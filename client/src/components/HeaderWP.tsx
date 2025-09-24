@@ -33,12 +33,12 @@ export default function HeaderWP(): React.JSX.Element {
 				{/* Logo */}
 				<div className="logo-box pull-left">
 				  <figure className="logo">
-					<a href="/" title="KKMA">
+					<NavLink to="/" title="KKMA">
 					  <img
 						src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
 						alt="logo"
 					  />
-					</a>
+					</NavLink>
 				  </figure>
 				</div>
   
@@ -61,7 +61,7 @@ export default function HeaderWP(): React.JSX.Element {
 					>
 					  <ul className="navigation clearfix">
 						<li className="active">
-						  <a href="/">Home</a>
+						  <NavLink to="/">Home</NavLink>
 						</li>
 						<li className="dropdown">
 						  <a href="#">About Us</a>
@@ -72,14 +72,14 @@ export default function HeaderWP(): React.JSX.Element {
 								  </NavLink>
 								</li>
 							<li>
-							  <a href="/about/people-behind">
+							  <NavLink to="/about/people-behind">
 								People Behind
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/about/kkma-history">
+							  <NavLink to="/about/kkma-history">
 								KKMA History
-							  </a>
+							  </NavLink>
 							</li>
 						  </ul>
 						</li>
@@ -87,14 +87,14 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Our Initiatives</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/initiatives/social-projects">
+							  <NavLink to="/initiatives/social-projects">
 								Social Projects
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/initiatives/magnet-club">
+							  <NavLink to="/initiatives/magnet-club">
 								Magnet Club
-							  </a>
+							  </NavLink>
 							</li>
 						  </ul>
 						</li>
@@ -102,14 +102,14 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Membership</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/membership/membership-information">
+							  <NavLink to="/membership/membership-information">
 								Membership Information
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/membership/member-privileges">
+							  <NavLink to="/membership/member-privileges">
 								Member Privileges
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
 							  <a href="http://database.kkma.net">Members Area</a>
@@ -120,19 +120,19 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Classifieds</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/classifieds/view-classifieds">
+							  <NavLink to="/classifieds/view-classifieds">
 								View Classifieds
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/classifieds/view-categories">
+							  <NavLink to="/classifieds/view-categories">
 								View Categories
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/classifieds/quick-search">
+							  <NavLink to="/classifieds/quick-search">
 								Quick Search
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
 							  <a href="https://kkma.net/add-listing/">
@@ -150,14 +150,14 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Media</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/media/news-and-updates">
+							  <NavLink to="/media/news-and-updates">
 								News & Updates
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/media/events-and-programs">
+							  <NavLink to="/media/events-and-programs">
 								Events & Programs
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
 							  <a href="#">Downloads</a>
@@ -168,7 +168,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li>
-						  <a href="/contact/">Contact</a>
+						  <NavLink to="/contact">Contact</NavLink>
 						</li>
 					  </ul>
 					</div>
@@ -195,12 +195,12 @@ export default function HeaderWP(): React.JSX.Element {
 			  <div className="outer-box clearfix">
 				<div className="logo-box pull-left">
 				  <figure className="logo">
-					<a href="https://kkma.net/" title="KKMA">
+					<NavLink to="/" title="KKMA">
 					  <img
 						src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
 						alt="logo"
 					  />
-					</a>
+					</NavLink>
 				  </figure>
 				</div>
 				<div className="menu-area clearfix pull-right">
@@ -233,12 +233,12 @@ export default function HeaderWP(): React.JSX.Element {
   
 			<nav className="menu-box">
 			  <div className="nav-logo">
-				<a href="https://kkma.net/" title="KKMA">
+				<NavLink to="/" title="KKMA">
 				  <img
 					src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
 					alt="logo"
 				  />
-				</a>
+				</NavLink>
 			  </div>
 			  <div className="menu-outer">{/* Same menu links go here */}</div>
   
