@@ -194,7 +194,8 @@ export default function NewsAndUpdates(): React.JSX.Element {
                       </div>
                       <div className="lower-content">
                         <div className="category"><a href="#"><i className="flaticon-star"></i>{post.category}</a></div>
-                        <h4><a href={post._id ? `/media/news-and-updates/${post._id}` : post.href}>{post.title}</a></h4>
+                        {/* <h4><a href={post._id ? `/media/news-and-updates/${post._id}` : post.href}>{post.title}</a></h4> */}
+                        <h4>{post.title}</h4>
                         <ul className="post-info clearfix">
                           <li><i className="far fa-user"></i><a href="#">{post.author}</a></li>
                           <li><i className="far fa-comment"></i><a href="#">{post.comments} Comments</a></li>

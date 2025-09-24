@@ -73,7 +73,8 @@ export default function EventsPrograms(): React.JSX.Element {
                         <div className="post-date"><h3>{event.dateBadge.day}<span>{event.dateBadge.monthYear}</span></h3></div>
                         <div className="text">
                           <span className="category"><i className="flaticon-star"></i></span>
-                          <h4><a href={event.href}>{event.title}</a></h4>
+                          {/* <h4><a href={event.href}>{event.title}</a></h4> */}
+                          <h4>{event.title}</h4>
                         </div>
                       </div>
                     </div>
@@ -82,7 +83,8 @@ export default function EventsPrograms(): React.JSX.Element {
                         <li><i className="flaticon-clock-circular-outline"></i>{event.dateRange}</li>
                         <li><i className="flaticon-gps"></i>{event.location ?? ''}</li>
                       </ul>
-                      <div className="links"><a href={event.href}>Read More<i className="flaticon-right-arrow"></i></a></div>
+                      {/* <div className="links"><a href={event.href}>Read More<i className="flaticon-right-arrow"></i></a></div> */}
+                      <div className="links"><a href="#">Read More<i className="flaticon-right-arrow"></i></a></div>
                     </div>
                   </div>
                 </div>
