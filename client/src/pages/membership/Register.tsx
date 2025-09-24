@@ -306,7 +306,7 @@ export default function Register(): React.JSX.Element {
                             ))}
                           </tbody>
                         </table>
-                      </div>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -512,7 +512,7 @@ export default function Register(): React.JSX.Element {
                   </span>
                   <span>If a member leaves Kuwait and does not return for more than 6 months, it will be assumed that their membership has automatically lapsed.</span>
                 </li>
-              </ul>
+                  </ul>
               <div style={{ marginTop: 16 }}>
                 <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
                   <input
