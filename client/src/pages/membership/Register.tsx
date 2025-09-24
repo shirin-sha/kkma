@@ -11,8 +11,6 @@ type FormState = {
   mobile: string
   mobile2: string
   whatsappnumber: string
-  email: string
-  branch: string
   addressinKuwait: string
   proffession: string
   qualification: string
@@ -22,6 +20,13 @@ type FormState = {
   emergencyContacts: EmergencyContact[]
   acknowledge: boolean
   photo: File | null
+  passport: string
+  locationinIndia: string
+  stateinIndia: string
+  districtinIndia: string
+  panchayath: string
+  postoffice: string
+  pincode: string
 }
 
 export default function Register(): React.JSX.Element {
@@ -35,8 +40,7 @@ export default function Register(): React.JSX.Element {
     mobile: '',
     mobile2: '',
     whatsappnumber: '',
-    email: '',
-    branch: '',
+
     addressinKuwait: '',
     proffession: '',
     qualification: '',
@@ -49,6 +53,13 @@ export default function Register(): React.JSX.Element {
     ],
     acknowledge: false,
     photo: null,
+    passport: '',
+    locationinIndia: '',
+    stateinIndia: '',
+    districtinIndia: '',
+    panchayath: '',
+    postoffice: '',
+    pincode: '',
   })
   const [family, setFamily] = useState<FamilyMember[]>([{ name: '', relation: '', age: '' }])
   const [previewUrl, setPreviewUrl] = useState<string>('')
@@ -90,8 +101,6 @@ export default function Register(): React.JSX.Element {
       fd.append('applicationType', form.membershipType)
       fd.append('fullName', form.fullName)
       fd.append('phone', form.mobile)
-      fd.append('email', form.email)
-      fd.append('branch', form.branch)
       fd.append('address', form.addressinKuwait)
       if (form.photo) fd.append('photo', form.photo)
 
@@ -117,10 +126,17 @@ export default function Register(): React.JSX.Element {
       if (res.ok && data?.ok) {
         setMessage('Application submitted successfully.')
         setForm({
-          membershipType: 'new', fullName: '', bloodGroup: '', civilId: '', mobile: '', mobile2: '', whatsappnumber: '', email: '', branch: '',
+          membershipType: 'new', fullName: '', bloodGroup: '', civilId: '', mobile: '', mobile2: '', whatsappnumber: '',
           addressinKuwait: '', proffession: '', qualification: '', addressinIndia: '', contactnumberinIndia: '', contactnumberiindia2: '',
           emergencyContacts: [ { name: '', relation: '', phone: '' }, { name: '', relation: '', phone: '' } ], acknowledge: false, photo: null,
-        })
+          passport: '',
+          locationinIndia: '',
+          stateinIndia: '',
+          districtinIndia: '',
+          panchayath: '',
+          postoffice: '',
+          pincode: '',
+          })
         setFamily([{ name: '', relation: '', age: '' }])
         if (previewUrl) URL.revokeObjectURL(previewUrl)
         setPreviewUrl('')
@@ -141,7 +157,10 @@ export default function Register(): React.JSX.Element {
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred">
-              <h1>KKMA Membership Form</h1>
+            <h1>KKMA Membership Form</h1>
+
+              <h2 style={{color:'white'}}>കുവൈറ്റ് കേരള മുസ്ലിം അസോസിയേഷന്‍</h2>
+              <h2 style={{color:'white'}}>അംഗത്വത്തിനുള്ള അപേക്ഷ ഫോറം</h2>
             </div>
             <ul className="bread-crumb clearfix">
               <li><a href="/">Home</a></li>
@@ -171,16 +190,12 @@ export default function Register(): React.JSX.Element {
                       </select>
                     </div>
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>Full Name*</label>
-                      <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required placeholder="Full name" style={inputBoxStyle} />
+                      <label>പേര്*</label>
+                      <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
+                 
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>Branch</label>
-                      <input type="text" name="branch" value={form.branch} onChange={handleChange} placeholder="Branch" style={inputBoxStyle} />
-                    </div>
-             
-                    <div className="col-md-4 col-sm-12 form-group">
-                      <label>Blood Group</label>
+                      <label>ബ്ലഡ് ഗ്രൂപ്പ്*</label>
                       <input type="text" name="bloodGroup" value={form.bloodGroup} onChange={handleChange} placeholder="e.g. O+" style={inputBoxStyle} />
                     </div>
                     
@@ -192,23 +207,24 @@ export default function Register(): React.JSX.Element {
                   <h4 style={{ marginBottom: 16 }}>Contact &amp; Identification</h4>
                   <div className="row clearfix">
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>Civil ID / Passport*</label>
+                      <label>സിവില്‍ ഐഡി നമ്പര്‍*</label>
                       <input type="text" name="civilId" value={form.civilId} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>Email*</label>
-                      <input type="email" name="email" value={form.email} onChange={handleChange} required style={inputBoxStyle} />
-                    </div>
+                      <label>പാസ്പോർട്ട് നമ്പര്‍*</label>
+                      <input type="text" name="passport" value={form.passport} onChange={handleChange} required style={inputBoxStyle} />
+                    </div>  
+                 
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>Mobile*</label>
+                      <label>മൊബൈൽ നമ്പര്‍*</label>
                       <input type="tel" name="mobile" value={form.mobile} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>Alt. Mobile</label>
+                      <label>മൊബൈൽ നമ്പര്‍ 2*</label>
                       <input type="tel" name="mobile2" value={form.mobile2} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-4 col-sm-12 form-group">
-                      <label>WhatsApp</label>
+                      <label>വാട്സ്ആപ് നമ്പര്‍*</label>
                       <input type="tel" name="whatsappnumber" value={form.whatsappnumber} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                   </div>
@@ -219,27 +235,52 @@ export default function Register(): React.JSX.Element {
                   <h4 style={{ marginBottom: 16 }}>Address &amp; Profession</h4>
                   <div className="row clearfix">
                     <div className="col-md-12 col-sm-12 form-group">
-                      <label>Address in Kuwait*</label>
+                      <label>കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം*</label>
                       <textarea name="addressinKuwait" value={form.addressinKuwait} onChange={handleChange} required rows={2} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
-                      <label>Profession</label>
+                      <label>തൊഴില്‍</label>
                       <input type="text" name="proffession" value={form.proffession} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
-                      <label>Qualification</label>
+                      <label>വിദ്യാഭ്യാസ യോഗ്യത </label>
                       <input type="text" name="qualification" value={form.qualification} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-12 col-sm-12 form-group">
-                      <label>Address in India</label>
+                      <label>ഇന്ത്യയിലെ വീട്ടു പേര്*</label>
                       <textarea name="addressinIndia" value={form.addressinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
                     </div>
+                    <div className="col-md-12 col-sm-12 form-group">
+                      <label>സ്ഥലം*</label>
+                      <textarea name="addressinIndia" value={form.locationinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                    </div>
+                    <div className="col-md-12 col-sm-12 form-group">
+                      <label>സംസ്ഥാനം*</label>
+                      <textarea name="stateinIndia" value={form.stateinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                    </div>
+                    <div className="col-md-12 col-sm-12 form-group">
+                      <label>ജില്ലാം*</label>
+                      <textarea name="districtinIndia" value={form.districtinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                    </div>
                     <div className="col-md-6 col-sm-12 form-group">
-                      <label>Contact in India</label>
+                      <label>പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍*</label>
+                      <input type="tel" name="panchayath" value={form.panchayath} onChange={handleChange} style={inputBoxStyle} />
+                    </div>
+                    <div className="col-md-6 col-sm-12 form-group">
+                      <label>പോസ്റ്റ് ഓഫീസ്*</label>
+                      <input type="tel" name="postoffice" value={form.postoffice} onChange={handleChange} style={inputBoxStyle} />
+                    </div>
+                    
+                    <div className="col-md-6 col-sm-12 form-group">
+                      <label>പിന്കോഡ്*</label>
+                      <input type="tel" name="pincode" value={form.pincode} onChange={handleChange} style={inputBoxStyle} />
+                    </div>
+                    <div className="col-md-6 col-sm-12 form-group">
+                      <label>ഇന്ത്യയില്‍ ബന്ധപ്പെടാനുള്ള നമ്പര്‍*</label>
                       <input type="tel" name="contactnumberinIndia" value={form.contactnumberinIndia} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
-                      <label>Contact in India (Alt)</label>
+                      <label>ഇന്ത്യന്‍ നമ്പര്‍ 2*</label>
                       <input type="tel" name="contactnumberiindia2" value={form.contactnumberiindia2} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                   </div>
@@ -248,8 +289,8 @@ export default function Register(): React.JSX.Element {
                 {/* Emergency Contacts */}
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
                   <div className="row clearfix" style={{ alignItems: 'center' }}>
-                    <div className="col-md-8 col-sm-12">
-                      <h4 style={{ marginBottom: 16 }}>Emergency Contacts</h4>
+                    <div className="col-md-12 col-sm-12">
+                      <h5 style={{ marginBottom: 16 }}> അടിയന്തിര ഘട്ടങ്ങളില്‍ ബന്ധപ്പെടാനുള്ള ബന്ധുവിന്‍റെയോ, സുഹൃത്തിന്‍റെയോ നമ്പര്‍ </h5>
                     </div>
                   </div>
                   <div className="row clearfix">
@@ -332,7 +373,7 @@ export default function Register(): React.JSX.Element {
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
                   <div className="row clearfix" style={{ alignItems: 'center' }}>
                     <div className="col-md-8 col-sm-12">
-                      <h4 style={{ marginBottom: 16 }}>Family Members</h4>
+                      <h5 style={{ marginBottom: 16 }}>കുടുംബ വിവരങ്ങള്‍ (നിലവില്‍ ജീവിച്ചിരിക്കുന്നവര്‍ മാത്രം) </h5>
                     </div>
                     <div className="col-md-4 col-sm-12" style={{ textAlign: 'right' }}>
                       <span
@@ -436,7 +477,7 @@ export default function Register(): React.JSX.Element {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
           <div style={{ width: '100%', maxWidth: 800, background: '#fff', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
             <div style={{ padding: 16, borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <h4 style={{ margin: 0 }}>Rules &amp; Regulations</h4>
+              <h4 style={{ margin: 0 }}>  അംഗങ്ങൾ അറി ിരിേ ണ്ട, പാലി ിരിേ ണ്ടതായ നിയമാവലികൾ</h4>
             </div>
             <div style={{ padding: 16, maxHeight: '60vh', overflowY: 'auto' }}>
               <ul className="list" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
@@ -444,74 +485,85 @@ export default function Register(): React.JSX.Element {
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>The Kuwait Kerala Muslim Association (KKMA) is a well-established organization operating in Kuwait.</span>
+                  <span>കുവൈത്ത് കേരള മുസ്ലിം അസോസിയേഷന്‍ (കെ.കെ.എം.എ) കുവൈത്തില്‍ പ്രവര്‍ത്തിക്കുന്ന ഒരു സ്വതന്ത്ര സംഘടനയാണ്.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>It is an organization that maintains structured connections with expatriates in both Kuwait and India.</span>
+                  <span>കുവൈത്തിലോ,ഇന്ത്യയിലോ പ്രവര്‍ത്തിക്കുന്ന ഒരു സംഘടനയുടെയും പോഷക സംഘടന അല്ല.</span>
+                 
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>Members are expected to lead lives based on Islamic values and to actively contribute to society.</span>
+                  
+                  <span>അംഗങ്ങള്‍ ഇസ്ലാമിക ചര്യ അനുസരിച്ച് ജീവിക്കുന്നവരും,സ്വഭാവത്തില്‍ വിശുദ്ധി കാത്ത് സൂക്ഷിക്കുന്നവരും ആയിരിക്കണം.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>Welfare programs such as Family Welfare Scheme, Membership Welfare Scheme, etc., initiated by KKMA are social welfare initiatives aimed at supporting members.</span>
+  
+                  <span>കെ.കെ.എം.എ നടപ്പിലാക്കുന്ന കുടുംബ ക്ഷേമ പദ്ധതി,അംഗത്വ ക്ഷേമ പദ്ധതി തുടങ്ങിയ സാമൂഹിക ക്ഷേമ പദ്ധതികളുമായി സഹകരിക്കാന്‍ അംഗങ്ങള്‍ ബാധ്യസ്ഥരാണ്.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>Members are expected to support these schemes with full trust and commitment, as they are designed to assist expatriates in situations like financial emergencies or family support needs.</span>
+                  <span>കുടുംബ സഹായ പദ്ധതി/അംഗത്വ ക്ഷേമ പദ്ധതി പോലുള്ള അംഗത്വപരമായ നിര്‍ബന്ധ ബാധ്യതകള്‍ നല്‍കുവാനുള്ള സര്‍ക്കുലര്‍
+ കിട്ടിക്കഴിഞ്ഞാല്‍ വിഹിതം, നിശ്ചയിച്ച തിയ്യതിക്കകം ബ്രാഞ്ച് ഭാരവാഹികളെ ഏല്പിക്കണം. അത് മെമ്പര്‍മാരുടെ
+ ഉത്തരവാദിത്വമാണ്.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>The use of funds received from schemes like the Family Support Scheme or Final Rites Scheme must be transparently communicated to the branch officials by the members.</span>
+                  <span> പുതിയ മെമ്പര്‍മാര്‍ക്ക്  അവരുടെ അംഗത്വ അപേക്ഷ,രസീതി തിയ്യതി മുതല്‍ 3 മാസങ്ങള്‍ക്ക് ശേഷം മാത്രമേ കെ.കെ.എം.എ.യുടെ
+ ക്ഷേമ പദ്ധതികള്‍ക്ക് അര്‍ഹരാവുകയുള്ളൂ. എന്നാല്‍ അംഗത്വം എടുത്തതിന് ശേഷം പ്രാബല്യത്തില്‍ വരുന്ന എല്ലാ സ്കീമുകളും
+ അടക്കുവാന്‍ ഈ മെമ്പര്‍മാര്‍ ബാധ്യസ്ഥരായിരിക്കും .</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>New members become eligible for welfare schemes only after three months from the date of application and official membership confirmation. Hence, branch officials must be informed of any such final rites in advance.</span>
+                  <span> മെമ്പര്‍മാര്‍ ചുരുങ്ങിയത് മാസത്തില്‍ ഒരിക്കലെങ്കിലും ബ്രാഞ്ച് ഭാരവാഹികളുമായി ബന്ധപ്പെടുകയും,സംഘടനാ കാര്യങ്ങള്‍
+ അറിഞ്ഞിരിക്കുകയും വേണം.അംഗങ്ങളുടെ വിലാസമോ, ഫോണ്‍ നമ്പറോ മാറുകയാണെങ്കില്‍,വിവരങ്ങള്‍ യഥാസമയം ബ്രാഞ്ച്
+ ഭാരവാഹികളെ അറിയിക്കേ താണ്.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>Members should maintain regular communication with branch officials — at least once a month. If there are changes in the member’s address or phone number, these updates must be informed promptly.</span>
+                  <span>ദേശ വിരുദ്ധ പ്രവര്‍ത്തനങ്ങളിലും,മദ്യം,മയക്ക് മരുന്ന്,ചൂതാട്ടം തുടങ്ങിയ സാമൂഹ്യ തിന്മകളിലും,അധാര്‍മിക പ്രവര്‍ത്തനങ്ങളിലും  
+ഏര്‍പ്പെടുന്നവരുടെ അംഗത്വം മുന്‍കാല പ്രാബല്യത്തോടെ തനിയെ നഷ്ട്ടപ്പെടുന്നതായിരിക്കും. അംഗത്വത്തിനുള്ള അപേക്ഷകള്‍
+ സ്വീകരിക്കുവാനും,കാരണം കാണിക്കാതെ തിരസ്കരിക്കുവാനും,മെമ്പര്‍മാരുടെ അംഗത്വം റദ്ദാക്കാനുമുള്ള അധികാരം
+ കെ.കെ.എം.എയുടെ കേന്ദ്ര കമ്മിറ്റിയില്‍ നിക്ഷിപ്തമാണ്.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>For other social engagements, such as funerals, events, or community support activities, members should be active participants and adhere to the principles and decisions laid out by KKMA.</span>
+                  <span> ആത്മഹത്യ ചെയ്യുന്ന അംഗങ്ങളുടെ കുടുംബങ്ങള്‍ കെ.കെ.എം.എ നല്‍കുന്ന യാതൊരു അനുകൂല്യങ്ങള്‍ക്കോ, ക്ഷേമ
+                  പദ്ധതികള്‍ക്കോ അര്‍ഹരായിരിക്കുകയില്ല  </span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>Families of deceased members will not be eligible for welfare schemes if the member was not compliant with the organizational rules at the time of death.</span>
+                  <span>എല്ലാ മെമ്പര്‍മാരും കെ.കെ.എം.എ കേന്ദ്ര കമ്മിറ്റിയുടെ അധികാര പരിധിയില്‍ ഉള്ളവരും, മെമ്പര്‍മാരെ സംബന്ധിച്ചുള്ള അവസാന
+ തീരുമാനം എടുക്കാനുള്ള അധികാരം കെ.കെ.എം.എ കേന്ദ്ര കമ്മിറ്റിയില്‍ നിക്ഷിപ്തമായിരിക്കുകയും ചെയ്യും. ഏതെങ്കിലും
+ വ്യക്തികള്‍ക്കോ,സ്റ്റാര്‍ ക്ലബ് മെമ്പര്‍മാര്‍ക്കോ മെമ്പര്‍മാരുടെ ഉത്തരവാദിത്തം ഏറ്റെടുക്കാന്‍ സാധിക്കില്ല.</span>
                 </li>
                 <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                   <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                   </span>
-                  <span>All members shall fall under the authority of the KKMA Central Committee, and only the Central Committee has the authority to finalize any dues or settlements related to members. Any exceptions or variations, whether it be store club members or other individual members, will not be accepted as valid unless officially approved.</span>
+                  <span>അംഗങ്ങള്‍ കുവൈത്തില്‍ നിന്നും യാത്ര പുറപ്പെട്ട്  6 മാസം കഴിയുകയും,തിരിച്ചെത്താതിരിക്കുകയും ചെയ്താല്‍  അംഗത്വം
+                  സ്വമേധയാ നഷ്ട്ടപ്പെടുന്നതായിരിക്കും </span>
                 </li>
-                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  </span>
-                  <span>If a member leaves Kuwait and does not return for more than 6 months, it will be assumed that their membership has automatically lapsed.</span>
-                </li>
+            
                   </ul>
               <div style={{ marginTop: 16 }}>
                 <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
@@ -522,7 +574,8 @@ export default function Register(): React.JSX.Element {
                     style={{ marginTop: 4 }}
                   />
                   <span style={{ lineHeight: 1.6 }}>
-                    I hereby acknowledge that I have carefully read and understood the rules and regulations stated above, and I commit to adhering to them fully.
+                  മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച്
+                  കൊള്ളുമെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.  
                   </span>
                 </label>
               </div>
