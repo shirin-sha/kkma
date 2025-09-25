@@ -1,6 +1,6 @@
 import React, { useMemo, useState, ChangeEvent, FormEvent } from 'react'
 
-type FamilyMember = { name: string; relation: string; age: string }
+type FamilyMember = { name: string; relation: string; age: string; education: string; occupation: string; phone: string; place: 'കുവൈത്ത്' | 'നാട്ടിൽ' | '' }
 type EmergencyContact = { name: string; relation: string; phone: string }
 
 type FormState = {
@@ -61,7 +61,17 @@ export default function Register(): React.JSX.Element {
     postoffice: '',
     pincode: '',
   })
-  const [family, setFamily] = useState<FamilyMember[]>([{ name: '', relation: '', age: '' }])
+  const defaultRelations = ['പിതാവ്', 'മാതാവ്', 'ഭാര്യ', 'ഭാര്യാ പിതാവ്', 'ഭാര്യാ മാതാവ്']
+  const makeDefaultFamily = (): FamilyMember[] => [
+    { name: '', relation: 'പിതാവ്', age: '', education: '', occupation: '', phone: '', place: '' },
+    { name: '', relation: 'മാതാവ്', age: '', education: '', occupation: '', phone: '', place: '' },
+    { name: '', relation: 'ഭാര്യ', age: '', education: '', occupation: '', phone: '', place: '' },
+    { name: '', relation: 'ഭാര്യാ പിതാവ്', age: '', education: '', occupation: '', phone: '', place: '' },
+    { name: '', relation: 'ഭാര്യാ മാതാവ്', age: '', education: '', occupation: '', phone: '', place: '' },
+    // One child row to start with (relation selectable below)
+    { name: '', relation: '', age: '', education: '', occupation: '', phone: '', place: '' },
+  ]
+  const [family, setFamily] = useState<FamilyMember[]>(makeDefaultFamily())
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState('')
@@ -137,7 +147,7 @@ export default function Register(): React.JSX.Element {
           postoffice: '',
           pincode: '',
           })
-        setFamily([{ name: '', relation: '', age: '' }])
+        setFamily(makeDefaultFamily())
         if (previewUrl) URL.revokeObjectURL(previewUrl)
         setPreviewUrl('')
         setAccepted(false)
@@ -160,7 +170,7 @@ export default function Register(): React.JSX.Element {
             <h1>KKMA Membership Form</h1>
 
               <h2 style={{color:'white'}}>കുവൈറ്റ് കേരള മുസ്ലിം അസോസിയേഷന്‍</h2>
-              <h2 style={{color:'white'}}>അംഗത്വത്തിനുള്ള അപേക്ഷ ഫോറം</h2>
+              <h2 style={{color:'white'}}>അംഗത്തിനുള്ള അപേക്ഷ ഫോറം</h2>
             </div>
             <ul className="bread-crumb clearfix">
               <li><a href="/">Home</a></li>
@@ -180,15 +190,8 @@ export default function Register(): React.JSX.Element {
               <form className="default-form" onSubmit={handleSubmit} encType="multipart/form-data">
                 {/* Basic Information */}
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
-                  <h4 style={{ marginBottom: 16 }}>Basic Information</h4>
+                  {/* <h4 style={{ marginBottom: 16 }}>Basic Information</h4> */}
                   <div className="row clearfix">
-                    <div className="col-md-4 col-sm-12 form-group">
-                      <label>Membership Type*</label>
-                      <select name="membershipType" value={form.membershipType} onChange={handleChange} required className="nice-select">
-                        <option value="new">New</option>
-                        <option value="renew">Renew</option>
-                      </select>
-                    </div>
                     <div className="col-md-4 col-sm-12 form-group">
                       <label>പേര്*</label>
                       <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required style={inputBoxStyle} />
@@ -196,15 +199,33 @@ export default function Register(): React.JSX.Element {
                  
                     <div className="col-md-4 col-sm-12 form-group">
                       <label>ബ്ലഡ് ഗ്രൂപ്പ്*</label>
-                      <input type="text" name="bloodGroup" value={form.bloodGroup} onChange={handleChange} placeholder="e.g. O+" style={inputBoxStyle} />
+                      <input type="text" name="bloodGroup" value={form.bloodGroup} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    
+                    <div className="col-md-4 col-sm-12 form-group">
+                      <label>അംഗത്വ തരം*</label>
+                      <select name="membershipType" value={form.membershipType} onChange={handleChange} required style={inputBoxStyle}>
+                        <option value="new">New</option>
+                        <option value="renew">Renew</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="row clearfix">
+                    <div className="col-md-8 col-sm-12 form-group">
+                      <label>Upload Photo</label>
+                      <input type="file" name="photo" accept="image/*" onChange={handleChange} />
+                      <p style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>Upload a clear, recent passport-size photo (JPG/PNG).</p>
+                    </div>
+                  {previewUrl && <div className="col-md-4 col-sm-12 form-group" style={{ textAlign: 'center' }}>
+                      <div style={{ display: 'inline-block', border: '1px solid #e5e7eb', borderRadius: 8, padding: 8 }}>
+                        <img src={previewUrl || 'https://via.placeholder.com/120x120?text=Preview'} alt="Preview" style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 6 }} />
+                      </div>
+                    </div>}
                   </div>
                 </div>
 
                 {/* Contact & IDs */}
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
-                  <h4 style={{ marginBottom: 16 }}>Contact &amp; Identification</h4>
+                  {/* <h4 style={{ marginBottom: 16 }}>Contact &amp; Identification</h4> */}
                   <div className="row clearfix">
                     <div className="col-md-4 col-sm-12 form-group">
                       <label>സിവില്‍ ഐഡി നമ്പര്‍*</label>
@@ -232,139 +253,56 @@ export default function Register(): React.JSX.Element {
 
                 {/* Address & Profession */}
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
-                  <h4 style={{ marginBottom: 16 }}>Address &amp; Profession</h4>
+                  {/* <h4 style={{ marginBottom: 16 }}>Address &amp; Profession</h4> */}
                   <div className="row clearfix">
-                    <div className="col-md-12 col-sm-12 form-group">
-                      <label>കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം*</label>
-                      <textarea name="addressinKuwait" value={form.addressinKuwait} onChange={handleChange} required rows={2} style={inputBoxStyle} />
-                    </div>
                     <div className="col-md-6 col-sm-12 form-group">
+                      <label>കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം*</label>
+                      <input name="addressinKuwait" value={form.addressinKuwait} onChange={handleChange} required style={inputBoxStyle} />
+                    </div>
+                    <div className="col-md-3 col-sm-12 form-group">
                       <label>തൊഴില്‍</label>
                       <input type="text" name="proffession" value={form.proffession} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group">
                       <label>വിദ്യാഭ്യാസ യോഗ്യത </label>
                       <input type="text" name="qualification" value={form.qualification} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-12 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group">
                       <label>ഇന്ത്യയിലെ വീട്ടു പേര്*</label>
-                      <textarea name="addressinIndia" value={form.addressinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                      <input type="text" name="addressinIndia" value={form.addressinIndia} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-12 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group">
                       <label>സ്ഥലം*</label>
-                      <textarea name="addressinIndia" value={form.locationinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                      <input type="text" name="locationinIndia" value={form.locationinIndia} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-12 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group">
                       <label>സംസ്ഥാനം*</label>
-                      <textarea name="stateinIndia" value={form.stateinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                      <input type="text" name="stateinIndia" value={form.stateinIndia} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-12 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group">
                       <label>ജില്ലാം*</label>
-                      <textarea name="districtinIndia" value={form.districtinIndia} onChange={handleChange} rows={2} style={inputBoxStyle} />
+                      <input type="text" name="districtinIndia" value={form.districtinIndia} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label>പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍*</label>
-                      <input type="tel" name="panchayath" value={form.panchayath} onChange={handleChange} style={inputBoxStyle} />
+                      <input type="text" name="panchayath" value={form.panchayath} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group">
                       <label>പോസ്റ്റ് ഓഫീസ്*</label>
-                      <input type="tel" name="postoffice" value={form.postoffice} onChange={handleChange} style={inputBoxStyle} />
+                      <input type="text" name="postoffice" value={form.postoffice} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-2 col-sm-12 form-group">
                       <label>പിന്കോഡ്*</label>
                       <input type="tel" name="pincode" value={form.pincode} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-5 col-sm-12 form-group">
                       <label>ഇന്ത്യയില്‍ ബന്ധപ്പെടാനുള്ള നമ്പര്‍*</label>
                       <input type="tel" name="contactnumberinIndia" value={form.contactnumberinIndia} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-5 col-sm-12 form-group">
                       <label>ഇന്ത്യന്‍ നമ്പര്‍ 2*</label>
                       <input type="tel" name="contactnumberiindia2" value={form.contactnumberiindia2} onChange={handleChange} style={inputBoxStyle} />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Emergency Contacts */}
-                <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
-                  <div className="row clearfix" style={{ alignItems: 'center' }}>
-                    <div className="col-md-12 col-sm-12">
-                      <h5 style={{ marginBottom: 16 }}> അടിയന്തിര ഘട്ടങ്ങളില്‍ ബന്ധപ്പെടാനുള്ള ബന്ധുവിന്‍റെയോ, സുഹൃത്തിന്‍റെയോ നമ്പര്‍ </h5>
-                    </div>
-                  </div>
-                  <div className="row clearfix">
-                    <div className="col-md-12 col-sm-12">
-                      <div style={{ overflowX: 'auto' }}>
-                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                          <thead>
-                            <tr>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Name</th>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Relation</th>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Phone</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {form.emergencyContacts.map((row, idx) => (
-                              <tr key={idx}>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input
-                                    type="text"
-                                    value={row.name}
-                                    onChange={(e) => setForm((s) => ({
-                                      ...s,
-                                      emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, name: e.target.value } : r)
-                                    }))}
-                                    placeholder="Name"
-                                    style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
-                                  />
-                                </td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input
-                                    type="text"
-                                    value={row.relation}
-                                    onChange={(e) => setForm((s) => ({
-                                      ...s,
-                                      emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, relation: e.target.value } : r)
-                                    }))}
-                                    placeholder="Relation"
-                                    style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
-                                  />
-                                </td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input
-                                    type="tel"
-                                    value={row.phone}
-                                    onChange={(e) => setForm((s) => ({
-                                      ...s,
-                                      emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, phone: e.target.value } : r)
-                                    }))}
-                                    placeholder="Phone"
-                                    style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                    </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Photo */}
-                <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
-                  <h4 style={{ marginBottom: 16 }}>Photo</h4>
-                  <div className="row clearfix">
-                    <div className="col-md-8 col-sm-12 form-group">
-                      <label>Upload Photo</label>
-                      <input type="file" name="photo" accept="image/*" onChange={handleChange} />
-                      <p style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>Upload a clear, recent passport-size photo (JPG/PNG).</p>
-                    </div>
-                    <div className="col-md-4 col-sm-12 form-group" style={{ textAlign: 'center' }}>
-                      <div style={{ display: 'inline-block', border: '1px solid #e5e7eb', borderRadius: 8, padding: 8 }}>
-                        <img src={previewUrl || 'https://via.placeholder.com/120x120?text=Preview'} alt="Preview" style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 6 }} />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -375,43 +313,54 @@ export default function Register(): React.JSX.Element {
                     <div className="col-md-8 col-sm-12">
                       <h5 style={{ marginBottom: 16 }}>കുടുംബ വിവരങ്ങള്‍ (നിലവില്‍ ജീവിച്ചിരിക്കുന്നവര്‍ മാത്രം) </h5>
                     </div>
-                    <div className="col-md-4 col-sm-12" style={{ textAlign: 'right' }}>
-                      <span
-                        onClick={() => setFamily((f) => [...f, { name: '', relation: '', age: '' }])}
-                        style={{ color: '#16a34a', fontWeight: 600, cursor: 'pointer' }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = '#000' }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = '#16a34a' }}
-                      >
-                        + Add Member
-                      </span>
-                    </div>
+                    
                   </div>
                   <div className="row clearfix">
                     <div className="col-md-12 col-sm-12">
                       <div style={{ overflowX: 'auto' }}>
                         <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                          <thead>
+                          <thead style={{ background: '#fafafa' }}>
                             <tr>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Name</th>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Relation</th>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Age</th>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>Actions</th>
+                            <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>ബന്ധം</th>
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>പേര്</th>
+ 
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>വയസ്സ്</th>
+   
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>സ്ഥലം</th>
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>ആക്ഷന്‍സ്</th>
                             </tr>
                           </thead>
                           <tbody>
                             {family.map((row, idx) => (
                               <tr key={idx}>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input type="text" value={row.name} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, name: e.target.value } : r))} placeholder="Name" />
+                                   <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
+                                  {defaultRelations.includes(row.relation) ? (
+                                    <input type="text" value={row.relation} readOnly style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }} />
+                                  ) : (
+                                    <select value={row.relation} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, relation: e.target.value } : r))} style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}>
+                                      <option value="">തിരഞ്ഞെടുക്കുക</option>
+                                      <option value="മകന്‍">മകന്‍</option>
+                                      <option value="മകള്‍">മകള്‍</option>
+                                    </select>
+                                  )}
                                 </td>
                                 <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input type="text" value={row.relation} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, relation: e.target.value } : r))} placeholder="Relation" />
+                                  <input type="text" value={row.name} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, name: e.target.value } : r))} style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }} />
+                                </td>
+                             
+                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
+                                  <input type="text" value={row.age} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, age: e.target.value } : r))} style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }} />
+                                </td>
+                              
+                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
+                                  <select value={row.place} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, place: e.target.value as FamilyMember['place'] } : r))} style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}>
+                                    <option value="">തിരഞ്ഞെടുക്കുക</option>
+                                    <option value="കുവൈത്തില്‍">കുവൈത്തില്‍</option>
+                                    <option value="നാട്ടിൽ">നാട്ടിൽ</option>
+                                  </select>
                                 </td>
                                 <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input type="text" value={row.age} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, age: e.target.value } : r))} placeholder="Age" />
-                                </td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  {family.length > 1 ? (
+                                  {idx >= defaultRelations.length ? (
                                     <span
                                       onClick={() => setFamily((arr) => arr.filter((_, i) => i !== idx))}
                                       style={{ color: '#ef4444', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6 }}
@@ -430,9 +379,97 @@ export default function Register(): React.JSX.Element {
                                 </td>
                               </tr>
                             ))}
+                            {/* Bottom add control under Relation column */}
+                            <tr>
+                            <td colSpan={1}>
+                                <span
+                                  onClick={() => setFamily((f) => [...f, { name: '', relation: '', age: '', education: '', occupation: '', phone: '', place: '' }])}
+                                  style={{ color: '#16a34a', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                                  onMouseEnter={(e) => { e.currentTarget.style.color = '#000' }}
+                                  onMouseLeave={(e) => { e.currentTarget.style.color = '#16a34a' }}
+                                >
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                  </svg>
+                                  മക്കൾ
+                                </span>
+                            
+                             
+                              </td>
+                             
+                            </tr>
                           </tbody>
                         </table>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Emergency Contacts */}
+                <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
+                  <div className="row clearfix" style={{ alignItems: 'center' }}>
+                    <div className="col-md-12 col-sm-12">
+                      <h5 style={{ marginBottom: 16 }}> അടിയന്തിര ഘട്ടങ്ങളില്‍ ബന്ധപ്പെടാനുള്ള ബന്ധുവിന്‍റെയോ, സുഹൃത്തിന്‍റെയോ നമ്പര്‍ </h5>
+                    </div>
+                  </div>
+                  <div className="row clearfix">
+                    <div className="col-md-12 col-sm-12">
+                      <div style={{ overflowX: 'auto' }}>
+                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                          <thead>
+                            <tr>
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>പേര്</th>
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>ഫോൺ</th>
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>ബന്ധം</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {form.emergencyContacts.map((row, idx) => (
+                              <tr key={idx}>
+                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
+                                  <input
+                                    type="text"
+                                    value={row.name}
+                                    onChange={(e) => setForm((s) => ({
+                                      ...s,
+                                      emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, name: e.target.value } : r)
+                                    }))}
+                                    
+                                    style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
+                                  />
+                                </td>
+                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
+                                  <input
+                                    type="tel"
+                                    value={row.phone}
+                                    onChange={(e) => setForm((s) => ({
+                                      ...s,
+                                      emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, phone: e.target.value } : r)
+                                    }))}
+                                    
+                                    style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
+                                  />
+                                </td>
+                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
+                                  <select
+                                    value={row.relation}
+                                    onChange={(e) => setForm((s) => ({
+                                      ...s,
+                                      emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, relation: e.target.value } : r)
+                                    }))}
+                                    style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
+                                  >
+                                    <option value="">തിരഞ്ഞെടുക്കുക</option>
+                                    <option value="ബന്ധു">ബന്ധു</option>
+                                    <option value="സുഹൃത്ത്">സുഹൃത്ത്</option>
+                                  </select>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -477,7 +514,7 @@ export default function Register(): React.JSX.Element {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
           <div style={{ width: '100%', maxWidth: 800, background: '#fff', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
             <div style={{ padding: 16, borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <h4 style={{ margin: 0 }}>  അംഗങ്ങൾ അറി ിരിേ ണ്ട, പാലി ിരിേ ണ്ടതായ നിയമാവലികൾ</h4>
+              <h4 style={{ margin: 0 }}>  അംഗങ്ങൾ അറിഞ്ഞിരിക്കേണ്ട , പാലിച്ചിരിക്കേണ്ടതായ  നിയമാവലികൾ</h4>
             </div>
             <div style={{ padding: 16, maxHeight: '60vh', overflowY: 'auto' }}>
               <ul className="list" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
@@ -609,3 +646,4 @@ export default function Register(): React.JSX.Element {
     </div>
   )
 }
+
