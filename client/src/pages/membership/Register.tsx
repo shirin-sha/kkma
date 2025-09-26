@@ -132,12 +132,19 @@ export default function Register(): React.JSX.Element {
       const extra = {
         bloodGroup: form.bloodGroup,
         civilId: form.civilId,
+        passport: form.passport,
         mobile2: form.mobile2,
         whatsappnumber: form.whatsappnumber,
         addressinKuwait: form.addressinKuwait,
         proffession: form.proffession,
         qualification: form.qualification,
         addressinIndia: form.addressinIndia,
+        locationinIndia: form.locationinIndia,
+        stateinIndia: form.stateinIndia,
+        districtinIndia: form.districtinIndia,
+        panchayath: form.panchayath,
+        postoffice: form.postoffice,
+        pincode: form.pincode,
         contactnumberinIndia: form.contactnumberinIndia,
         contactnumberiindia2: form.contactnumberiindia2,
         emergencyContacts: form.emergencyContacts,
@@ -191,9 +198,6 @@ export default function Register(): React.JSX.Element {
           <div className="content-box">
             <div className="title centred">
             <h1>KKMA Membership Form</h1>
-
-              <h2 style={{color:'white'}}>കുവൈറ്റ് കേരള മുസ്ലിം അസോസിയേഷന്‍</h2>
-              <h2 style={{color:'white'}}>അംഗത്തിനുള്ള അപേക്ഷ ഫോറം</h2>
             </div>
             <ul className="bread-crumb clearfix">
               <li><a href="/">Home</a></li>
@@ -203,6 +207,17 @@ export default function Register(): React.JSX.Element {
         </div>
       </section>
 
+      <div className="auto-container" style={{ padding: '16px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+          <img src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT.png" alt="KKMA" style={{ width: 96, height: 96, objectFit: 'contain' }} />
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontWeight: 800, fontSize: 18 }}>KUWAIT KERALA MUSLIM ASSOCIATION [KKMA]</div>
+            <div style={{ fontWeight: 700 }}>കുവൈറ്റ് കേരള മുസ്ലിം അസോസിയേഷൻ</div>
+            <div style={{ fontWeight: 700 }}>അംഗത്വത്തിനുള്ള അപേക്ഷ ഫോറം</div>
+          </div>
+        </div>
+      </div>
+
       <section className="contact-section sec-pad-2">
         <div className="auto-container">
           {message && (
@@ -210,7 +225,7 @@ export default function Register(): React.JSX.Element {
           )}
           <div className="row clearfix">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <form className="default-form" onSubmit={handleSubmit} encType="multipart/form-data">
+              <form className="default-form form-lite" onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
                 <h4 style={{ marginBottom: 16, color: '#16a34a', }}>പ്രാഥമിക വിവരങ്ങൾ</h4>
                   <div className="row clearfix">
@@ -302,7 +317,7 @@ export default function Register(): React.JSX.Element {
                       <input type="text" name="stateinIndia" value={form.stateinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     <div className="col-md-3 col-sm-12 form-group">
-                      <label>ജില്ലാം*</label>
+                      <label>ജില്ല*</label>
                       <input type="text" name="districtinIndia" value={form.districtinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
@@ -315,7 +330,7 @@ export default function Register(): React.JSX.Element {
                     </div>
                     
                     <div className="col-md-2 col-sm-12 form-group">
-                      <label>പിന്കോഡ്</label>
+                      <label>പിൻകോഡ്</label>
                       <input type="tel" name="pincode" value={form.pincode} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                     <div className="col-md-5 col-sm-12 form-group">
@@ -344,7 +359,7 @@ export default function Register(): React.JSX.Element {
                           <thead style={{ background: '#fafafa' }}>
                             <tr>
                             <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>ബന്ധം</th>
-                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>പേര്*</th>
+                              <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>പേര്</th>
  
                               <th style={{ borderBottom: '1px solid #e5e7eb', padding: 8 }}>വയസ്സ്</th>
    
@@ -367,7 +382,7 @@ export default function Register(): React.JSX.Element {
                                   )}
                                 </td>
                                 <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
-                                  <input type="text" value={row.name} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, name: e.target.value } : r))} required style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }} />
+                                  <input type="text" value={row.name} onChange={(e) => setFamily((arr) => arr.map((r, i) => i === idx ? { ...r, name: e.target.value } : r))} style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }} />
                                 </td>
                              
                                 <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>
@@ -481,7 +496,7 @@ export default function Register(): React.JSX.Element {
                                       emergencyContacts: s.emergencyContacts.map((r, i) => i === idx ? { ...r, relation: e.target.value } : r)
                                     }))}
                                     style={{ width: '100%', border: '1px solid #e5e7eb', borderRadius: 6, padding: '8px 10px', background: '#fff' }}
-                                  >
+                  >
                                     <option value="">തിരഞ്ഞെടുക്കുക</option>
                                     <option value="ബന്ധു">ബന്ധു</option>
                                     <option value="സുഹൃത്ത്">സുഹൃത്ത്</option>
@@ -491,88 +506,88 @@ export default function Register(): React.JSX.Element {
                             ))}
                           </tbody>
                         </table>
-                    </div>
-                    </div>
-                  </div>
                 </div>
+            </div>
+          </div>
+        </div>
 
                 {/* Rules & Regulations (Modal Trigger) */}
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
                   <h4 style={{ marginBottom: 16, color: '#16a34a', }}>അംഗങ്ങൾ അറിഞ്ഞിരിക്കേണ്ട , പാലിച്ചിരിക്കേണ്ടതായ  നിയമാവലികൾ</h4>
-                  <ul className="list" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
-                      <span>കുവൈത്ത് കേരള മുസ്ലിം അസോസിയേഷന്‍ (കെ.കെ.എം.എ) കുവൈത്തില്‍ പ്രവര്‍ത്തിക്കുന്ന ഒരു സ്വതന്ത്ര സംഘടനയാണ്.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
-                      <span>കുവൈത്തിലോ,ഇന്ത്യയിലോ പ്രവര്‍ത്തിക്കുന്ന ഒരു സംഘടനയുടെയും പോഷക സംഘടന അല്ല.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
-                      <span>അംഗങ്ങള്‍ ഇസ്ലാമിക ചര്യ അനുസരിച്ച് ജീവിക്കുന്നവരും,സ്വഭാവത്തില്‍ വിശുദ്ധി കാത്ത് സൂക്ഷിക്കുന്നവരും ആയിരിക്കണം.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
-                      <span>കെ.കെ.എം.എ നടപ്പിലാക്കുന്ന കുടുംബ ക്ഷേമ പദ്ധതി,അംഗത്വ ക്ഷേമ പദ്ധതി തുടങ്ങിയ സാമൂഹിക ക്ഷേമ പദ്ധതികളുമായി സഹകരിക്കാന്‍ അംഗങ്ങള്‍ ബാധ്യസ്ഥരാണ്.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+              <ul className="list" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                  <span>കുവൈത്ത് കേരള മുസ്ലിം അസോസിയേഷന്‍ (കെ.കെ.എം.എ) കുവൈത്തില്‍ പ്രവര്‍ത്തിക്കുന്ന ഒരു സ്വതന്ത്ര സംഘടനയാണ്.</span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                  <span>കുവൈത്തിലോ,ഇന്ത്യയിലോ പ്രവര്‍ത്തിക്കുന്ന ഒരു സംഘടനയുടെയും പോഷക സംഘടന അല്ല.</span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                  <span>അംഗങ്ങള്‍ ഇസ്ലാമിക ചര്യ അനുസരിച്ച് ജീവിക്കുന്നവരും,സ്വഭാവത്തില്‍ വിശുദ്ധി കാത്ത് സൂക്ഷിക്കുന്നവരും ആയിരിക്കണം.</span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                  <span>കെ.കെ.എം.എ നടപ്പിലാക്കുന്ന കുടുംബ ക്ഷേമ പദ്ധതി,അംഗത്വ ക്ഷേമ പദ്ധതി തുടങ്ങിയ സാമൂഹിക ക്ഷേമ പദ്ധതികളുമായി സഹകരിക്കാന്‍ അംഗങ്ങള്‍ ബാധ്യസ്ഥരാണ്.</span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>കുടുംബ സഹായ പദ്ധതി/അംഗത്വ ക്ഷേമ പദ്ധതി പോലുള്ള അംഗത്വപരമായ നിര്‍ബന്ധ ബാധ്യതകള്‍ നല്‍കുവാനുള്ള സര്‍ക്കുലര്‍ കിട്ടിക്കഴിഞ്ഞാല്‍ വിഹിതം, നിശ്ചയിച്ച തിയ്യതിക്കകം ബ്രാഞ്ച് ഭാരവാഹികളെ ഏല്പിക്കണം. അത് മെമ്പര്‍മാരുടെ ഉത്തരവാദിത്വമാണ്.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>പുതിയ മെമ്പര്‍മാര്‍ക്ക് അവരുടെ അംഗത്വ അപേക്ഷ,രസീതി തിയ്യതി മുതല്‍ 3 മാസങ്ങള്‍ക്ക് ശേഷം മാത്രമേ കെ.കെ.എം.എ.യുടെ ക്ഷേമ പദ്ധതികള്‍ക്ക് അര്‍ഹരാവുകയുള്ളൂ. എന്നാല്‍ അംഗത്വം എടുത്തതിന് ശേഷം പ്രാബല്യത്തില്‍ വരുന്ന എല്ലാ സ്കീമുകളും അടക്കുവാന്‍ ഈ മെമ്പര്‍മാര്‍ ബാധ്യസ്ഥരായിരിക്കും.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>മെമ്പര്‍മാര്‍ ചുരുങ്ങിയത് മാസത്തില്‍ ഒരിക്കലെങ്കിലും ബ്രാഞ്ച് ഭാരവാഹികളുമായി ബന്ധപ്പെടുകയും,സംഘടനാ കാര്യങ്ങള്‍ അറിഞ്ഞിരിക്കുകയും വേണം. അംഗങ്ങളുടെ വിലാസമോ, ഫോണ്‍ നമ്പറോ മാറുകയാണെങ്കില്‍,വിവരങ്ങള്‍ യഥാസമയം ബ്രാഞ്ച് ഭാരവാഹികളെ അറിയിക്കേണ്ടതാണ്.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>ദേശ വിരുദ്ധ പ്രവര്‍ത്തനങ്ങളിലും,മദ്യം,മയക്ക് മരുന്ന്,ചൂതാട്ടം തുടങ്ങിയ സാമൂഹ്യ തിന്മകളിലും,അധാര്‍മിക പ്രവര്‍ത്തനങ്ങളിലും ഏര്‍പ്പെടുന്നവരുടെ അംഗത്വം മുന്‍കാല പ്രാബല്യത്തോടെ തനിയെ നഷ്ട്ടപ്പെടുന്നതായിരിക്കും. അംഗത്വത്തിനുള്ള അപേക്ഷകള്‍ സ്വീകരിക്കുവാനും, കാരണം കാണിക്കാതെ തിരസ്കരിക്കുവാനും,മെമ്പര്‍മാരുടെ അംഗത്വം റദ്ദാക്കാനും അധികാരം കെ.കെ.എം.എയുടെ കേന്ദ്ര കമ്മിറ്റിയില്‍ നിക്ഷിപ്തമാണ്.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>ആത്മഹത്യ ചെയ്യുന്ന അംഗങ്ങളുടെ കുടുംബങ്ങള്‍ കെ.കെ.എം.എ നല്‍കുന്ന യാതൊരു അനുകൂല്യങ്ങള്‍ക്കോ, ക്ഷേമ പദ്ധതികള്‍ക്കോ അര്‍ഹരായിരിക്കുകയില്ല.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>എല്ലാ മെമ്പര്‍മാരും കെ.കെ.എം.എ കേന്ദ്ര കമ്മിറ്റിയുടെ അധികാര പരിധിയില്‍ ഉള്ളവരും, മെമ്പര്‍മാരെ സംബന്ധിച്ചുള്ള അവസാന തീരുമാനം എടുക്കാനുള്ള അധികാരം കെ.കെ.എം.എ കേന്ദ്ര കമ്മിറ്റിയില്‍ നിക്ഷിപ്തമായിരിക്കുകയും ചെയ്യും. ഏതെങ്കിലും വ്യക്തികള്‍ക്കോ,സ്റ്റാര്‍ ക്ലബ് മെമ്പര്‍മാര്‍ക്കോ മെമ്പര്‍മാരുടെ ഉത്തരവാദിത്തം ഏറ്റെടുക്കാന്‍ സാധിക്കില്ല.</span>
-                    </li>
-                    <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
-                      <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      </span>
+                </li>
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
+                  <span aria-hidden="true" style={{ color: '#16a34a', marginTop: 2 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
                       <span>അംഗങ്ങള്‍ കുവൈത്തില്‍ നിന്നും യാത്ര പുറപ്പെട്ട്  6 മാസം കഴിയുകയും,തിരിച്ചെത്താതിരിക്കുകയും ചെയ്താല്‍  അംഗത്വം സ്വമേധയാ നഷ്ട്ടപ്പെടുന്നതായിരിക്കും.</span>
-                    </li>
+                </li>
                   </ul>
                  </div>
 
                 {/* Oath / Affidavit */}
                 <div className="sidebar-widget" style={{ padding: 20, border: '1px solid #eee', borderRadius: 12, marginBottom: 20 }}>
                   <h4 style={{ marginBottom: 16, color: '#16a34a', }}>സത്യവാചകം</h4>
-                  <p style={{ marginBottom: 16, color: '#374151' }}>മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച് കൊള്ളെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.  
+                  <p style={{ marginBottom: 16, color: '#374151' }}>മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച്കൊള്ളുമെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.  
                   </p>
                   <div className="row clearfix">
                     <div className="col-md-6 col-sm-12 form-group">
@@ -581,7 +596,7 @@ export default function Register(): React.JSX.Element {
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
                       <label>തീയ്യതി*</label>
-                      <input
+                  <input
                         type="text"
                         name="oathDate"
                         value={form.oathDate}
@@ -599,22 +614,22 @@ export default function Register(): React.JSX.Element {
                       <input type="text" name="recommenderName" value={form.recommenderName} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
-                      <label>കെ.കെ.എം.എ ഐഡി*</label>
-                      <input type="text" name="recommenderKkmaId" value={form.recommenderKkmaId} onChange={handleChange} required style={inputBoxStyle} />
+                      <label>കെ.കെ.എം.എ ഐഡി</label>
+                      <input type="text" name="recommenderKkmaId" value={form.recommenderKkmaId} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                  </div>
-                </div>
+              </div>
+            </div>
 
                 {/* Submit */}
                 <div className="form-group">
-                  <button
+              <button
                     type="submit"
-                    className="theme-btn"
+                className="theme-btn"
                     disabled={submitting}
                     style={{ cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.6 : 1 }}
-                  >
+              >
                     {submitting ? 'Submitting...' : 'Submit Application'}
-                  </button>
+              </button>
                 </div>
               </form>
             </div>

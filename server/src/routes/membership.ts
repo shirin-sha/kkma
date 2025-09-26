@@ -82,4 +82,17 @@ router.get('/api/membership/applications', async (req: Request, res: Response) =
   }
 })
 
+// GET /api/membership/applications/:id - fetch one (admin)
+router.get('/api/membership/applications/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params as any
+    const item = await MemberApplication.findById(id).lean()
+    if (!item) return res.status(404).json({ ok: false, error: 'Not found' })
+    return res.json({ ok: true, item })
+  } catch (err) {
+    console.error('[membership get one] error:', err)
+    return res.status(500).json({ ok: false, error: 'Server error' })
+  }
+})
+
 export default router 

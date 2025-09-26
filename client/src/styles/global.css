@@ -139,3 +139,67 @@ img { max-width: 100%; display: block; }
 .banner-section .swiper-slide-active .content-box.wh-anim p { animation: whFadeUp .7s ease both .3s; }
 .banner-section .swiper-slide-active .content-box.wh-anim .btn-box { animation: whFadeUp .7s ease both .4s; } 
 
+/* Lightweight form styles */
+.form-lite .sidebar-widget { border-color: #dbeafe; background: #ffffff; box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02); }
+.form-lite .form-group label { font-weight: 700; color: #0f172a; font-size: 14px; }
+.form-lite input,
+.form-lite select,
+.form-lite textarea { width: 100%; border: 1px solid #e5e7eb; border-radius: 6px; padding: 8px 10px; background: #fff; font: inherit; }
+.form-lite h4 { color: #16a34a;  } 
+
+@media print {
+  body { background: #fff; }
+  /* Hide page chrome and show only modal */
+  .page-title, header, footer, .admin__layout .admin__sidebar, .admin__layout .admin__topbar, .admin__layout .theme-btn, .admin__layout a { display: none !important; }
+  .admin-modal, .print-header, .print-body, .print-footer { display: block !important; }
+  .admin__content { margin: 0 !important; width: 100% !important; }
+  .admin__page { padding: 0 !important; }
+  .print-footer .theme-btn { display: none !important; }
+} 
+
+/* Admin modal enhancements */
+.admin-modal .print-body { font-size: 14px; }
+.admin-modal .print-body .field-label, .admin-modal .print-body .field-value { display: block; }
+.admin-modal .print-body .field-label { color: #0f172a; font-weight: 800; font-size: 13px; margin-bottom: 4px; }
+.admin-modal .print-body .field-value { font-weight: 700; color: #111827; }
+.admin-modal input { width: 100%; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; font: inherit; background: #fff; }
+.admin-modal h5 { color: #16a34a; font-weight: 800; }
+.admin-modal .table th { font-weight: 800; color: #0f172a; } 
+.admin-modal .rules-list { list-style: disc !important; padding-left: 20px; }
+.admin-modal .rules-list li { display: list-item !important; list-style: disc !important; }
+.admin-modal .rules-list li::marker { color: #16a34a; } 
+
+/* Admin modal tables - lightweight, readable */
+.admin-modal .table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin-modal .table { border: 1px solid #e5e7eb; border-radius: 8px; }
+.admin-modal .table thead tr { background: #f8fafc; }
+.admin-modal .table th { text-align: left; padding: 10px 12px; color: #0f172a; font-weight: 700; border-bottom: 1px solid #e5e7eb; }
+.admin-modal .table td { padding: 10px 12px; border-bottom: 1px solid #f3f4f6; color: #111827; }
+.admin-modal .table th, .admin-modal .table td { border: 1px solid #e5e7eb; }
+.admin-modal .table tbody tr:nth-child(even) { background: #fcfcfd; }
+.admin-modal .table tbody tr:hover { background: #f9fafb; } 
+
+/* Class-based print styles for PDF export */
+.admin-pdf-export .page-title,
+.admin-pdf-export header,
+.admin-pdf-export footer,
+.admin-pdf-export .admin__layout .admin__sidebar,
+.admin-pdf-export .admin__layout .admin__topbar,
+.admin-pdf-export .admin__layout .theme-btn,
+.admin-pdf-export .admin__layout a { display: none !important; }
+.admin-pdf-export .admin-modal,
+.admin-pdf-export .print-header,
+.admin-pdf-export .print-body,
+.admin-pdf-export .print-footer { display: block !important; }
+.admin-pdf-export .admin__content { margin: 0 !important; width: 100% !important; }
+.admin-pdf-export .admin__page { padding: 0 !important; }
+.admin-pdf-export .print-footer .theme-btn { display: none !important; }
+/* A4 sized content area with internal margins for PDF */
+.admin-pdf-export .pdf-root { width: 190mm !important; padding: 10mm !important; margin: 0 auto !important; background: #ffffff !important; }
+.admin-pdf-export .admin-modal { padding: 0 !important; }
+.admin-pdf-export .print-header img { top: 0 !important; }
+.admin-pdf-export .page-break-before { page-break-before: always; }
+
+/* Avoid breaking important blocks across pages */
+.admin-modal .print-header, .admin-modal .table, .admin-modal .rules-list { page-break-inside: avoid; } 
+

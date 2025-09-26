@@ -27,6 +27,7 @@ import AdminLayout from "./pages/admin/Layout";
 import AdminNews from "./pages/admin/News";
 import AdminEvents from "./pages/admin/EventsandPrograms";
 import AdminMemberships from "./pages/admin/Memberships";
+import AdminMembershipDetail from "./pages/admin/MembershipDetail";
 import EventDetail from "./pages/media/EventDetail";
 import NewsDetail from "./pages/media/NewsDetail";
 import Register from "./pages/membership/Register";
@@ -83,6 +84,7 @@ path: "/admin",
 { path: "news", element: <AdminNews /> },
 { path: "events", element: <AdminEvents /> },
 { path: "memberships", element: <AdminMemberships /> },
+{ path: "memberships/:id", element: <AdminMembershipDetail /> },
 ]
 }
 ];

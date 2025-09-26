@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type ApplicationItem = {
   _id: string
@@ -31,6 +32,7 @@ export default function AdminMemberships(): React.JSX.Element {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [selected, setSelected] = useState<ApplicationItem | null>(null)
+  const navigate = useNavigate()
 
   const formatDate = (iso?: string) => {
     if (!iso) return ''
@@ -87,8 +89,6 @@ export default function AdminMemberships(): React.JSX.Element {
               <tr>
                 <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Name</th>
                 <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Phone</th>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Email</th>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Branch</th>
                 <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Type</th>
                 <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Created</th>
                 <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Actions</th>
@@ -104,13 +104,11 @@ export default function AdminMemberships(): React.JSX.Element {
                   <tr key={it._id}>
                     <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.fullName}</td>
                     <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.phone || '—'}</td>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.email || '—'}</td>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.branch || '—'}</td>
                     <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.applicationType}</td>
                     <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{formatDate(it.createdAt)}</td>
                     <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>
                       <span
-                        onClick={() => setSelected(it)}
+                        onClick={() => navigate(`/admin/memberships/${it._id}`)}
                         style={{ color: '#2563eb', cursor: 'pointer', fontWeight: 600 }}
                         onMouseEnter={(e) => { e.currentTarget.style.color = '#000' }}
                         onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb' }}
@@ -155,128 +153,7 @@ export default function AdminMemberships(): React.JSX.Element {
         </div>
       </div>
 
-      {/* Detail Modal */}
-      {selected && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-          <div style={{ width: '100%', maxWidth: 900, background: '#fff', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.2)', display: 'flex', flexDirection: 'column', maxHeight: '90vh' }}>
-            <div style={{ padding: 16, borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <h4 style={{ margin: 0 }}>Application Detail</h4>
-              <span
-                onClick={() => setSelected(null)}
-                style={{ color: '#6b7280', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#000' }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = '#6b7280' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-                Close
-              </span>
-            </div>
-            <div style={{ padding: 16, overflowY: 'auto', flex: '1 1 auto' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-                <Field label="Full Name" value={selected.fullName} />
-                <Field label="Branch" value={selected.branch || '—'} />
-                <Field label="Phone" value={selected.phone || '—'} />
-                <Field label="Email" value={selected.email || '—'} />
-                <Field label="Type" value={selected.applicationType} />
-                <Field label="Status" value={selected.status} />
-                <Field label="Created At" value={formatDate(selected.createdAt)} />
-              </div>
-
-              {selected.address && (
-                <div style={{ marginTop: 12 }}>
-                  <Field label="Address" value={selected.address} full />
-                </div>
-              )}
-
-              {/* Extra fields */}
-              {selected.extra && (
-                <div style={{ marginTop: 16 }}>
-                  <h5 style={{ margin: '0 0 8px 0' }}>Extra</h5>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-                    <Field label="Blood Group" value={selected.extra?.bloodGroup || '—'} />
-                    <Field label="Civil ID" value={selected.extra?.civilId || '—'} />
-                    <Field label="WhatsApp" value={selected.extra?.whatsappnumber || '—'} />
-                    <Field label="Profession" value={selected.extra?.proffession || '—'} />
-                    <Field label="Qualification" value={selected.extra?.qualification || '—'} />
-                  </div>
-
-                  {/* Emergency Contacts */}
-                  {Array.isArray(selected.extra?.emergencyContacts) && selected.extra.emergencyContacts.length > 0 && (
-                    <div style={{ marginTop: 12 }}>
-                      <h5 style={{ margin: '0 0 8px 0' }}>Emergency Contacts</h5>
-                      <div style={{ overflowX: 'auto' }}>
-                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                          <thead>
-                            <tr>
-                              <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 8 }}>Name</th>
-                              <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 8 }}>Relation</th>
-                              <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 8 }}>Phone</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {selected.extra.emergencyContacts.map((c: any, i: number) => (
-                              <tr key={i}>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>{c?.name || '—'}</td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>{c?.relation || '—'}</td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>{c?.phone || '—'}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Family Members */}
-                  {Array.isArray(selected.extra?.family) && selected.extra.family.length > 0 && (
-                    <div style={{ marginTop: 12 }}>
-                      <h5 style={{ margin: '0 0 8px 0' }}>Family Members</h5>
-                      <div style={{ overflowX: 'auto' }}>
-                        <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                          <thead>
-                            <tr>
-                              <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 8 }}>Name</th>
-                              <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 8 }}>Relation</th>
-                              <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 8 }}>Age</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {selected.extra.family.map((f: any, i: number) => (
-                              <tr key={i}>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>{f?.name || '—'}</td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>{f?.relation || '—'}</td>
-                                <td style={{ borderBottom: '1px solid #f3f4f6', padding: 8 }}>{f?.age || '—'}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Photo Preview */}
-              {selected.photoPath && (
-                <div style={{ marginTop: 16 }}>
-                  <h5 style={{ margin: '0 0 8px 0' }}>Photo</h5>
-                  <img
-                    src={selected.photoPath.startsWith('http') ? selected.photoPath : `${baseUrl}${selected.photoPath}`}
-                    alt="Photo"
-                    style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 8, border: '1px solid #e5e7eb' }}
-                  />
-                </div>
-              )}
-            </div>
-            <div style={{ padding: 16, borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'flex-end' }}>
-              <button type="button" className="theme-btn" onClick={() => setSelected(null)}>Close</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Detail Modal removed; now navigates to dedicated page */}
     </div>
   )
 }
@@ -285,8 +162,8 @@ function Field(props: { label: string; value: React.ReactNode; full?: boolean })
   const { label, value, full } = props
   return (
     <div style={{ gridColumn: full ? 'span 3 / span 3' : undefined }}>
-      <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 4 }}>{label}</div>
-      <div style={{ fontWeight: 600 }}>{value}</div>
+      <div className="field-label" style={{ fontSize: 12, color: '#6b7280', marginBottom: 4 }}>{label}</div>
+      <div className="field-value value-box" style={{ color: '#111827', border: '1px solid #e5e7eb', borderRadius: 8, padding: '10px 12px', background: '#fff' }}>{value}</div>
     </div>
   )
 } 
