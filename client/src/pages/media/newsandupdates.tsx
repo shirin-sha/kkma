@@ -194,8 +194,8 @@ export default function NewsAndUpdates(): React.JSX.Element {
                       </div>
                       <div className="lower-content">
                         <div className="category"><a href="#"><i className="flaticon-star"></i>{post.category}</a></div>
-                        {/* <h4><a href={post._id ? `/media/news-and-updates/${post._id}` : post.href}>{post.title}</a></h4> */}
-                        <h4>{post.title}</h4>
+                        <h4><a href={post._id ? `/media/news-and-updates/${post._id}` : post.href}>{post.title}</a></h4>
+                        {/* <h4>{post.title}</h4> */}
                         <ul className="post-info clearfix">
                           <li><i className="far fa-user"></i><a href="#">{post.author}</a></li>
                           <li><i className="far fa-comment"></i><a href="#">{post.comments} Comments</a></li>
@@ -210,10 +210,8 @@ export default function NewsAndUpdates(): React.JSX.Element {
 
           <div className="pagination-wrapper centred">
             <ul className="pagination clearfix">
-              <li>
-                {page <= 1 ? (
-                  <span className="page-numbers">1</span>
-                ) : (
+              {page > 1 && (
+                <li>
                   <a
                     className="page-numbers"
                     href={`/media/news-and-updates/page/${page - 1}`}
@@ -221,8 +219,8 @@ export default function NewsAndUpdates(): React.JSX.Element {
                   >
                     {page - 1}
                   </a>
-                )}
-              </li>
+                </li>
+              )}
               <li>
                 <span aria-current="page" className="page-numbers current">{page}</span>
               </li>

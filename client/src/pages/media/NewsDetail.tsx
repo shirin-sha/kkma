@@ -31,6 +31,7 @@ export default function NewsDetail(): React.JSX.Element {
   const [error, setError] = useState('')
   const [archives, setArchives] = useState<{ key: string; label: string; count: number }[]>([])
   const [categories, setCategories] = useState<{ name: string; count: number }[]>([])
+  const [galleryIndex, setGalleryIndex] = useState(0)
   const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
 
   useEffect(() => {
@@ -95,6 +96,8 @@ export default function NewsDetail(): React.JSX.Element {
   const shareText = item?.title || 'KKMA News'
   const imgSrc = item?.imagePath ? `${baseUrl}${item.imagePath}` : item?.img
   const isHtmlContent = !!item?.contentHtml || (!!item?.content && /<\/?[a-z][\s\S]*>/i.test(item.content))
+  const gallery = Array.isArray(item?.galleryPaths) ? item!.galleryPaths! : []
+  const hasGallery = gallery.length > 0
 
   return (
     <div>
@@ -128,6 +131,21 @@ export default function NewsDetail(): React.JSX.Element {
                           <img src={imgSrc} alt={item.featuredAlt || ''} />
                           {item.featuredCaption && <figcaption>{item.featuredCaption}</figcaption>}
                         </figure>
+                      )}
+
+                      {hasGallery && (
+                        <div style={{ position: 'relative', marginTop: 16 }}>
+                          <div style={{ overflow: 'hidden', borderRadius: 8, border: '1px solid #e5e7eb' }}>
+                            <img src={`${baseUrl}${gallery[galleryIndex]}`} alt="gallery" style={{ width: '100%', display: 'block' }} />
+                          </div>
+                          <button aria-label="Prev" onClick={() => setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length)} style={{ position: 'absolute', top: '50%', left: 8, transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: 999, width: 36, height: 36, cursor: 'pointer' }}>&lt;</button>
+                          <button aria-label="Next" onClick={() => setGalleryIndex((i) => (i + 1) % gallery.length)} style={{ position: 'absolute', top: '50%', right: 8, transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: 999, width: 36, height: 36, cursor: 'pointer' }}>&gt;</button>
+                          <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 8 }}>
+                            {gallery.map((g, idx) => (
+                              <button key={idx} onClick={() => setGalleryIndex(idx)} aria-label={`Slide ${idx + 1}`} style={{ width: 8, height: 8, borderRadius: 8, border: 'none', background: idx === galleryIndex ? '#111827' : '#d1d5db', cursor: 'pointer' }} />
+                            ))}
+                          </div>
+                        </div>
                       )}
                       <div className="post-date"><h3>{item.date?.day}<span>{item.date?.monthYear}</span></h3></div>
                       <div className="lower-content">
