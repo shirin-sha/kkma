@@ -19,6 +19,37 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
+
+// GET /api/membership/applications - list with pagination (admin)
+router.get('/api/membership/applications', async (req: Request, res: Response) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1
+    const limit = parseInt(req.query.limit as string) || 20
+    const skip = (page - 1) * limit
+
+    const items = await MemberApplication.find().sort({ createdAt: -1 }).skip(skip).limit(limit).lean()
+    const total = await MemberApplication.countDocuments()
+
+    return res.json({ ok: true, items, page, limit, total })
+  } catch (err) {
+    console.error('[membership list] error:', err)
+    return res.status(500).json({ ok: false, error: 'Server error' })
+  }
+})
+
+
+// GET /api/membership/applications/:id - fetch one (admin)
+router.get('/api/membership/applications/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params as any
+    const item = await MemberApplication.findById(id).lean()
+    if (!item) return res.status(404).json({ ok: false, error: 'Not found' })
+    return res.json({ ok: true, item })
+  } catch (err) {
+    console.error('[membership get one] error:', err)
+    return res.status(500).json({ ok: false, error: 'Server error' })
+  }
+})
 // POST /api/membership/applications - submit an application
 router.post('/api/membership/applications', upload.single('photo'), async (req: Request, res: Response) => {
   try {
@@ -61,36 +92,6 @@ router.post('/api/membership/applications', upload.single('photo'), async (req: 
     return res.json({ ok: true, item: app })
   } catch (err) {
     console.error('[membership create] error:', err)
-    return res.status(500).json({ ok: false, error: 'Server error' })
-  }
-})
-
-// GET /api/membership/applications - list with pagination (admin)
-router.get('/api/membership/applications', async (req: Request, res: Response) => {
-  try {
-    const page = parseInt(req.query.page as string) || 1
-    const limit = parseInt(req.query.limit as string) || 20
-    const skip = (page - 1) * limit
-
-    const items = await MemberApplication.find().sort({ createdAt: -1 }).skip(skip).limit(limit).lean()
-    const total = await MemberApplication.countDocuments()
-
-    return res.json({ ok: true, items, page, limit, total })
-  } catch (err) {
-    console.error('[membership list] error:', err)
-    return res.status(500).json({ ok: false, error: 'Server error' })
-  }
-})
-
-// GET /api/membership/applications/:id - fetch one (admin)
-router.get('/api/membership/applications/:id', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params as any
-    const item = await MemberApplication.findById(id).lean()
-    if (!item) return res.status(404).json({ ok: false, error: 'Not found' })
-    return res.json({ ok: true, item })
-  } catch (err) {
-    console.error('[membership get one] error:', err)
     return res.status(500).json({ ok: false, error: 'Server error' })
   }
 })
