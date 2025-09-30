@@ -239,7 +239,7 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                     paddingBottom: 8
                   }}>സത്യവാചകം</h4>
                   <p style={{ margin: '0 0 12px 0', color: '#374151' }}>മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച്കൊള്ളെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
                     <Field label="പേര്" value={item.extra?.oathName || '—'} />
                     <Field label="തീയ്യതി" value={item.extra?.oathDate || '—'} />
                     <Field label="നിര്‍ദ്ദേശിച്ച മെമ്പറുടെ പേര്" value={item.extra?.recommenderName || '—'} />
