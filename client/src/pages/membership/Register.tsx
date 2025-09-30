@@ -750,7 +750,7 @@ export default function Register(): React.JSX.Element {
                       <input type="text" name="recommenderName" value={form.recommenderName} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     <div className="col-md-6 col-sm-12 form-group">
-                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>കെ.കെ.എം.എ ഐഡി</label>
+                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>നിർദേശിച്ച മെമ്പറുടെ കെ.കെ.എം.എ ഐഡി</label>
                       <input type="text" name="recommenderKkmaId" value={form.recommenderKkmaId} onChange={handleChange} style={inputBoxStyle} />
                     </div>
               </div>
