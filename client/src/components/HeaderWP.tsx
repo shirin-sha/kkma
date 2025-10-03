@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { ChevronDown, Phone } from 'lucide-react';
 
 export default function HeaderWP(): React.JSX.Element {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,11 +18,11 @@ export default function HeaderWP(): React.JSX.Element {
 				<div className="right-column pull-right clearfix">
 				  <ul className="info-list clearfix">
 					<li>
-					  <i className="flaticon-phone-with-wire"></i>
+					  <Phone size={16} color="#83b253" className="mr-2" />
 					  <a href="tel:96550649506">+965 506 49506</a>
 					</li>
 				  </ul>
-				</div>
+				</div>	
 			  </div>
 			</div>
 		  </div>
@@ -64,7 +65,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  <NavLink to="/">Home</NavLink>
 						</li>
 						<li className="dropdown">
-						  <a href="#">About Us</a>
+						  <a href="#">About Us <ChevronDown size={12} /></a>
 						  <ul className="submenu">
 															<li>
 								  <NavLink to="/about/overview">
@@ -84,7 +85,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Our Initiatives</a>
+						  <a href="#">Our Initiatives <ChevronDown size={12} /></a>
 						  <ul className="submenu">
 							<li>
 							  <NavLink to="/initiatives/social-projects">
@@ -99,7 +100,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Membership</a>
+						  <a href="#">Membership <ChevronDown size={12} /></a>
 						  <ul className="submenu">
 							<li>
 							  <NavLink to="/membership/membership-information">
@@ -117,7 +118,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Classifieds</a>
+						  <a href="#">Classifieds <ChevronDown size={12} /></a>
 						  <ul className="submenu">
 							<li>
 							  <NavLink to="/classifieds/view-classifieds">
@@ -147,7 +148,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Media</a>
+						  <a href="#">Media <ChevronDown size={12} /></a>
 						  <ul className="submenu">
 							<li>
 							  <NavLink to="/media/news-and-updates">

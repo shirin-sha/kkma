@@ -35,6 +35,17 @@ export default function AdminMembershipDetail(): React.JSX.Element {
       console.error("Element not found!");
       return;
     }
+
+    // Before PDF generation, hide select dropdowns and show input fields for better PDF rendering
+    const selectElements = element.querySelectorAll('.branch-select');
+    const inputElements = element.querySelectorAll('.pdf-branch-value');
+    
+    selectElements.forEach((select) => {
+      (select as HTMLElement).style.display = 'none';
+    });
+    inputElements.forEach((input) => {
+      (input as HTMLElement).style.display = 'block';
+    });
   
     try {
       // Convert HTML to Canvas
@@ -85,8 +96,24 @@ export default function AdminMembershipDetail(): React.JSX.Element {
   
       const safeName = String(item?.fullName || 'application').replace(/[^a-z0-9\-]+/gi, '_');
       pdf.save(`${safeName}_application.pdf`);
+      
+      // Restore original state after PDF generation
+      selectElements.forEach((select) => {
+        (select as HTMLElement).style.display = 'block';
+      });
+      inputElements.forEach((input) => {
+        (input as HTMLElement).style.display = 'none';
+      });
     } catch (error) {
       console.error("Error generating PDF:", error);
+      
+      // Restore original state even if there's an error
+      selectElements.forEach((select) => {
+        (select as HTMLElement).style.display = 'block';
+      });
+      inputElements.forEach((input) => {
+        (input as HTMLElement).style.display = 'none';
+      });
     }
   };
 
@@ -103,11 +130,11 @@ export default function AdminMembershipDetail(): React.JSX.Element {
               <span aria-hidden="true" style={{ display: 'inline-flex' }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#83b253" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
               </span>
-              Back
+              Back (തിരികെ)
             </Link>
             <span role="button" tabIndex={0} onClick={handleDownloadPdf} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleDownloadPdf(); }} aria-label="Download PDF" title="Download PDF" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, color: '#83b253', fontWeight: 600 }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#83b253" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download
+              Download (ഡൗൺലോഡ്)
             </span>
           </div>
           <div  id="pdf-content" style={{
@@ -171,7 +198,7 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                   fontWeight: 700,
                   borderBottom: '2px solid #83b253',
                   paddingBottom: 8
-                }}>അംഗങ്ങൾ അറിഞ്ഞിരിക്കേണ്ട , പാലിച്ചിരിക്കേണ്ടതായ  നിയമാവലികൾ</h4>
+                }}>അംഗങ്ങൾ അറിഞ്ഞിരിക്കേണ്ട , പാലിച്ചിരിക്കേണ്ടതായ  നിയമാവലികൾ (Rules & Regulations for Members)</h4>
                 <ul className="rules-list" style={{ margin: 0, padding: 0, listStyle: 'none' }}>
                   <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 8 }}>
                     <span className="bullet" style={{ color: '#83b253', fontWeight: 700, marginTop: 2 }}>●</span>
@@ -237,13 +264,13 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                     fontWeight: 700,
                     borderBottom: '2px solid #83b253',
                     paddingBottom: 8
-                  }}>സത്യവാചകം</h4>
+                  }}>സത്യവാചകം (Oath/Affidavit)</h4>
                   <p style={{ margin: '0 0 12px 0', color: '#374151' }}>മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച്കൊള്ളെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.</p>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
-                    <Field label="പേര്" value={item.extra?.oathName || '—'} />
-                    <Field label="തീയ്യതി" value={item.extra?.oathDate || '—'} />
-                    <Field label="നിര്‍ദ്ദേശിച്ച മെമ്പറുടെ പേര്" value={item.extra?.recommenderName || '—'} />
-                    <Field label="നിർദേശിച്ച മെമ്പറുടെ കെ.കെ.എം.എ ഐഡി" value={item.extra?.recommenderKkmaId || '—'} />
+                    <Field label="പേര് (Name)" value={item.extra?.oathName || '—'} />
+                    <Field label="തീയ്യതി (Date)" value={item.extra?.oathDate || '—'} />
+                    <Field label="നിര്‍ദ്ദേശിച്ച മെമ്പറുടെ പേര് (Recommended Member Name)" value={item.extra?.recommenderName || '—'} />
+                    <Field label="നിർദേശിച്ച മെമ്പറുടെ കെ.കെ.എം.എ ഐഡി (Recommended Member KKMA ID)" value={item.extra?.recommenderKkmaId || '—'} />
                   </div>
                 </div>
               )}
@@ -264,16 +291,16 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                   fontWeight: 700,
                   borderBottom: '2px solid #83b253',
                   paddingBottom: 8
-                }}>FOR OFFICIAL USE ONLY</h4>
+                }}>FOR OFFICIAL USE ONLY (ഉദ്യോഗസ്ഥ ഉപയോഗത്തിന് മാത്രം)</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
                   <InputField label="സോണല്‍ (Zone)" value={item.extra?.zone || ''} />
-                  <InputField label="ബ്രാഞ്ച് (Branch)" value={item.extra?.branch || item.branch || ''} />
+                  <BranchDropdown label="ബ്രാഞ്ച് (Branch)" value={item.extra?.branch || item.branch || ''} />
                   <InputField label="യൂണിറ്റ് (Unit)" value={item.extra?.unit || ''} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 8 }}>
-                  <InputField label="കെ.കെ.എം.എ ഐഡി" value={item.extra?.recommenderKkmaId || ''} />
-                  <InputField label="BRANCH APPROVED BY (NAME)" value={item.extra?.branchApprovedByName || ''} />
-                  <InputField label="DATE (DD/MM/YYYY)" value={item.extra?.branchApprovedDate || ''} placeholder="DD/MM/YYYY" />
+                  <InputField label="കെ.കെ.എം.എ ഐഡി (KKMA ID)" value={item.extra?.recommenderKkmaId || ''} />
+                  <InputField label="BRANCH APPROVED BY (NAME) " value={item.extra?.branchApprovedByName || ''} />
+                  <InputField label="DATE (DD/MM/YYYY) (തീയ്യതി)" value={item.extra?.branchApprovedDate || ''} placeholder="DD/MM/YYYY" />
                 </div>
               </div>
             </div>
@@ -307,48 +334,129 @@ function InputField(props: { label: string; value?: string; placeholder?: string
   )
 }
 
+function BranchDropdown(props: { label: string; value?: string }): React.JSX.Element {
+  const { label, value } = props
+  const [selectedBranch, setSelectedBranch] = useState(value || '')
+  
+  const branchOptions = [
+    'ABBASIYA',
+    'ABU HALEEFA',
+    'CITY',
+    'FAHAHEEL',
+    'FARWANIYA',
+    'FINTHAS',
+    'HAWALLY',
+    'JAHARA',
+    'JLEEB',
+    'KARNATAKA',
+    'KHAITHAN',
+    'MAHABOULA',
+    'MANGAF',
+    'SABHAN',
+    'SALMIYA'
+  ]
+
+  const handleBranchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newValue = e.target.value
+    setSelectedBranch(newValue)
+    
+    // Update the hidden input field for PDF generation
+    const hiddenInput = e.target.parentElement?.querySelector('.pdf-branch-value') as HTMLInputElement
+    if (hiddenInput) {
+      hiddenInput.value = newValue
+    }
+  }
+  
+  return (
+    <div>
+      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8 }}>{label}</div>
+      {/* Hidden input for PDF generation - shows the selected value as text */}
+      <input 
+        type="text" 
+        value={selectedBranch} 
+        readOnly
+        style={{ 
+          width: '100%', 
+          color: '#111827', 
+          border: '2px solid #d1d5db', 
+          borderRadius: 6, 
+          padding: '12px 14px', 
+          background: '#fff', 
+          fontSize: '14px',
+          display: 'none' // Hidden by default, shown during PDF generation
+        }}
+        className="pdf-branch-value"
+      />
+      {/* Select dropdown for editing */}
+      <select 
+        value={selectedBranch} 
+        onChange={handleBranchChange}
+        style={{ 
+          width: '100%', 
+          color: '#111827', 
+          border: '2px solid #d1d5db', 
+          borderRadius: 6, 
+          padding: '12px 14px', 
+          background: '#fff', 
+          fontSize: '14px', 
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+          cursor: 'pointer'
+        }}
+        className="branch-select"
+      >
+        <option value="">Select Branch</option>
+        {branchOptions.map((branch) => (
+          <option key={branch} value={branch}>
+            {branch}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+}
+
 function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
   return (
     <div className="print-body">
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-        <Field label="പേര്" value={selected.fullName} />
-        <Field label="ബ്ലഡ് ഗ്രൂപ്പ്" value={selected.extra?.bloodGroup || '—'} />
-        <Field label="അംഗത്വ തരം" value={selected.applicationType} />
+        <Field label="പേര് (Name)" value={selected.fullName} />
+        <Field label="ബ്ലഡ് ഗ്രൂപ്പ് (Blood Group)" value={selected.extra?.bloodGroup || '—'} />
+        <Field label="അംഗത്വ തരം (Membership Type)" value={selected.applicationType} />
       </div>
 
       <div style={{ marginTop: 16 }}>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-          <Field label="സിവില്‍ ഐഡി നമ്പര്*" value={selected.extra?.civilId || '—'} />
-          <Field label="പാസ്പോർട്ട് നമ്പര്*" value={selected.extra?.passport || '—'} />
-          <Field label="മൊബൈൽ നമ്പര്‍" value={selected.phone || '—'} />
-          <Field label="മൊബൈൽ നമ്പര്‍ 2" value={selected.extra?.mobile2 || '—'} />
-          <Field label="വാട്സ്ആപ്പ് നമ്പര്‍" value={selected.extra?.whatsappnumber || '—'} />
+          <Field label="സിവില്‍ ഐഡി നമ്പര് (Civil ID Number)*" value={selected.extra?.civilId || '—'} />
+          <Field label="പാസ്പോർട്ട് നമ്പര് (Passport Number)*" value={selected.extra?.passport || '—'} />
+          <Field label="മൊബൈൽ നമ്പര്‍ (Mobile Number)" value={selected.phone || '—'} />
+          <Field label="മൊബൈൽ നമ്പര്‍ 2 (Mobile Number 2)" value={selected.extra?.mobile2 || '—'} />
+          <Field label="വാട്സ്ആപ്പ് നമ്പര്‍ (WhatsApp Number)" value={selected.extra?.whatsappnumber || '—'} />
         </div>
       </div>
 
       <div style={{ marginTop: 16 }}>
         
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12 }}>
-          <Field label="കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം" value={selected.extra?.addressinKuwait || selected.address || '—'} />
-          <Field label="തൊഴിൽ" value={selected.extra?.proffession || '—'} />
-          <Field label="വിദ്യാഭ്യാസ യോഗ്യത" value={selected.extra?.qualification || '—'} />
+          <Field label="കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം (Address in Kuwait)" value={selected.extra?.addressinKuwait || selected.address || '—'} />
+          <Field label="തൊഴിൽ (Profession)" value={selected.extra?.proffession || '—'} />
+          <Field label="വിദ്യാഭ്യാസ യോഗ്യത (Educational Qualification)" value={selected.extra?.qualification || '—'} />
         </div>
         <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12 }}>
-          <Field label="ഇന്ത്യയിലെ വീട്ടുപേര്" value={selected.extra?.addressinIndia || '—'} />
-          <Field label="സ്ഥലം" value={selected.extra?.locationinIndia || '—'} />
-          <Field label="സംസ്ഥാനം" value={selected.extra?.stateinIndia || '—'} />
+          <Field label="ഇന്ത്യയിലെ വീട്ടുപേര് (House Name in India)" value={selected.extra?.addressinIndia || '—'} />
+          <Field label="സ്ഥലം (Place)" value={selected.extra?.locationinIndia || '—'} />
+          <Field label="സംസ്ഥാനം (State)" value={selected.extra?.stateinIndia || '—'} />
         </div>
         <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 12 }}>
-          <Field label="ജില്ല" value={selected.extra?.districtinIndia || '—'} />
-          <Field label="പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍" value={selected.extra?.panchayath || '—'} />
-          <Field label="പോസ്റ്റ് ഓഫീസ്" value={selected.extra?.postoffice || '—'} />
+          <Field label="ജില്ല (District)" value={selected.extra?.districtinIndia || '—'} />
+          <Field label="പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍ (Panchayath/Municipality/Corporation)" value={selected.extra?.panchayath || '—'} />
+          <Field label="പോസ്റ്റ് ഓഫീസ് (Post Office)" value={selected.extra?.postoffice || '—'} />
         </div>
         <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 12 }}>
-          <Field label="പിൻകോഡ്" value={selected.extra?.pincode || '—'} />
-          <Field label="ഇന്ത്യയിലെ ബന്ധപ്പെടാനുള്ള നമ്പർ" value={selected.extra?.contactnumberinIndia || '—'} />
-          <Field label="ഇന്ത്യൻ നമ്പർ 2" value={selected.extra?.contactnumberiindia2 || '—'} />
+          <Field label="പിൻകോഡ് (Pin Code)" value={selected.extra?.pincode || '—'} />
+          <Field label="ഇന്ത്യയിലെ ബന്ധപ്പെടാനുള്ള നമ്പർ (Contact Number in India)" value={selected.extra?.contactnumberinIndia || '—'} />
+          <Field label="ഇന്ത്യൻ നമ്പർ 2 (Indian Number 2)" value={selected.extra?.contactnumberiindia2 || '—'} />
         </div>
       </div>
 
@@ -361,15 +469,15 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
           fontWeight: 700,
           borderBottom: '2px solid #83b253',
           paddingBottom: 8
-        }}>കുടുംബ വിവരങ്ങള്‍ (നിലവില്‍ ജീവിച്ചിരിക്കുന്നവര്‍ മാത്രം)</h4>
+        }}>കുടുംബ വിവരങ്ങള്‍ (നിലവില്‍ ജീവിച്ചിരിക്കുന്നവര്‍ മാത്രം) (Family Details - Living Members Only)</h4>
         <div style={{ overflowX: 'auto' }}>
           <table className="table" style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #e5e7eb' }}>
             <thead>
               <tr>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>ബന്ധം</th>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>പേര്</th>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>വയസ്സ്</th>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>സ്ഥലം</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>ബന്ധം (Relation)</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>പേര് (Name)</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>വയസ്സ് (Age)</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>സ്ഥലം (Place)</th>
               </tr>
             </thead>
             <tbody>
@@ -394,14 +502,14 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
           fontWeight: 700,
           borderBottom: '2px solid #83b253',
           paddingBottom: 8
-        }}>അടിയന്തിര ഘട്ടങ്ങളില്‍ ബന്ധപ്പെടാനുള്ള ബന്ധുവിന്‍റെയോ, സുഹൃത്തിന്‍റെയോ നമ്പര്‍</h4>
+        }}>അടിയന്തിര ഘട്ടങ്ങളില്‍ ബന്ധപ്പെടാനുള്ള ബന്ധുവിന്‍റെയോ, സുഹൃത്തിന്‍റെയോ നമ്പര്‍ (Emergency Contact Numbers)</h4>
         <div style={{ overflowX: 'auto' }}>
           <table className="table" style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #e5e7eb' }}>
             <thead>
               <tr>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>പേര്</th>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>ഫോൺ</th>
-                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>ബന്ധം</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>പേര് (Name)</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>ഫോൺ (Phone)</th>
+                <th style={{ border: '1px solid #e5e7eb', padding: 8, background: '#fafafa' }}>ബന്ധം (Relation)</th>
               </tr>
             </thead>
             <tbody>

@@ -18,20 +18,42 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
-// GET /api/news - Get all news posts with pagination
+// GET /api/news - Get all news posts with pagination and filtering
 router.get("/api/news", async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1
     const limit = parseInt(req.query.limit as string) || 10
     const skip = (page - 1) * limit
+    const category = req.query.category as string
+    const startDate = req.query.startDate as string
+    const endDate = req.query.endDate as string
 
-    const posts = await NewsPost.find()
+    // Build filter query
+    const filter: any = {}
+
+    // Filter by category
+    if (category) {
+      filter.category = { $regex: new RegExp(category.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }
+    }
+
+    // Filter by date range
+    if (startDate || endDate) {
+      filter.createdAt = {}
+      if (startDate) {
+        filter.createdAt.$gte = new Date(startDate)
+      }
+      if (endDate) {
+        filter.createdAt.$lte = new Date(endDate)
+      }
+    }
+
+    const posts = await NewsPost.find(filter)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .lean()
 
-    const total = await NewsPost.countDocuments()
+    const total = await NewsPost.countDocuments(filter)
 
     return res.json({
       ok: true,

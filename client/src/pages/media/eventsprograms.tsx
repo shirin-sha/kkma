@@ -1,48 +1,163 @@
-import React from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
 type EventItem = {
+  _id: string
   title: string
-  href: string
-  img: string
-  dateBadge: { day: string; monthYear: string }
-  dateRange: string
-  location?: string
+  description?: string
+  category?: string
+  startDate?: string
+  endDate?: string
+  startTime?: string
+  endTime?: string
+  venueCity?: string
+  venueState?: string
+  venueCountry?: string
+  cost?: string
+  organizerName?: string
+  organizerPhone?: string
+  organizerEmail?: string
+  organizerWebsite?: string
+  imagePath?: string
+  createdAt: string
+  updatedAt: string
 }
 
 export default function EventsPrograms(): React.JSX.Element {
-  const events: EventItem[] = [
-    {
-      title: 'കെ.കെ.എം.എ രക്ത ദാന ക്യാമ്പ്‌',
-      href: 'https://kkma.net/event/%e0%b4%95%e0%b5%86-%e0%b4%95%e0%b5%86-%e0%b4%8e%e0%b4%82-%e0%b4%8e-%e0%b4%b0%e0%b4%95%e0%b5%8d%e0%b4%a4-%e0%b4%a6%e0%b4%be%e0%b4%a8-%e0%b4%95%e0%b5%8d%e0%b4%af%e0%b4%be%e0%b4%ae%e0%b5%8d%e0%b4%aa/',
-      img: 'https://kkma.net/wp-content/uploads/2024/09/456056998_473388042139926_4659360682239931105_n-1.jpg',
-      dateBadge: { day: '01', monthYear: "Jun’21" },
-      dateRange: 'September 3, 2024 - September 3, 2024',
-      location: 'Kuwait',
-    },
-    {
-      title: 'വിജയം നേടിയവർക്ക് അവാർഡുകൾ',
-      href: 'https://kkma.net/event/%e0%b4%9c%e0%b4%bf%e0%b4%b2%e0%b5%8d%e0%b4%b2%e0%b4%af%e0%b4%bf%e0%b5%bd-%e0%b4%a8%e0%b4%bf%e0%b4%a8%e0%b5%8d%e0%b4%a8%e0%b5%81%e0%b4%82-%e0%b4%8e%e0%b4%b8%e0%b5%8d-%e0%b4%8e%e0%b4%b8%e0%b5%8d/',
-      img: 'https://kkma.net/wp-content/uploads/2024/09/457065869_480014061477324_3963912601557779540_n-2.jpg',
-      dateBadge: { day: '01', monthYear: "Jun’21" },
-      dateRange: 'September 25, 2024 - September 25, 2024',
-      location: 'Malappuram',
-    },
-    {
-      title: 'കെ കെ എം എ യാത്ര യായപ്പ്',
-      href: 'https://kkma.net/event/%e0%b4%95%e0%b5%86-%e0%b4%95%e0%b5%86-%e0%b4%8e%e0%b4%82-%e0%b4%8e-%e0%b4%af%e0%b4%be%e0%b4%a4%e0%b5%8d%e0%b4%b0-%e0%b4%af%e0%b4%be%e0%b4%af%e0%b4%aa%e0%b5%8d%e0%b4%aa%e0%b5%8d/',
-      img: 'https://kkma.net/wp-content/uploads/2024/09/452007666_455099060635491_7406906250601281188_n-1-1.jpg',
-      dateBadge: { day: '01', monthYear: "Jun’21" },
-      dateRange: 'September 28, 2024 - September 28, 2024',
-      location: 'Kuwait',
-    },
-    {
-      title: 'test app',
-      href: 'https://kkma.net/event/test-app/',
-      img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-Social-Projects-Training-Details-1.jpg',
-      dateBadge: { day: '01', monthYear: "Jun’21" },
-      dateRange: 'February 10 - March 3',
-    },
-  ]
+  const [events, setEvents] = useState<EventItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(0)
+  const [limit] = useState(9)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [selectedCategory, setSelectedCategory] = useState<string>(() => {
+    return searchParams.get('category') || 'all'
+  })
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      setLoading(true)
+      setError('')
+      try {
+        const res = await fetch(`${baseUrl}/api/events?page=${page}&limit=${limit}`)
+        const data = await res.json()
+        if (res.ok && data?.ok && Array.isArray(data.items)) {
+          setEvents(data.items)
+          setTotal(Number(data.total || 0))
+        } else {
+          setError('Failed to load events')
+        }
+      } catch {
+        setError('Network error')
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadEvents()
+  }, [page, limit, baseUrl])
+
+  // Filter events based on selected category
+  const filteredEvents = useMemo(() => {
+    if (selectedCategory === 'all') {
+      return events
+    }
+
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+    return events.filter(event => {
+      const eventStartDate = new Date(event.startDate || event.createdAt)
+      const eventDate = new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate())
+
+      switch (selectedCategory) {
+        case 'featured':
+          // Events marked as featured (you can add a featured field to your Event model)
+          return event.category?.toLowerCase().includes('featured') || 
+                 event.title?.toLowerCase().includes('featured') ||
+                 event.description?.toLowerCase().includes('featured')
+        
+        case 'upcoming':
+          // Events that start today or in the future
+          return eventDate >= today
+        
+        case 'meetings':
+          // Events categorized as meetings
+          return event.category?.toLowerCase().includes('meeting') || 
+                 event.title?.toLowerCase().includes('meeting') ||
+                 event.description?.toLowerCase().includes('meeting')
+        
+        default:
+          // Filter by specific category if it matches the event's category
+          return event.category?.toLowerCase() === selectedCategory.toLowerCase()
+      }
+    })
+  }, [events, selectedCategory])
+
+  // Handle category selection
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category)
+    setPage(1) // Reset to first page when changing category
+    
+    // Update URL parameters
+    const newSearchParams = new URLSearchParams(searchParams)
+    if (category === 'all') {
+      newSearchParams.delete('category')
+    } else {
+      newSearchParams.set('category', category)
+    }
+    setSearchParams(newSearchParams)
+  }
+
+  // Helper function to format date badge
+  const formatDateBadge = (dateString?: string) => {
+    if (!dateString) return { day: '01', monthYear: "Jan'24" }
+    
+    const date = new Date(dateString)
+    const day = String(date.getDate()).padStart(2, '0')
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const month = monthNames[date.getMonth()]
+    const year = String(date.getFullYear()).slice(-2)
+    
+    return { day, monthYear: `${month}'${year}` }
+  }
+
+  // Helper function to format date range
+  const formatDateRange = (startDate?: string, endDate?: string, startTime?: string, endTime?: string) => {
+    if (!startDate) return 'Date TBD'
+    
+    const start = new Date(startDate)
+    const startFormatted = start.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+    
+    if (!endDate || endDate === startDate) {
+      // Single day event
+      const timeInfo = startTime && endTime ? ` at ${startTime} - ${endTime}` : startTime ? ` at ${startTime}` : ''
+      return `${startFormatted}${timeInfo}`
+    } else {
+      // Multi-day event
+      const end = new Date(endDate)
+      const endFormatted = end.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })
+      return `${startFormatted} - ${endFormatted}`
+    }
+  }
+
+  // Helper function to format location
+  const formatLocation = (venueCity?: string, venueState?: string, venueCountry?: string) => {
+    const parts = [venueCity, venueState, venueCountry].filter(Boolean)
+    return parts.length > 0 ? parts.join(', ') : 'Location TBD'
+  }
+
+  const totalPages = Math.max(1, Math.ceil(total / limit))
 
   return (
     <div>
@@ -62,35 +177,237 @@ export default function EventsPrograms(): React.JSX.Element {
 
       <section className="events-grid sec-pad-2">
         <div className="auto-container">
+          {/* Category Filter Buttons */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            gap: '12px', 
+            marginBottom: '40px',
+            flexWrap: 'wrap'
+          }}>
+            {[
+              { key: 'all', label: 'All Events' },
+              { key: 'featured', label: 'Featured Events' },
+              { key: 'upcoming', label: 'Upcoming Events' },
+              { key: 'meetings', label: 'Upcoming Meetings' }
+            ].map((category) => (
+              <button
+                key={category.key}
+                onClick={() => handleCategoryChange(category.key)}
+                style={{
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  background: selectedCategory === category.key ? '#83b253' : '#f8f9fa',
+                  color: selectedCategory === category.key ? '#fff' : '#374151',
+                  border: selectedCategory === category.key ? 'none' : '1px solid #e5e7eb'
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCategory !== category.key) {
+                    e.currentTarget.style.background = '#e5e7eb'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCategory !== category.key) {
+                    e.currentTarget.style.background = '#f8f9fa'
+                  }
+                }}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+
+          {error && (
+            <div style={{ 
+              background: '#fee2e2', 
+              border: '1px solid #fecaca', 
+              color: '#b91c1c', 
+              padding: 12, 
+              borderRadius: 8, 
+              marginBottom: 16 
+            }}>
+              {error}
+            </div>
+          )}
+          
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '40px 0', color: '#6b7280' }}>
+              Loading events...
+            </div>
+          ) : filteredEvents.length === 0 ? (
+            <div style={{ 
+              background: '#eff6ff', 
+              border: '1px solid #bfdbfe', 
+              color: '#1e3a8a', 
+              padding: 20, 
+              borderRadius: 8, 
+              textAlign: 'center' 
+            }}>
+              No {selectedCategory === 'all' ? '' : selectedCategory} events found.
+            </div>
+          ) : (
+            <>
           <div className="row clearfix">
-            {events.map((event, idx) => (
-              <div key={idx} className="col-lg-4 col-md-6 col-sm-12 schedule-block">
+                {filteredEvents.map((event) => {
+                  const dateBadge = formatDateBadge(event.startDate)
+                  const dateRange = formatDateRange(event.startDate, event.endDate, event.startTime, event.endTime)
+                  const location =  event.venueCountry
+                  
+                  return (
+                    <div key={event._id} className="col-lg-4 col-md-6 col-sm-12 schedule-block">
                 <div className="schedule-block-one">
                   <div className="inner-box">
                     <div className="image-box">
-                      <figure className="image"><img src={event.img} alt="Awesome Image" /></figure>
+                            <figure className="image">
+                              {event.imagePath ? (
+                                <img 
+                                  src={`${baseUrl}${event.imagePath}`} 
+                                  alt={event.title}
+                                  style={{ 
+                                    width: '100%', 
+                                    height: '250px', 
+                                    objectFit: 'contain',
+                                    objectPosition: 'center',
+                                    backgroundColor: '#f8f9fa'
+                                  }}
+                                />
+                              ) : (
+                                <div style={{ 
+                                  width: '100%', 
+                                  height: '250px', 
+                                  background: '#f0f0f0', 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  justifyContent: 'center', 
+                                  color: '#666' 
+                                }}>
+                                  No Image
+                                </div>
+                              )}
+                            </figure>
                       <div className="content-box">
-                        <div className="post-date"><h3>{event.dateBadge.day}<span>{event.dateBadge.monthYear}</span></h3></div>
+                              <div className="post-date">
+                                <h3>{dateBadge.day}<span>{dateBadge.monthYear}</span></h3>
+                              </div>
                         <div className="text">
-                          <span className="category"><i className="flaticon-star"></i></span>
-                          {/* <h4><a href={event.href}>{event.title}</a></h4> */}
-                          <h4>{event.title}</h4>
+                                {event.category && (
+                                  <span className="category" style={{ 
+                                    background: '#83b253', 
+                                    color: '#fff', 
+                                    padding: '4px 8px', 
+                                    borderRadius: '4px',
+                                    fontSize: '12px',
+                                    fontWeight: '500'
+                                  }}>
+                                    <i className="flaticon-star" style={{ fontSize: '10px', marginRight: '4px' }}></i>
+                                    {event.category}
+                                  </span>
+                                )}
+                                <h4 style={{ color: '#83b253', fontSize: '18px', fontWeight: '700', margin: '10px 0' }}>
+                                  {event.title}
+                                </h4>
                         </div>
                       </div>
                     </div>
                     <div className="lower-content">
                       <ul className="post-info clearfix">
-                        <li><i className="flaticon-clock-circular-outline"></i>{event.dateRange}</li>
-                        <li><i className="flaticon-gps"></i>{event.location ?? ''}</li>
+                              <li>
+                                <i className="flaticon-clock-circular-outline"></i>
+                                {dateRange}
+                              </li>
+                              <li>
+                                <i className="flaticon-gps"></i>
+                                {location}
+                              </li>
+                            
                       </ul>
-                      {/* <div className="links"><a href={event.href}>Read More<i className="flaticon-right-arrow"></i></a></div> */}
-                      <div className="links"><a href="#">Read More<i className="flaticon-right-arrow"></i></a></div>
+                         
+                            <div className="links">
+                              <Link 
+                                to={`/media/events-and-programs/${event._id}`}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '8px',
+                                  color: '#83b253',
+                                  textDecoration: 'none',
+                                  fontWeight: '600',
+                                  fontSize: '14px',
+                                  transition: 'color 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.color = '#6a9a3e'}
+                                onMouseLeave={(e) => e.currentTarget.style.color = '#83b253'}
+                              >
+                                Read More<i className="flaticon-right-arrow"></i>
+                              </Link>
+                            </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
+                  )
+                })}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div style={{ marginTop: 40, textAlign: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
+                    {page > 1 && (
+                      <button
+                        onClick={() => setPage(page - 1)}
+                        style={{
+                          padding: '10px 16px',
+                          background: '#83b253',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          fontWeight: '600'
+                        }}
+                      >
+                        Previous
+                      </button>
+                    )}
+                    
+                    <span style={{
+                      padding: '10px 16px',
+                      background: '#f3f4f6',
+                      color: '#374151',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      fontWeight: '600'
+                    }}>
+                      Page {page} of {totalPages}
+                    </span>
+                    
+                    {page < totalPages && (
+                      <button
+                        onClick={() => setPage(page + 1)}
+                        style={{
+                          padding: '10px 16px',
+                          background: '#83b253',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          fontWeight: '600'
+                        }}
+                      >
+                        Next
+                      </button>
+                    )}
           </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </section>
     </div>

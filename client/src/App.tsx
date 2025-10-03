@@ -30,6 +30,8 @@ import AdminMemberships from "./pages/admin/Memberships";
 import AdminMembershipDetail from "./pages/admin/MembershipDetail";
 import EventDetail from "./pages/media/EventDetail";
 import NewsDetail from "./pages/media/NewsDetail";
+import CategoryNews from "./pages/media/CategoryNews";
+import ArchiveNews from "./pages/media/ArchiveNews";
 import Register from "./pages/membership/Register";
 
 function Layout(): React.JSX.Element {
@@ -55,6 +57,8 @@ path: "/",
 { path: "media/events-and-programs", element: <EventsAndPrograms /> },
 { path: "media/news-and-updates", element: <NewsAndUpdates /> },
 { path: "media/news-and-updates/:id", element: <NewsDetail /> },
+{ path: "media/category/:categoryName", element: <CategoryNews /> },
+{ path: "media/archive/:archiveKey", element: <ArchiveNews /> },
 { path: "media/events-and-programs/:id", element: <EventDetail /> },
 { path: "classifieds/quick-search", element: <QuickSearch /> },
 { path: "classifieds/view-categories", element: <ClassifiedsCategories /> },

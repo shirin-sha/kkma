@@ -185,10 +185,44 @@ export default function NewsAndUpdates(): React.JSX.Element {
                         <figure className="image">
                           <a href={post._id ? `/media/news-and-updates/${post._id}` : post.href}><i className="fas fa-link"></i></a>
                           {post.imagePath ? (
-                            <img src={`${baseUrl}${post.imagePath}`} alt="" />
+                            <img 
+                              src={`${baseUrl}${post.imagePath}`} 
+                              alt={post.title}
+                              style={{ 
+                                width: '100%', 
+                                height: '250px', 
+                                objectFit: 'contain',
+                                objectPosition: 'center',
+                                backgroundColor: '#f8f9fa'
+                              }}
+                            />
                           ) : post.img ? (
-                            <img src={post.img} alt="" />
-                          ) : null}
+                            <img 
+                              src={post.img} 
+                              alt={post.title}
+                              style={{ 
+                                width: '100%', 
+                                height: '250px', 
+                                objectFit: 'contain',
+                                objectPosition: 'center',
+                                backgroundColor: '#f8f9fa'
+                              }}
+                            />
+                          ) : (
+                            <div style={{ 
+                              width: '100%', 
+                              height: '250px', 
+                              background: '#f0f0f0', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              color: '#666',
+                              fontSize: '14px',
+                              fontWeight: '500'
+                            }}>
+                              No Image
+                            </div>
+                          )}
                         </figure>
                         <div className="post-date"><h3>{post.date.day}<span>{post.date.monthYear}</span></h3></div>
                       </div>

@@ -1,6 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import './styles/bootstrap-replacement.css';
 import './styles/global.css';
+import './styles/color.css';
+import './styles/style.css';
+import './styles/custom.css';
+import './styles/responsive.css';
 import App from './App';
 
 // Initialize WOW.js animations via dynamic import to avoid bundling issues

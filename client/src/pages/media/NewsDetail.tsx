@@ -60,7 +60,32 @@ export default function NewsDetail(): React.JSX.Element {
           const categoryToCount = new Map<string, number>()
 
           items.forEach((p) => {
-            const created = p.createdAt ? new Date(p.createdAt) : undefined
+            let created: Date | undefined = undefined
+            
+            // Try createdAt first
+            if (p.createdAt) {
+              created = new Date(p.createdAt)
+            }
+            // If createdAt is invalid or doesn't exist, try parsing the date field
+            else if (p.date?.monthYear) {
+              // Parse monthYear format like "Sep'24" (short month + apostrophe + 2-digit year)
+              const monthYearMatch = p.date.monthYear.match(/(\w+)'(\d{2})/)
+              if (monthYearMatch) {
+                const monthAbbrev = monthYearMatch[1] // "Sep"
+                const year2Digit = parseInt(monthYearMatch[2]) // 24
+                const year = 2000 + year2Digit // Convert to 2024
+                
+                // Convert month abbreviation to month index
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                const monthIndex = monthNames.indexOf(monthAbbrev)
+                
+                if (monthIndex !== -1) {
+                  created = new Date(year, monthIndex, 1)
+                }
+              }
+            }
+            
             if (created && !isNaN(created.getTime())) {
               const key = `${created.getFullYear()}-${String(created.getMonth() + 1).padStart(2, '0')}`
               const prev = monthKeyToCount.get(key)
@@ -81,6 +106,7 @@ export default function NewsDetail(): React.JSX.Element {
           const categoriesArr = Array.from(categoryToCount.entries())
             .sort((a, b) => b[1] - a[1])
             .map(([name, count]) => ({ name, count }))
+
 
           setArchives(archivesArr)
           setCategories(categoriesArr)
@@ -127,38 +153,115 @@ export default function NewsDetail(): React.JSX.Element {
                   <div className="blog-details-content">
                     <div className="inner-box">
                       {imgSrc && (
-                        <figure className="image-box">
-                          <img src={imgSrc} alt={item.featuredAlt || ''} />
-                          {item.featuredCaption && <figcaption>{item.featuredCaption}</figcaption>}
+                        <figure className="image-box" style={{ marginBottom: 24 }}>
+                          <img 
+                            src={imgSrc} 
+                            alt={item.featuredAlt || item.title || ''}
+                            style={{ 
+                              width: '100%', 
+                              height: '400px', 
+                              objectFit: 'contain',
+                              objectPosition: 'center',
+                              borderRadius: 12,
+                              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                              backgroundColor: '#f8f9fa'
+                            }}
+                          />
+                          {item.featuredCaption && (
+                            <figcaption style={{ 
+                              marginTop: 12, 
+                              fontSize: '14px', 
+                              color: '#6b7280', 
+                              fontStyle: 'italic',
+                              textAlign: 'center'
+                            }}>
+                              {item.featuredCaption}
+                            </figcaption>
+                          )}
                         </figure>
                       )}
 
-                      {hasGallery && (
-                        <div style={{ position: 'relative', marginTop: 16 }}>
-                          <div style={{ overflow: 'hidden', borderRadius: 8, border: '1px solid #e5e7eb' }}>
-                            <img src={`${baseUrl}${gallery[galleryIndex]}`} alt="gallery" style={{ width: '100%', display: 'block' }} />
+                      <div style={{ marginBottom: 16 }}>
+                        {/* Category Button */}
+                        <div style={{ marginBottom: 12 }}>
+                          <a href="javascript:;" style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            gap: 8, 
+                            background: '#83b253', 
+                            color: '#fff', 
+                            padding: '8px 16px', 
+                            borderRadius: '6px', 
+                            textDecoration: 'none', 
+                            fontSize: '14px', 
+                            fontWeight: '500',
+                            border: 'none',
+                            cursor: 'pointer'
+                          }}>
+                            <i className="flaticon-star" style={{ fontSize: '14px' }}></i>
+                            {item.category}
+                          </a>
+                        </div>
+                        
+                        {/* Author and Comment Info */}
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 12, 
+                          color: '#6b7280', 
+                          fontSize: '14px',
+                          marginBottom: 12
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <i className="far fa-user" style={{ fontSize: '14px' }}></i>
+                            <span>{item.author}</span>
                           </div>
-                          <button aria-label="Prev" onClick={() => setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length)} style={{ position: 'absolute', top: '50%', left: 8, transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: 999, width: 36, height: 36, cursor: 'pointer' }}>&lt;</button>
-                          <button aria-label="Next" onClick={() => setGalleryIndex((i) => (i + 1) % gallery.length)} style={{ position: 'absolute', top: '50%', right: 8, transform: 'translateY(-50%)', background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', borderRadius: 999, width: 36, height: 36, cursor: 'pointer' }}>&gt;</button>
-                          <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: 8 }}>
-                            {gallery.map((g, idx) => (
-                              <button key={idx} onClick={() => setGalleryIndex(idx)} aria-label={`Slide ${idx + 1}`} style={{ width: 8, height: 8, borderRadius: 8, border: 'none', background: idx === galleryIndex ? '#111827' : '#d1d5db', cursor: 'pointer' }} />
-                            ))}
+                          
+                          <div style={{ 
+                            width: '1px', 
+                            height: '14px', 
+                            background: '#d1d5db' 
+                          }}></div>
+                          
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <i className="far fa-comment" style={{ fontSize: '14px' }}></i>
+                            <span>{item.comments} Comment{item.comments !== 1 ? 's' : ''}</span>
                           </div>
                         </div>
+                        
+                        {/* Divider Line */}
+                        <div style={{ 
+                          width: '100%', 
+                          height: '1px', 
+                          background: '#e5e7eb',
+                          marginBottom: 20
+                        }}></div>
+                        
+                        {/* Article Heading */}
+                        <div style={{ marginBottom: 20 }}>
+                          <h2 style={{ 
+                            fontSize: '24px', 
+                            fontWeight: '700', 
+                            color: '#83b253', 
+                            lineHeight: '1.3',
+                            margin: '0 0 16px 0'
+                          }}>
+                            {item.title}
+                          </h2>
+                          
+                          {/* Article Description/Excerpt */}
+                          {item.excerpt && (
+                            <div style={{ 
+                              fontSize: '16px', 
+                              lineHeight: '1.6', 
+                              color: '#374151',
+                              marginBottom: 16
+                            }}>
+                              {item.excerpt}
+                        </div>
                       )}
-                      <div className="post-date"><h3>{item.date?.day}<span>{item.date?.monthYear}</span></h3></div>
-                      <div className="lower-content">
-                        <div className="category"><a href="javascript:;"><i className="flaticon-star"></i>{item.category}</a></div>
-                        <ul className="post-info clearfix">
-                          <li><i className="far fa-user"></i><a href="#">{item.author}</a></li>
-                          <li><i className="far fa-comment"></i><a href="#">{item.comments} Comment</a></li>
-                        </ul>
+                        </div>
                       </div>
-
-                      {item.excerpt && (
-                        <p>{item.excerpt}</p>
-                      )}
                       {isHtmlContent ? (
                         <div data-elementor-type="wp-post" className="elementor">
                           <div dangerouslySetInnerHTML={{ __html: item.contentHtml || item.content || '' }} />
@@ -167,26 +270,214 @@ export default function NewsDetail(): React.JSX.Element {
                         item.content ? <div style={{ whiteSpace: 'pre-wrap' }}>{item.content}</div> : null
                       )}
 
-                      {Array.isArray(item.galleryPaths) && item.galleryPaths.length > 0 && (
-                        <div className="row clearfix" style={{ marginTop: 24 }}>
-                          {item.galleryPaths.map((p, i) => (
-                            <div key={i} className="col-md-6 col-sm-12" style={{ marginBottom: 16 }}>
-                              <img src={`${baseUrl}${p}`} alt="" style={{ width: '100%', borderRadius: 8 }} />
+                  {hasGallery && (
+                        <div style={{ marginTop: 32 }}>
+                          {/* Gallery Heading */}
+                          <div style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 12, 
+                            marginBottom: 16,
+                            paddingBottom: 12,
+                            borderBottom: '2px solid #e5e7eb'
+                          }}>
+                            <div style={{
+                              width: 4,
+                              height: 24,
+                              background: '#83b253',
+                              borderRadius: 2
+                            }}></div>
+                            <h3 style={{
+                              margin: 0,
+                              fontSize: '20px',
+                              fontWeight: '700',
+                              color: '#1f2937',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 8
+                            }}>
+                              <span style={{ fontSize: '18px' }}>📸</span>
+                              Gallery
+                              <span style={{ 
+                                fontSize: '14px', 
+                                fontWeight: '500', 
+                                color: '#6b7280',
+                                background: '#f3f4f6',
+                                padding: '2px 8px',
+                                borderRadius: '12px'
+                              }}>
+                                {gallery.length} {gallery.length === 1 ? 'image' : 'images'}
+                              </span>
+                            </h3>
+                          </div>
+                          
+                          {/* Gallery Container */}
+                          <div style={{ 
+                            position: 'relative', 
+                            width: '100%',
+                            aspectRatio: '16/9', // Fixed aspect ratio to prevent jumping
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                            background: '#f8f9fa'
+                          }}>
+                            {/* Main Image */}
+                            <img 
+                              src={`${baseUrl}${gallery[galleryIndex]}`} 
+                              alt={`Gallery ${galleryIndex + 1}`}
+                              style={{ 
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover', // Maintain aspect ratio while filling container
+                                objectPosition: 'center',
+                                transition: 'opacity 0.3s ease-in-out'
+                              }} 
+                            />
+                            
+                            {/* Navigation Buttons */}
+                            <button 
+                              aria-label="Previous image" 
+                              onClick={() => setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length)}
+                              style={{ 
+                                position: 'absolute', 
+                                top: '50%', 
+                                left: 12, 
+                                transform: 'translateY(-50%)',
+                                background: 'rgba(0,0,0,0.7)', 
+                                color: '#fff', 
+                                border: 'none', 
+                                borderRadius: '50%', 
+                                width: 44, 
+                                height: 44, 
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '18px',
+                                fontWeight: 'bold',
+                                transition: 'all 0.2s ease',
+                                backdropFilter: 'blur(4px)'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(0,0,0,0.9)'
+                                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)'
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(0,0,0,0.7)'
+                                e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
+                              }}
+                            >
+                              ‹
+                            </button>
+                            
+                            <button 
+                              aria-label="Next image" 
+                              onClick={() => setGalleryIndex((i) => (i + 1) % gallery.length)}
+                              style={{ 
+                                position: 'absolute', 
+                                top: '50%', 
+                                right: 12, 
+                                transform: 'translateY(-50%)',
+                                background: 'rgba(0,0,0,0.7)', 
+                                color: '#fff', 
+                                border: 'none', 
+                                borderRadius: '50%', 
+                                width: 44, 
+                                height: 44, 
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '18px',
+                                fontWeight: 'bold',
+                                transition: 'all 0.2s ease',
+                                backdropFilter: 'blur(4px)'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(0,0,0,0.9)'
+                                e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)'
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(0,0,0,0.7)'
+                                e.currentTarget.style.transform = 'translateY(-50%) scale(1)'
+                              }}
+                            >
+                              ›
+                            </button>
+                            
+                            {/* Image Counter */}
+                            <div style={{
+                              position: 'absolute',
+                              top: 12,
+                              right: 12,
+                              background: 'rgba(0,0,0,0.7)',
+                              color: '#fff',
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              backdropFilter: 'blur(4px)'
+                            }}>
+                              {galleryIndex + 1} / {gallery.length}
                             </div>
-                          ))}
+                          </div>
+                          
+                          {/* Thumbnail Navigation */}
+                          {gallery.length > 1 && (
+                            <div style={{ 
+                              display: 'flex', 
+                              gap: 8, 
+                              justifyContent: 'center', 
+                              marginTop: 16,
+                              flexWrap: 'wrap'
+                            }}>
+                              {gallery.map((g, idx) => (
+                                <button 
+                                  key={idx} 
+                                  onClick={() => setGalleryIndex(idx)} 
+                                  aria-label={`View image ${idx + 1}`}
+                                  style={{ 
+                                    width: 60, 
+                                    height: 60, 
+                                    borderRadius: 8,
+                                    border: idx === galleryIndex ? '3px solid #83b253' : '2px solid #e5e7eb',
+                                    overflow: 'hidden',
+                                    cursor: 'pointer',
+                                    background: 'none',
+                                    padding: 0,
+                                    transition: 'all 0.2s ease',
+                                    opacity: idx === galleryIndex ? 1 : 0.7
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    if (idx !== galleryIndex) {
+                                      e.currentTarget.style.opacity = '1'
+                                      e.currentTarget.style.transform = 'scale(1.05)'
+                                    }
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    if (idx !== galleryIndex) {
+                                      e.currentTarget.style.opacity = '0.7'
+                                      e.currentTarget.style.transform = 'scale(1)'
+                                    }
+                                  }}
+                                >
+                                  <img 
+                                    src={`${baseUrl}${g}`} 
+                                    alt={`Thumbnail ${idx + 1}`}
+                                    style={{ 
+                                      width: '100%',
+                                      height: '100%',
+                                      objectFit: 'cover',
+                                      objectPosition: 'center'
+                                    }}
+                                  />
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )}
 
-                      <div className="share-option">
-                        <h6>Share This Post</h6>
-                        <a href="javascript:;" className="share-icon"><i className="flaticon-share"></i></a>
-                        <ul className="social-links clearfix">
-                          <li><a href={`http://www.facebook.com/sharer.php?u=${encodeURIComponent(pageUrl)}`} className="fab fa-facebook-f" target="_blank"></a></li>
-                          <li><a href={`https://twitter.com/share?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}`} className="fab fa-twitter" target="_blank"></a></li>
-                          <li><a href={`http://www.linkedin.com/shareArticle?url=${encodeURIComponent(pageUrl)}&title=${encodeURIComponent(shareText)}`} className="fab fa-linkedin" target="_blank"></a></li>
-                          <li><a href={`https://pinterest.com/pin/create/bookmarklet/?url=${encodeURIComponent(pageUrl)}&description=${encodeURIComponent(shareText)}`} className="fab fa-pinterest"></a></li>
-                        </ul>
-                      </div>
 
                       {Array.isArray(item.tags) && item.tags.length > 0 && (
                         <div style={{ marginTop: 16 }}>
@@ -211,7 +502,7 @@ export default function NewsDetail(): React.JSX.Element {
                       {archives.length === 0 ? (
                         <li><span>No archives</span></li>
                       ) : archives.map((a) => (
-                        <li key={a.key}><a href="#">{a.label}</a></li>
+                        <li key={a.key}><a href={`/media/archive/${a.key}`}>{a.label}</a></li>
                       ))}
                     </ul>
                   </div>
@@ -222,7 +513,7 @@ export default function NewsDetail(): React.JSX.Element {
                       {categories.length === 0 ? (
                         <li><span>No categories</span></li>
                       ) : categories.map((c) => (
-                        <li key={c.name}><a href="#">{c.name}</a></li>
+                        <li key={c.name}><a href={`/media/category/${encodeURIComponent(c.name)}`}>{c.name}</a></li>
                       ))}
                     </ul>
                   </div>
