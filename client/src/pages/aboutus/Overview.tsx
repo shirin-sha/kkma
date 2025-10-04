@@ -4,6 +4,7 @@ import OverviewAboutSection from '../../components/overview/OverviewAboutSection
 import OverviewVisionSection from '../../components/overview/OverviewVisionSection';
 import OverviewHistorySection from '../../components/overview/OverviewHistorySection';
 import OverviewDiscoverSection from '../../components/overview/OverviewDiscoverSection';
+import { Star } from 'lucide-react';
 
 export default function Overview(): React.JSX.Element {
 	return (
@@ -36,11 +37,11 @@ export default function Overview(): React.JSX.Element {
         <div className="auto-container">
           <div className="sec-title centred light">
             <h6>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={14} />
               <span>
                 cultural, professional, and personal growth within our community.
               </span>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={14} />
             </h6>
             <h2>Empowering Community Through Diverse Initiatives</h2>
             <div className="title-shape"></div>
@@ -89,7 +90,7 @@ export default function Overview(): React.JSX.Element {
         <div className="auto-container">
           <div className="sec-title">
             <h6>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={14} />
               <span>Our Awards</span>
             </h6>
             <h2>Our Recognitions & Appreciations</h2>
@@ -145,11 +146,11 @@ export default function Overview(): React.JSX.Element {
         <div className="auto-container">
           <div className="sec-title centred">
             <h6>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={14} />
               <span>
                 Discover opportunities to engage, connect, and contribute
               </span>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={14} />
             </h6>
             <h2>Explore Our Key Offerings and Programs</h2>
             <div className="title-shape"></div>

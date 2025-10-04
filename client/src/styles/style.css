@@ -7858,14 +7858,7 @@
     text-decoration: underline;
   }
   
-  .page-title .bread-crumb li:before{
-    position: absolute;
-    content: "\f105";
-    font-family: 'Font Awesome 5 Pro';
-    top: 1px;
-    right: 0px;
-    font-weight: 400;
-  }
+
   
   .page-title .bread-crumb li:last-child:before{
     display: none;
@@ -13367,3 +13360,4 @@
     height: 480px;
     border-radius: 5px;
   }
+

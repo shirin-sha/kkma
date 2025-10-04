@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import React, { useState } from 'react'
 
 export default function Schedules(): React.JSX.Element {
@@ -20,7 +21,7 @@ export default function Schedules(): React.JSX.Element {
                         <div className="col-lg-6 col-md-6 col-sm-12 title-column">
                             <div className="sec-title light">
                                 <h6>
-                                    <i className="flaticon-star"></i>
+                                    <Star fill='currentColor' size={14} />
                                     <span>Our Calendars</span>
                                 </h6>
                                 <h2>Our Schedules &amp; Routines</h2>

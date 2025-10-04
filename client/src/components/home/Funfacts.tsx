@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import React from 'react'
 
 type Funfact = { number: number; suffix: string; label: string }
@@ -12,7 +13,7 @@ export default function Funfacts({ items }: { items: Funfact[] }): React.JSX.Ele
             <div className="col-lg-4 col-md-12 col-sm-12 title-column">
               <div className="sec-title">
                 <h6>
-                  <i className="flaticon-star"></i>
+                  <Star fill='currentColor' size={14} />
                   <span>Collective Impacts</span>
                 </h6>
                 <h2>Key Milestones</h2>

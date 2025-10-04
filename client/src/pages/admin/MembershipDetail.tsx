@@ -29,14 +29,9 @@ export default function AdminMembershipDetail(): React.JSX.Element {
   }, [id, baseUrl])
 
   const handleDownloadPdf = async () => {
-    const element = document.getElementById("pdf-content"); // your div id
-  
-    if (!element) {
-      console.error("Element not found!");
-      return;
-    }
-
-    // Before PDF generation, hide select dropdowns and show input fields for better PDF rendering
+    const element = document.getElementById("pdf-content");
+    if (!element) return;
+     // Before PDF generation, hide select dropdowns and show input fields for better PDF rendering
     const selectElements = element.querySelectorAll('.branch-select');
     const inputElements = element.querySelectorAll('.pdf-branch-value');
     
@@ -46,76 +41,35 @@ export default function AdminMembershipDetail(): React.JSX.Element {
     inputElements.forEach((input) => {
       (input as HTMLElement).style.display = 'block';
     });
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
   
-    try {
-      // Convert HTML to Canvas
-      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+    // Split DOM by .page-break markers
+    const sections = element.innerHTML.split('<div class="page-break"></div>');
+  
+    for (let i = 0; i < sections.length; i++) {
+      // Create a temporary container
+      const temp = document.createElement("div");
+      temp.innerHTML = sections[i];
+      temp.style.padding = "20px"; // optional
+      document.body.appendChild(temp);
+  
+      // Render only this section
+      const canvas = await html2canvas(temp, { scale: 2, useCORS: true });
       const imgData = canvas.toDataURL("image/png");
   
-      // Create PDF (Portrait, mm, A4)
-      const pdf = new jsPDF("p", "mm", "a4");
-  
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-  
-      // Image props
-      const imgWidth = pdfWidth;
       const imgHeight = (canvas.height * pdfWidth) / canvas.width;
   
-      // Compute explicit break offsets (in mm) from .page-break markers
-      const containerRect = element.getBoundingClientRect();
-      const totalDomHeight = Math.max(element.scrollHeight, containerRect.height);
-      const breakOffsetsMm = Array.from(element.querySelectorAll('.page-break'))
-        .map((el) => {
-          const r = (el as HTMLElement).getBoundingClientRect();
-          const domY = Math.max(0, (r.top - containerRect.top) + element.scrollTop);
-          const ratio = totalDomHeight > 0 ? domY / totalDomHeight : 0;
-          return imgHeight * ratio;
-        })
-        .filter((mm) => mm > 0.1 && mm < imgHeight - 0.1)
-        .sort((a, b) => a - b);
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, imgHeight);
   
-      // Walk the content: start new pages at natural page breaks OR the next .page-break marker, whichever comes first
-      let yOffset = 0; // in mm, top of the visible slice within the big image
-      let iBreak = 0;
-      let pageIndex = 0;
-      while (yOffset < imgHeight - 0.1) {
-        if (pageIndex > 0) pdf.addPage();
-        const position = -yOffset; // shift image up to show the correct slice
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  
-        const nextNatural = yOffset + pdfHeight; // next page boundary
-        if (iBreak < breakOffsetsMm.length && breakOffsetsMm[iBreak] > yOffset + 0.1 && breakOffsetsMm[iBreak] < nextNatural - 0.1) {
-          yOffset = breakOffsetsMm[iBreak];
-          iBreak += 1;
-        } else {
-          yOffset = nextNatural;
-        }
-        pageIndex += 1;
-      }
-  
-      const safeName = String(item?.fullName || 'application').replace(/[^a-z0-9\-]+/gi, '_');
-      pdf.save(`${safeName}_application.pdf`);
-      
-      // Restore original state after PDF generation
-      selectElements.forEach((select) => {
-        (select as HTMLElement).style.display = 'block';
-      });
-      inputElements.forEach((input) => {
-        (input as HTMLElement).style.display = 'none';
-      });
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      
-      // Restore original state even if there's an error
-      selectElements.forEach((select) => {
-        (select as HTMLElement).style.display = 'block';
-      });
-      inputElements.forEach((input) => {
-        (input as HTMLElement).style.display = 'none';
-      });
+      // Clean up temp
+      document.body.removeChild(temp);
     }
+  
+    pdf.save("download.pdf");
   };
+  
 
   if (loading) return <div className="auto-container" style={{ padding: 16 }}>Loading...</div>
   if (error || !item) return <div className="auto-container" style={{ padding: 16, color: '#991b1b' }}>{error || 'Not found'}</div>
@@ -266,11 +220,11 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                     paddingBottom: 8
                   }}>സത്യവാചകം (Oath/Affidavit)</h4>
                   <p style={{ margin: '0 0 12px 0', color: '#374151' }}>മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച്കൊള്ളെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
                     <Field label="പേര് (Name)" value={item.extra?.oathName || '—'} />
                     <Field label="തീയ്യതി (Date)" value={item.extra?.oathDate || '—'} />
-                    <Field label="നിര്‍ദ്ദേശിച്ച മെമ്പറുടെ പേര് (Recommended Member Name)" value={item.extra?.recommenderName || '—'} />
-                    <Field label="നിർദേശിച്ച മെമ്പറുടെ കെ.കെ.എം.എ ഐഡി (Recommended Member KKMA ID)" value={item.extra?.recommenderKkmaId || '—'} />
+                    <Field label="നിര്‍ദ്ദേശിച്ച മെമ്പറുടെ പേര്<br/> (Recommended Member Name)" value={item.extra?.recommenderName || '—'} />
+                    <Field label="നിർദേശിച്ച മെമ്പറുടെ കെ.കെ.എം.എ ഐഡി <br/> (Recommended Member KKMA ID)" value={item.extra?.recommenderKkmaId || '—'} />
                   </div>
                 </div>
               )}
@@ -292,12 +246,12 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                   borderBottom: '2px solid #83b253',
                   paddingBottom: 8
                 }}>FOR OFFICIAL USE ONLY (ഉദ്യോഗസ്ഥ ഉപയോഗത്തിന് മാത്രം)</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
                   <InputField label="സോണല്‍ (Zone)" value={item.extra?.zone || ''} />
                   <BranchDropdown label="ബ്രാഞ്ച് (Branch)" value={item.extra?.branch || item.branch || ''} />
                   <InputField label="യൂണിറ്റ് (Unit)" value={item.extra?.unit || ''} />
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 8 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 8, marginBottom: '20px' }}>
                   <InputField label="കെ.കെ.എം.എ ഐഡി (KKMA ID)" value={item.extra?.recommenderKkmaId || ''} />
                   <InputField label="BRANCH APPROVED BY (NAME) " value={item.extra?.branchApprovedByName || ''} />
                   <InputField label="DATE (DD/MM/YYYY) (തീയ്യതി)" value={item.extra?.branchApprovedDate || ''} placeholder="DD/MM/YYYY" />
@@ -318,8 +272,8 @@ function Field(props: { label: string; value: React.ReactNode; full?: boolean })
   const { label, value, full } = props
   return (
     <div style={{ gridColumn: full ? 'span 3 / span 3' : undefined }}>
-      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8 }}>{label}</div>
-      <div className="field-value value-box" style={{ color: '#111827', border: '2px solid #d1d5db', borderRadius: 6, padding: '12px 14px', background: '#fff', fontSize: '14px' }}>{value}</div>
+      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block', fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: label }}></div>
+      <div className="field-value value-box" style={{ color: '#111827', border: '2px solid #d1d5db', borderRadius: 6, padding: '12px 14px', background: '#fff', fontSize: '16px' }}>{value}</div>
     </div>
   )
 }
@@ -328,8 +282,8 @@ function InputField(props: { label: string; value?: string; placeholder?: string
   const { label, value, placeholder } = props
   return (
     <div>
-      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8 }}>{label}</div>
-      <input type="text" defaultValue={value || ''} placeholder={placeholder} style={{ width: '100%', color: '#111827', border: '2px solid #d1d5db', borderRadius: 6, padding: '12px 14px', background: '#fff', fontSize: '14px', transition: 'border-color 0.2s ease, box-shadow 0.2s ease' }} />
+      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block', fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: label }}></div>
+      <input type="text" defaultValue={value || ''} placeholder={placeholder} style={{ width: '100%', color: '#111827', border: '2px solid #d1d5db', borderRadius: 6, padding: '12px 14px', background: '#fff', fontSize: '16px', transition: 'border-color 0.2s ease, box-shadow 0.2s ease' }} />
     </div>
   )
 }
@@ -369,7 +323,7 @@ function BranchDropdown(props: { label: string; value?: string }): React.JSX.Ele
   
   return (
     <div>
-      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8 }}>{label}</div>
+      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block', fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: label }}></div>
       {/* Hidden input for PDF generation - shows the selected value as text */}
       <input 
         type="text" 
@@ -382,7 +336,7 @@ function BranchDropdown(props: { label: string; value?: string }): React.JSX.Ele
           borderRadius: 6, 
           padding: '12px 14px', 
           background: '#fff', 
-          fontSize: '14px',
+          fontSize: '16px',
           display: 'none' // Hidden by default, shown during PDF generation
         }}
         className="pdf-branch-value"
@@ -398,7 +352,7 @@ function BranchDropdown(props: { label: string; value?: string }): React.JSX.Ele
           borderRadius: 6, 
           padding: '12px 14px', 
           background: '#fff', 
-          fontSize: '14px', 
+          fontSize: '16px', 
           transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
           cursor: 'pointer'
         }}
@@ -419,7 +373,7 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
   return (
     <div className="print-body">
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
         <Field label="പേര് (Name)" value={selected.fullName} />
         <Field label="ബ്ലഡ് ഗ്രൂപ്പ് (Blood Group)" value={selected.extra?.bloodGroup || '—'} />
         <Field label="അംഗത്വ തരം (Membership Type)" value={selected.applicationType} />
@@ -427,7 +381,7 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
 
       <div style={{ marginTop: 16 }}>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
           <Field label="സിവില്‍ ഐഡി നമ്പര് (Civil ID Number)*" value={selected.extra?.civilId || '—'} />
           <Field label="പാസ്പോർട്ട് നമ്പര് (Passport Number)*" value={selected.extra?.passport || '—'} />
           <Field label="മൊബൈൽ നമ്പര്‍ (Mobile Number)" value={selected.phone || '—'} />
@@ -438,25 +392,25 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
 
       <div style={{ marginTop: 16 }}>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12 }}>
-          <Field label="കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം (Address in Kuwait)" value={selected.extra?.addressinKuwait || selected.address || '—'} />
-          <Field label="തൊഴിൽ (Profession)" value={selected.extra?.proffession || '—'} />
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12, marginBottom: '20px' }}>
+          <Field label="കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം <br/>(Address in Kuwait)" value={selected.extra?.addressinKuwait || selected.address || '—'} />
+          <Field label="തൊഴില്‍ <br/> (Profession)" value={selected.extra?.proffession || '—'} />
           <Field label="വിദ്യാഭ്യാസ യോഗ്യത (Educational Qualification)" value={selected.extra?.qualification || '—'} />
         </div>
-        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12 }}>
+        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 12, marginBottom: '20px' }}>
           <Field label="ഇന്ത്യയിലെ വീട്ടുപേര് (House Name in India)" value={selected.extra?.addressinIndia || '—'} />
           <Field label="സ്ഥലം (Place)" value={selected.extra?.locationinIndia || '—'} />
           <Field label="സംസ്ഥാനം (State)" value={selected.extra?.stateinIndia || '—'} />
         </div>
-        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 12 }}>
-          <Field label="ജില്ല (District)" value={selected.extra?.districtinIndia || '—'} />
-          <Field label="പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍ (Panchayath/Municipality/Corporation)" value={selected.extra?.panchayath || '—'} />
-          <Field label="പോസ്റ്റ് ഓഫീസ് (Post Office)" value={selected.extra?.postoffice || '—'} />
+        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 12, marginBottom: '20px' }}>
+          <Field label="ജില്ല <br/> (District)" value={selected.extra?.districtinIndia || '—'} />
+          <Field label="പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍  <br/>(Panchayath/Municipality/Corporation)" value={selected.extra?.panchayath || '—'} />
+          <Field label="പോസ്റ്റ് ഓഫീസ് <br/>(Post Office)" value={selected.extra?.postoffice || '—'} />
         </div>
-        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 12 }}>
-          <Field label="പിൻകോഡ് (Pin Code)" value={selected.extra?.pincode || '—'} />
-          <Field label="ഇന്ത്യയിലെ ബന്ധപ്പെടാനുള്ള നമ്പർ (Contact Number in India)" value={selected.extra?.contactnumberinIndia || '—'} />
-          <Field label="ഇന്ത്യൻ നമ്പർ 2 (Indian Number 2)" value={selected.extra?.contactnumberiindia2 || '—'} />
+        <div style={{ marginTop: 8, display: 'grid', gridTemplateColumns: '1fr 2fr 1fr', gap: 12, marginBottom: '20px' }}>
+          <Field label="പിൻകോഡ് <br/> (Pin Code)" value={selected.extra?.pincode || '—'} />
+          <Field label="ഇന്ത്യയില്‍ ബന്ധപ്പെടാനുള്ള നമ്പര്‍ <br/>(Contact Number in India)" value={selected.extra?.contactnumberinIndia || '—'} />
+          <Field label="ഇന്ത്യന്‍ നമ്പര്‍ 2 <br/>(Indian Number 2)" value={selected.extra?.contactnumberiindia2 || '—'} />
         </div>
       </div>
 
@@ -493,7 +447,7 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
           </table>
         </div>
       </div>
-      
+      <div className="page-break"></div>
       <div style={{ marginTop: 16 }}>
         <h4 style={{ 
           marginBottom: 12, 

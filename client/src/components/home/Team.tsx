@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import React from 'react'
 
 type Member = {
@@ -30,7 +31,7 @@ export default function Team({ members }: { members: Member[] }): React.JSX.Elem
         {/* Section title */}
         <div className="sec-title">
           <h6>
-            <i className="flaticon-star"></i>
+            <Star fill='currentColor' size={14} />
             <span>Guiding Lights Behind Our Vision</span>
           </h6>
           <h2>Meet Our Leadership</h2>

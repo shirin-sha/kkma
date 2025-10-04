@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import React from "react";
 
 // DiscoverSection.jsx
@@ -50,9 +51,9 @@ export default function OverviewDiscoverSection() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <h6 className="flex items-center justify-center space-x-2 text-white/90 uppercase tracking-wide">
-            <i className="flaticon-star" />
+           <Star fill='currentColor' size={14} />
             <span>Stay Connected with KKMA Resources</span>
-            <i className="flaticon-star" />
+            <Star fill='currentColor' size={14} />
           </h6>
           <h2 className="text-3xl md:text-4xl font-extrabold mt-2">
             Quick Access to Essential Resources and Updates.

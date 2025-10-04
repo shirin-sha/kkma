@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import React from 'react'
 
 type Solution = { icon: string; title: string; desc: string }
@@ -60,11 +61,11 @@ export default function Solutions(): React.JSX.Element {
                 {/* Section Title */}
                 <div className="sec-title centred">
                     <h6>
-                        <i className="flaticon-star"></i>
+                        <Star fill='currentColor' size={14} />
                         <span>
                             Dedicated to Community Growth, Support, and Collective Success
                         </span>
-                        <i className="flaticon-star"></i>
+                        <Star fill='currentColor' size={14} />
                     </h6>
                     <h2>Empowering Our Community: A Legacy of Service</h2>
                     <div className="title-shape"></div>

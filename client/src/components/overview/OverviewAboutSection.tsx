@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import React from 'react';
 
 export default function OverviewAboutSection(): React.JSX.Element {
@@ -9,12 +10,12 @@ export default function OverviewAboutSection(): React.JSX.Element {
 					<div className="col-lg-4 col-md-12 col-sm-12 content-column">
 						<div className="content_block_5">
 							<div className="content-box">
-								<div className="sec-title">
-									<h6>
-										<i className="flaticon-star"></i>
+								<div className="sec-title" style={{ textAlign: 'left', marginBottom: '30px' }}>
+									<h6 style={{ fontSize: '16px', fontWeight: '600', color: '#83b253', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+										<Star fill='currentColor' size={14} />
 										<span>About KKMA</span>
 									</h6>
-									<h2>Building a Stronger Community</h2>
+									<h2 style={{ fontSize: '39px', fontWeight: '700', color: '#1a1a1a', marginBottom: '20px', lineHeight: '1.2' }}>Building a Stronger Community</h2>
 									<div className="title-shape"></div>
 								</div>
 								<div className="text">

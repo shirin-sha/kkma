@@ -99,7 +99,7 @@ export default function Register(): React.JSX.Element {
     borderRadius: 6,
     padding: '12px 14px',
     background: '#fff',
-    fontSize: '14px',
+    fontSize: '16px',
     transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
   }
 
@@ -277,16 +277,16 @@ export default function Register(): React.JSX.Element {
                    paddingBottom: 8
                  }}>പ്രാഥമിക വിവരങ്ങൾ (Primary Details)</h4>
                   <div className="row clearfix">
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>പേര് (Name)*</label>
                       <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                  
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ബ്ലഡ് ഗ്രൂപ്പ് (Blood Group)</label>
                       <input type="text" name="bloodGroup" value={form.bloodGroup} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>അംഗത്വ തരം (Membership Type)*</label>
                       <select name="membershipType" value={form.membershipType} onChange={handleChange} required style={inputBoxStyle}>
                         <option value="new">New (പുതിയത്)</option>
@@ -295,7 +295,7 @@ export default function Register(): React.JSX.Element {
                     </div>
                   </div>
                   <div className="row clearfix">
-                    <div className="col-md-8 col-sm-12 form-group">
+                    <div className="col-md-8 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഫോട്ടോ (Photo)*</label>
                       <input type="file" name="photo" accept="image/*" onChange={handleChange} required style={{ 
                         ...inputBoxStyle, 
@@ -330,24 +330,24 @@ export default function Register(): React.JSX.Element {
                      paddingBottom: 8
                    }}>കോൺടാക്ട് ഐഡന്റിഫിക്കേഷൻ വിവരങ്ങൾ (Contact & Identification Details)</h4>
                   <div className="row clearfix">
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>സിവില്‍ ഐഡി നമ്പര്‍ (Civil ID Number)*</label>
                       <input type="text" name="civilId" value={form.civilId} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>പാസ്പോർട്ട് നമ്പര്‍ (Passport Number)*</label>
                       <input type="text" name="passport" value={form.passport} onChange={handleChange} required style={inputBoxStyle} />
                     </div>  
                  
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>മൊബൈൽ നമ്പര്‍ (Mobile Number)*</label>
                       <input type="tel" name="mobile" value={form.mobile} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>മൊബൈൽ നമ്പര്‍ 2 (Mobile Number 2)</label>
                       <input type="tel" name="mobile2" value={form.mobile2} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-4 col-sm-12 form-group">
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>വാട്സ്ആപ് നമ്പര്‍ (WhatsApp Number)</label>
                       <input type="tel" name="whatsappnumber" value={form.whatsappnumber} onChange={handleChange} style={inputBoxStyle} />
                     </div>
@@ -372,52 +372,52 @@ export default function Register(): React.JSX.Element {
                      paddingBottom: 8
                    }}>കോണ്ടാക്ട് വിവരങ്ങൾ (Contact Details)</h4>
                   <div className="row clearfix">
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>കുവൈത്തില്‍ താമസിക്കുന്ന സ്ഥലം  <br/>(Address in Kuwait)</label>
                       <input name="addressinKuwait" value={form.addressinKuwait} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-3 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>തൊഴില്‍ <br/> (Profession)</label>
                       <input type="text" name="proffession" value={form.proffession} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-3 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>വിദ്യാഭ്യാസ യോഗ്യത (Educational Qualification)</label>
                       <input type="text" name="qualification" value={form.qualification} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഇന്ത്യയിലെ വീട്ടു പേര് (House Name in India)*</label>
                       <input type="text" name="addressinIndia" value={form.addressinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-3 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>സ്ഥലം (Place)*</label>
                       <input type="text" name="locationinIndia" value={form.locationinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-3 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>സംസ്ഥാനം (State)*</label>
                       <input type="text" name="stateinIndia" value={form.stateinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-3 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ജില്ല <br/> (District)*</label>
                       <input type="text" name="districtinIndia" value={form.districtinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>പഞ്ചായത്ത്/മുനിസിപ്പാലിറ്റി/കോര്‍പറേഷന്‍ (Panchayath/Municipality/Corporation)*</label>
                       <input type="text" name="panchayath" value={form.panchayath} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-3 col-sm-12 form-group">
+                    <div className="col-md-3 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>പോസ്റ്റ് ഓഫീസ്  <br/>(Post Office)*</label>
                       <input type="text" name="postoffice" value={form.postoffice} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
                     
-                    <div className="col-md-2 col-sm-12 form-group">
+                    <div className="col-md-2 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>പിൻകോഡ് <br/> (Pin Code)</label>
                       <input type="tel" name="pincode" value={form.pincode} onChange={handleChange} style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-5 col-sm-12 form-group">
+                    <div className="col-md-5 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഇന്ത്യയില്‍ ബന്ധപ്പെടാനുള്ള നമ്പര്‍ <br/>(Contact Number in India)*</label>
                       <input type="tel" name="contactnumberinIndia" value={form.contactnumberinIndia} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-5 col-sm-12 form-group">
+                    <div className="col-md-5 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഇന്ത്യന്‍ നമ്പര്‍ 2  <br/>(Indian Number 2)</label>
                       <input type="tel" name="contactnumberiindia2" value={form.contactnumberiindia2} onChange={handleChange} style={inputBoxStyle} />
                     </div>
@@ -726,11 +726,11 @@ export default function Register(): React.JSX.Element {
                   <p style={{ marginBottom: 16, color: '#374151' }}>മുകളില്‍ കൊടുത്ത എല്ലാ നിബന്ധനകളും , മറ്റ് നിയമാവലികളും ഞാന്‍ വായിച്ച് മനസ്സിലാക്കി എന്നും, ഇവയെല്ലാം പാലിച്ച്കൊള്ളുമെന്നും ഇതിനാല്‍ ഉറപ്പ് നല്‍കുന്നു.  
                   </p>
                   <div className="row clearfix">
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>പേര് (Name)*</label>
                       <input type="text" name="oathName" value={form.oathName} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>തീയ്യതി (Date)*</label>
                   <input
                         type="text"
@@ -745,11 +745,11 @@ export default function Register(): React.JSX.Element {
                     </div>
                   </div>
                   <div className="row clearfix">
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>നിര്‍ദ്ദേശിച്ച മെമ്പറുടെ പേര്<br/> (Recommended Member Name)*</label>
                       <input type="text" name="recommenderName" value={form.recommenderName} onChange={handleChange} required style={inputBoxStyle} />
                     </div>
-                    <div className="col-md-6 col-sm-12 form-group">
+                    <div className="col-md-6 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>നിർദേശിച്ച മെമ്പറുടെ കെ.കെ.എം.എ ഐഡി <br/> (Recommended Member KKMA ID)</label>
                       <input type="text" name="recommenderKkmaId" value={form.recommenderKkmaId} onChange={handleChange} style={inputBoxStyle} />
                     </div>

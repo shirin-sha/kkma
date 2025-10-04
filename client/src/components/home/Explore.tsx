@@ -9,7 +9,7 @@ export default function Explore(): React.JSX.Element {
             <div className="pattern-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/shape-1-2.png)' }}></div>
             <div className="auto-container">
                 <div className="sec-title centred light">
-                    <h6><Star size={16} className="inline mr-2" /><span>Discover Our Initiatives and Opportunities to Make a Difference</span><Star size={16} className="inline ml-2" /></h6>
+                    <h6><Star size={16} fill='currentColor' className="inline mr-2" /><span>Discover Our Initiatives and Opportunities to Make a Difference</span><Star size={16} fill='currentColor' className="inline ml-2" /></h6>
 
                     <h2>Building Stronger Communities Together</h2>
                     <div className="title-shape"></div>

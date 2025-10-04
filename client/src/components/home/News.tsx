@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import React from 'react'
 
 type NewsItem = {
@@ -18,9 +19,9 @@ export default function News({ items }: { items: NewsItem[] }): React.JSX.Elemen
       <div className="auto-container">
         <div className="sec-title centred">
           <h6>
-            <i className="flaticon-star"></i>
+            <Star fill='currentColor' size={14} />
             <span>News &amp; Blog</span>
-            <i className="flaticon-star"></i>
+            <Star fill='currentColor' size={14} />
           </h6>
           <h2>Latest From Our Newsroom</h2>
           <div className="title-shape"></div>

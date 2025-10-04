@@ -1,4 +1,5 @@
 import React from 'react'
+import { Star } from 'lucide-react'
 
 export default function PeopleBehind(): React.JSX.Element {
   const founder = {
@@ -113,7 +114,7 @@ export default function PeopleBehind(): React.JSX.Element {
     <section className="team-section sec-pad ">
       <div className="auto-container">
         <div className="sec-title">
-          <h6><i className="flaticon-star"></i><span>{subtitle}</span></h6>
+          <h6><Star fill='currentColor' size={16} /><span>{subtitle}</span></h6>
           <h2>{title}</h2>
           <div className="title-shape"></div>
         </div>
@@ -152,7 +153,7 @@ export default function PeopleBehind(): React.JSX.Element {
     <section className="sec-pad">
       <div className="auto-container">
         <div className="sec-title">
-          <h6><i className="flaticon-star"></i><span>Driving Community Engagement and Local Initiatives</span></h6>
+          <h6><Star fill='currentColor' size={16} /><span>Driving Community Engagement and Local Initiatives</span></h6>
           <h2>{title}</h2>
           <div className="title-shape"></div>
         </div>
@@ -191,24 +192,74 @@ export default function PeopleBehind(): React.JSX.Element {
         </div>
       </section>
 
-      <section className="sec-pad" style={{ backgroundColor: '#ffffff' }}>
+      <section className="sec-pad" style={{ backgroundColor: '#201e1f', padding: '80px 0' }}>
         <div className="auto-container">
-          <div className="row clearfix">
+          <div className="row clearfix align-items-center">
             <div className="col-lg-7 col-md-12 col-sm-12">
-              <div className="sec-title" style={{ marginBottom: 16 }}>
-                <h2 className="elementor-heading-title">{founder.introTitle}</h2>
-                <h2 className="elementor-heading-title">{founder.introSubtitle}</h2>
-                <h2 className="elementor-heading-title" style={{ fontWeight: 400, fontSize: 18, lineHeight: 1.8 }}>{founder.introDesc}</h2>
+              <div className="sec-title" style={{ marginBottom: 0 }}>
+                <h6 style={{
+                  color: '#ffffff',
+                  textTransform: 'uppercase',
+                  fontWeight: 500,
+                  fontSize: '14px',
+                  letterSpacing: 1.2,
+                  marginBottom: 12
+                }}>
+                  {founder.introTitle}
+                </h6>
+                <h2 style={{ 
+                  fontSize: '36px', 
+                  lineHeight: 1.2, 
+                  fontWeight: 600, 
+                  color: '#ffffff',
+                  marginBottom: 20
+                }}>
+                  {founder.introSubtitle}
+                </h2>
+                <p style={{ 
+                  color: '#ffffff', 
+                  fontSize: '16px', 
+                  lineHeight: 1.8,
+                  marginBottom: 0
+                }}>
+                  {founder.introDesc}
+                </p>
               </div>
             </div>
             <div className="col-lg-5 col-md-12 col-sm-12">
               <div className="row clearfix">
-                <div className="col-12">
-                  <figure className="image"><img src={founder.img} alt={founder.name} width={500} height={600} /></figure>
-                </div>
-                <div className="col-12" style={{ marginTop: 12 }}>
-                  <h2 className="elementor-heading-title" style={{ fontWeight: 800 }}>{founder.name}</h2>
-                  <h2 className="elementor-heading-title" style={{ fontSize: 18, color: '#555' }}>{founder.role}</h2>
+                <div className="col-12" style={{ textAlign: 'center' }}>
+                  <figure className="image" style={{ marginBottom: 20 }}>
+                    <img 
+                      src={founder.img} 
+                      alt={founder.name} 
+                      style={{ 
+                        width: '300px', 
+                        height: '360px', 
+                        objectFit: 'cover',
+                        borderRadius: '8px',
+                        border: '4px solid #ffffff'
+                      }} 
+                    />
+                  </figure>
+                  <h2 style={{ 
+                    fontWeight: 800, 
+                    fontSize: '24px',
+                    color: '#ffffff',
+                    marginBottom: '8px',
+                    textTransform: 'uppercase'
+                  }}>
+                    {founder.name}
+                  </h2>
+                  <h3 style={{ 
+                    fontSize: '16px', 
+                    color: '#ffffff',
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    marginBottom: 0
+                  }}>
+                    {founder.role}
+                  </h3>
                 </div>
               </div>
             </div>

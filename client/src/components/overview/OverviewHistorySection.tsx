@@ -107,13 +107,14 @@ export default function OverviewHistorySection() {
                   <h6 style={{
                     color: '#83B253',
                     textTransform: 'uppercase',
-                    fontWeight: 700,
+                    fontWeight: 500,
+                    fontSize: '14px',
                     letterSpacing: 1.2,
-                    marginBottom: 8
+                    marginBottom: 12
                   }}>
                     A Legacy of Commitment and Growth
                   </h6>
-                  <h2 style={{ fontSize: 48, lineHeight: 1.15, fontWeight: 800 }}>Our Story and Achievements</h2>
+                  <h2 style={{ fontSize: '36px', lineHeight: 1.2, fontWeight: 600, color: '#1a1a1a' }}>Our Story and Achievements</h2>
                   <div className="title-shape" style={{ width: 95, height: 4, background: '#83B253', marginTop: 16 }}></div>
                 </div>
                 <div className="text">
@@ -156,9 +157,11 @@ export default function OverviewHistorySection() {
                         padding: '18px 20px',
                         background: '#fff',
                         color: '#111827',
-                        fontWeight: 700,
-                        fontSize: 20,
-                        cursor: 'pointer'
+                        fontWeight: 500,
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                        border: 'none',
+                        textAlign: 'left'
                       }}
                     >
                       <span>{item.title}</span>
