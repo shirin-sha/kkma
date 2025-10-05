@@ -153,7 +153,7 @@ export default function PeopleBehind(): React.JSX.Element {
     <section className="sec-pad">
       <div className="auto-container">
         <div className="sec-title">
-          <h6><Star fill='currentColor' size={16} /><span>Driving Community Engagement and Local Initiatives</span></h6>
+          <h6><span>Driving Community Engagement and Local Initiatives</span></h6>
           <h2>{title}</h2>
           <div className="title-shape"></div>
         </div>

@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import React from 'react'
 
 type ProjectCard = {
@@ -113,7 +114,7 @@ export default function SocialProjects(): React.JSX.Element {
             <div className="col-lg-8 col-md-12 col-sm-12 content-column">
               <div className="content_block_11"><div className="content-box">
                 <div className="sec-title light">
-                  <h6><i className="flaticon-star"></i><span>Empowering Communities, Enriching Lives</span></h6>
+                  <h6><Star fill='currentColor' size={16} /><span>Empowering Communities, Enriching Lives</span></h6>
                   <h2>Comprehensive Social Initiatives for Community Upliftment</h2>
                   <div className="title-shape"></div>
                 </div>
@@ -140,7 +141,7 @@ export default function SocialProjects(): React.JSX.Element {
       <section className="explore-style-two departments-page sec-pad centred">
         <div className="auto-container">
           <div className="sec-title centred">
-            <h6><i className="flaticon-star"></i><span>Dedicated to Enhancing Lives and Fostering Community Growth</span><i className="flaticon-star"></i></h6>
+            <h6><Star fill='currentColor' size={16} /><span>Dedicated to Enhancing Lives and Fostering Community Growth</span><Star fill='currentColor' size={16} /></h6>
             <h2>Empowering Communities Through Meaningful Initiatives</h2>
             <div className="title-shape"></div>
           </div>
@@ -172,6 +173,7 @@ export default function SocialProjects(): React.JSX.Element {
     </div>
   )
 }
+
 
 
 

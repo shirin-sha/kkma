@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import React from 'react'
 
 type Partner = {
@@ -173,7 +174,7 @@ export default function MemberPrivileges(): React.JSX.Element {
                 <div className="content-box">
                   <div className="sec-title light">
                     <h6>
-                      <i className="flaticon-star"></i>
+                      <Star fill='currentColor' size={16} />
                       <span>Exclusive Benefits and Discounts for KKMA Members</span>
                     </h6>
                     <h2>Unlock Your KKMA Membership Perks &amp; Privileges</h2>

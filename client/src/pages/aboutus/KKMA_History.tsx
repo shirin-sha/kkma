@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react'
 import React from 'react'
 
 type TimelineItem = {
@@ -164,7 +165,7 @@ export default function KKMA_History(): React.JSX.Element {
           <div className="row clearfix">
             <div className="col-lg-4 col-md-12 col-sm-12 title-column">
               <div className="sec-title">
-                <h6><i className="flaticon-star"></i><span>Tracing the Milestones of KKMA's Impact</span></h6>
+                <h6><Star fill='currentColor' size={16} /><span>Tracing the Milestones of KKMA's Impact</span></h6>
                 <h2>Our Journey Through Time</h2>
                 <div className="title-shape"></div>
                 <p>Explore the evolution of KKMA as we reflect on our key milestones, achievements, and pivotal moments. From our founding in 2001 to our latest initiatives, discover how we've grown and shaped our community over the years.</p>

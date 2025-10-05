@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import React, { useState } from 'react'
 
 export default function MagnetClub(): React.JSX.Element {
@@ -147,7 +148,7 @@ export default function MagnetClub(): React.JSX.Element {
                 <div className="content-box">
                   <div className="sec-title">
                     <h6>
-                      <i className="flaticon-star"></i>
+                     <Star fill='currentColor' size={16} />
                       <span>Compassionate Care and Support for Hospital Patients</span>
                       <i className="flaticon-star"></i>
                     </h6>
@@ -229,9 +230,9 @@ export default function MagnetClub(): React.JSX.Element {
         <div className="auto-container">
           <div className="sec-title centred light">
             <h6>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={16} />
               <span>Committed to Caring, Supporting, and Empowering Communities</span>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={16} />
             </h6>
             <h2>Comprehensive Volunteer Services</h2>
             <div className="title-shape"></div>
@@ -343,6 +344,7 @@ export default function MagnetClub(): React.JSX.Element {
     </div>
   )
 }
+
 
 
 

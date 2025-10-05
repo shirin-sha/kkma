@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import React, { useState } from 'react'
 
 export default function MembershipInformation(): React.JSX.Element {
@@ -99,7 +100,7 @@ export default function MembershipInformation(): React.JSX.Element {
                 <div className="content-box">
                   <div className="sec-title light">
                     <h6>
-                      <i className="flaticon-star"></i>
+                      <Star fill='currentColor' size={16} />  
                       <span>Get Involved and Maximize Your Membership Experience</span>
                     </h6>
                     <h2>Explore KKMA Membership</h2>
@@ -269,6 +270,7 @@ export default function MembershipInformation(): React.JSX.Element {
     </div>
   )
 }
+
 
 
 
