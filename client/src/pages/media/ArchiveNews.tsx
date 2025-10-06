@@ -21,6 +21,7 @@ type Post = {
   category: string
   author: string
   comments: number
+  publishedAt?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -38,6 +39,56 @@ export default function ArchiveNews(): React.JSX.Element {
   const [archiveLabel, setArchiveLabel] = useState('')
   const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
 
+  async function fetchAllNews(): Promise<Post[]> {
+    const all: Post[] = []
+    let pageIdx = 1
+    const limitPerPage = 100
+    // Safety cap to avoid infinite loops
+    const maxPages = 100
+    let totalFromApi = Infinity
+    while (pageIdx <= maxPages && all.length < totalFromApi) {
+      const res = await fetch(`${baseUrl}/api/news?page=${pageIdx}&limit=${limitPerPage}`)
+      const data = await res.json()
+      if (!(res.ok && data?.ok && Array.isArray(data.items))) {
+        break
+      }
+      if (typeof data.total === 'number') {
+        totalFromApi = data.total
+      }
+      all.push(...data.items)
+      if (data.items.length < limitPerPage) {
+        // Last page reached
+        break
+      }
+      pageIdx += 1
+    }
+    return all
+  }
+
+  function objectIdToDate(_id?: string): Date | undefined {
+    if (!_id || typeof _id !== 'string' || _id.length < 8) return undefined
+    const hex = _id.slice(0, 8)
+    const ts = parseInt(hex, 16)
+    if (!Number.isFinite(ts)) return undefined
+    return new Date(ts * 1000)
+  }
+
+  function parseLegacyMonthYear(monthYear?: string): { year: number; monthIndex: number } | undefined {
+    if (!monthYear) return undefined
+    const cleaned = monthYear.replace(/’/g, "'").trim()
+    const m = cleaned.match(/(\w+)'(\d{2})/)
+    if (!m) return undefined
+    const raw = m[1]
+    const yy = parseInt(m[2])
+    if (!Number.isFinite(yy)) return undefined
+    const year = 2000 + yy
+    const map: Record<string, number> = { jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11 }
+    const key = raw.slice(0,3).toLowerCase()
+    const monthIndex = map[key]
+    if (typeof monthIndex !== 'number') return undefined
+    return { year, monthIndex }
+  }
+
   useEffect(() => {
     const loadPosts = async () => {
       if (!archiveKey) return
@@ -52,36 +103,24 @@ export default function ArchiveNews(): React.JSX.Element {
         // Set archive label for display
         setArchiveLabel(startDate.toLocaleString('en-US', { month: 'long', year: 'numeric' }))
         
-        // Get all posts and filter client-side since we need to handle both createdAt and date.monthYear
-        const res = await fetch(`${baseUrl}/api/news?page=1&limit=1000`)
-        const data = await res.json()
-        if (res.ok && data?.ok && Array.isArray(data.items)) {
+        // Get all posts and filter client-side using publishedAt (admin date), with fallbacks
+        const items: Post[] = await fetchAllNews()
+        if (Array.isArray(items)) {
           // Filter posts by archive month/year
-          const filteredPosts = data.items.filter((post: Post) => {
+          const filteredPosts = items.filter((post: Post) => {
             let postDate: Date | undefined = undefined
-            
-            // Try createdAt first
-            if (post.createdAt) {
+            if (post.publishedAt) {
+              postDate = new Date(post.publishedAt)
+            }
+            if (!postDate && post.createdAt) {
               postDate = new Date(post.createdAt)
             }
-            // If createdAt is invalid or doesn't exist, try parsing the date field
-            else if (post.date?.monthYear) {
-              // Parse monthYear format like "Sep'24" (short month + apostrophe + 2-digit year)
-              const monthYearMatch = post.date.monthYear.match(/(\w+)'(\d{2})/)
-              if (monthYearMatch) {
-                const monthAbbrev = monthYearMatch[1] // "Sep"
-                const year2Digit = parseInt(monthYearMatch[2]) // 24
-                const year = 2000 + year2Digit // Convert to 2024
-                
-                // Convert month abbreviation to month index
-                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                const monthIndex = monthNames.indexOf(monthAbbrev)
-                
-                if (monthIndex !== -1) {
-                  postDate = new Date(year, monthIndex, 1)
-                }
-              }
+            if (!postDate) {
+              const legacy = parseLegacyMonthYear(post.date?.monthYear)
+              if (legacy) postDate = new Date(legacy.year, legacy.monthIndex, 1)
+            }
+            if (!postDate) {
+              postDate = objectIdToDate(post._id)
             }
             
             if (postDate && !isNaN(postDate.getTime())) {
@@ -91,6 +130,19 @@ export default function ArchiveNews(): React.JSX.Element {
             return false
           })
           
+          // Sort by publish date desc before applying pagination
+          filteredPosts.sort((a: Post, b: Post) => {
+            const toTime = (p: Post) => {
+              if (p.publishedAt) { const d = new Date(p.publishedAt); if (!isNaN(d.getTime())) return d.getTime() }
+              if (p.createdAt) { const d = new Date(p.createdAt); if (!isNaN(d.getTime())) return d.getTime() }
+              const legacy = parseLegacyMonthYear(p.date?.monthYear)
+              if (legacy) return new Date(legacy.year, legacy.monthIndex, 1).getTime()
+              const oid = objectIdToDate(p._id)
+              return oid ? oid.getTime() : 0
+            }
+            return toTime(b) - toTime(a)
+          })
+
           // Apply pagination to filtered results
           const startIndex = (page - 1) * limit
           const endIndex = startIndex + limit
@@ -113,38 +165,25 @@ export default function ArchiveNews(): React.JSX.Element {
   useEffect(() => {
     const loadSidebar = async () => {
       try {
-        const res = await fetch(`${baseUrl}/api/news?page=1&limit=100`)
-        const data = await res.json()
-        if (res.ok && data?.ok && Array.isArray(data.items)) {
-          const items: Post[] = data.items
+        const items: Post[] = await fetchAllNews()
+        if (Array.isArray(items)) {
           const monthKeyToCount = new Map<string, { count: number; date: Date }>()
           const categoryToCount = new Map<string, number>()
 
           items.forEach((p) => {
             let created: Date | undefined = undefined
-            
-            // Try createdAt first
-            if (p.createdAt) {
+            if ((p as any).publishedAt) {
+              created = new Date((p as any).publishedAt as string)
+            }
+            if (!created && p.createdAt) {
               created = new Date(p.createdAt)
             }
-            // If createdAt is invalid or doesn't exist, try parsing the date field
-            else if (p.date?.monthYear) {
-              // Parse monthYear format like "Sep'24" (short month + apostrophe + 2-digit year)
-              const monthYearMatch = p.date.monthYear.match(/(\w+)'(\d{2})/)
-              if (monthYearMatch) {
-                const monthAbbrev = monthYearMatch[1] // "Sep"
-                const year2Digit = parseInt(monthYearMatch[2]) // 24
-                const year = 2000 + year2Digit // Convert to 2024
-                
-                // Convert month abbreviation to month index
-                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                const monthIndex = monthNames.indexOf(monthAbbrev)
-                
-                if (monthIndex !== -1) {
-                  created = new Date(year, monthIndex, 1)
-                }
-              }
+            if (!created) {
+              const legacy = parseLegacyMonthYear(p.date?.monthYear)
+              if (legacy) created = new Date(legacy.year, legacy.monthIndex, 1)
+            }
+            if (!created) {
+              created = objectIdToDate(p._id)
             }
             
             if (created && !isNaN(created.getTime())) {
@@ -272,12 +311,36 @@ export default function ArchiveNews(): React.JSX.Element {
                           minWidth: '60px',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
                         }}>
-                          <div style={{ fontSize: '24px', fontWeight: '700', lineHeight: 1 }}>
-                            {post.date.day}
-                          </div>
-                          <div style={{ fontSize: '12px', fontWeight: '500', opacity: 0.9 }}>
-                            {post.date.monthYear}
-                          </div>
+                          {(() => {
+                            // Use publishedAt if available for the badge
+                            const d = post.publishedAt ? new Date(post.publishedAt) : (post.createdAt ? new Date(post.createdAt) : undefined)
+                            const showLegacy = !d || isNaN(d.getTime())
+                            if (showLegacy) {
+                              return (
+                                <>
+                                  <div style={{ fontSize: '24px', fontWeight: '700', lineHeight: 1 }}>
+                                    {post.date.day}
+                                  </div>
+                                  <div style={{ fontSize: '12px', fontWeight: '500', opacity: 0.9 }}>
+                                    {post.date.monthYear}
+                                  </div>
+                                </>
+                              )
+                            }
+                            const day = String(d.getDate()).padStart(2, '0')
+                            const monthAbbrev = d.toLocaleString('en-US', { month: 'short' })
+                            const yearShort = String(d.getFullYear()).slice(-2)
+                            return (
+                              <>
+                                <div style={{ fontSize: '24px', fontWeight: '700', lineHeight: 1 }}>
+                                  {day}
+                                </div>
+                                <div style={{ fontSize: '12px', fontWeight: '500', opacity: 0.9 }}>
+                                  {`${monthAbbrev}'${yearShort}`}
+                                </div>
+                              </>
+                            )
+                          })()}
                         </div>
                       </div>
 

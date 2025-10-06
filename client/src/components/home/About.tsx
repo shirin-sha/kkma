@@ -14,10 +14,10 @@ export default function About(): React.JSX.Element {
                                 <figure className="signature pull-left"><img decoding="async" src="https://kkma.net/wp-content/uploads/2024/08/Connect-us-on-.png" alt="Signature" />
                                 </figure>
                                 <ul className="social-style-one clearfix">
-                                    <li><a href="https://facebook.com/kkma.net" target="_blank"><i className="fab fa fa-facebook-f"></i></a></li>
-                                    <li><a href="https://www.instagram.com/kkmakuwait" target="_blank"><i className="fab fa fa-instagram"></i></a></li>
-                                    <li><a href="https://www.youtube.com/@kkma2002" target="_blank"><i className="fab fa fa-youtube"></i></a></li>
-                                    <li><a href="https://www.tiktok.com/@kkma427?_t=ZS-8yQj1lf3lb8&#038;_r=1" target="_blank"><i className="fab fa fa-google-play"></i></a></li>
+                                    <li><a href="https://facebook.com/kkma.net" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/facebook/fff" alt="Facebook" width={18} height={18} /></a></li>
+                                    <li><a href="https://www.instagram.com/kkmakuwait" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/instagram/fff" alt="Instagram" width={18} height={18} /></a></li>
+                                    <li><a href="https://www.youtube.com/@kkma2002" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/youtube/fff" alt="YouTube" width={18} height={18} /></a></li>
+                                    <li><a href="https://www.tiktok.com/@kkma427?_t=ZS-8yQj1lf3lb8&#038;_r=1" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/tiktok/fff" alt="TikTok" width={18} height={18} /></a></li>
                                 </ul>
                             </div>
                             <div className="lower-box"><div className="row clearfix">
