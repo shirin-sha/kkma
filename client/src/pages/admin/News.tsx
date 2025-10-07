@@ -158,11 +158,10 @@ export default function AdminNews(): React.JSX.Element {
 		if (form.category) fd.append('category', form.category)
 		if (form.author) fd.append('author', form.author)
 		if (form.content) fd.append('content', form.content)
-		if (dateInput) {
-			const parts = isoToDisplayParts(dateInput)
-			fd.append('day', parts.day)
-			fd.append('monthYear', parts.monthYear)
-		}
+    if (dateInput) {
+      const [y, m, d] = dateInput.split('-')
+      fd.append('publishedDate', `${d}/${m}/${y}`) // dd/mm/yyyy
+    }
 		if (file) fd.append('image', file)
 		if (galleryFiles && galleryFiles.length > 0) {
 			for (const gf of galleryFiles) fd.append('gallery', gf)

@@ -15,7 +15,8 @@ export interface NewsPostDoc extends Document {
   tags?: string[]
   seoTitle?: string
   seoDescription?: string
-  date: { day: string; monthYear: string }
+  date?: { day: string; monthYear: string }
+  publishedDate: string
   category: string
   author: string
   comments: number
@@ -39,9 +40,10 @@ const NewsPostSchema = new Schema<NewsPostDoc>({
   seoTitle: { type: String },
   seoDescription: { type: String },
   date: {
-    day: { type: String, required: true },
-    monthYear: { type: String, required: true }
+    day: { type: String },
+    monthYear: { type: String }
   },
+  publishedDate: { type: String, required: true },
   category: { type: String, required: true },
   author: { type: String, required: true },
   comments: { type: Number, default: 0 },

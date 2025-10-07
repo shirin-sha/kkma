@@ -5,7 +5,8 @@ type Post = {
   title: string
   href: string
   img?: string
-  date: { day: string; monthYear: string }
+  date?: { day: string; monthYear: string }
+  publishedDate?: string
   category: string
   author: string
   comments: number
@@ -131,7 +132,7 @@ export default function NewsAndUpdates(): React.JSX.Element {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(`${baseUrl}/api/news?limit=1000`)
+        const res = await fetch(`${baseUrl}/api/news`)
         const data = await res.json()
         if (res.ok && data?.ok && Array.isArray(data.items)) {
           setPosts(data.items.length > 0 ? data.items.reverse() : [])
@@ -219,7 +220,31 @@ export default function NewsAndUpdates(): React.JSX.Element {
                             </div>
                           )}
                         </figure>
-                        <div className="post-date"><h3>{post.date.day}<span>{post.date.monthYear}</span></h3></div>
+                        <div className="post-date">
+                          <h3>
+                            {(() => {
+                              let dayStr = ''
+                              let monthYearStr = ''
+                              if (post.date?.day && post.date?.monthYear) {
+                                dayStr = post.date.day
+                                monthYearStr = post.date.monthYear
+                              } else if (post.publishedDate) {
+                                const d = new Date(post.publishedDate)
+                                if (!isNaN(d.getTime())) {
+                                  dayStr = String(d.getDate()).padStart(2, '0')
+                                  const mm = String(d.getMonth() + 1).padStart(2, '0')
+                                  const yy = String(d.getFullYear()).slice(-2)
+                                  monthYearStr = `${mm}/${yy}`
+                                }
+                              }
+                              return (
+                                <>
+                                  {dayStr}<span>{monthYearStr}</span>
+                                </>
+                              )
+                            })()}
+                          </h3>
+                        </div>
                       </div>
                       <div className="lower-content">
                         <div className="category"><a href="#"><i className="flaticon-star"></i>{post.category}</a></div>

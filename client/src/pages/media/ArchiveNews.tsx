@@ -17,7 +17,8 @@ type Post = {
   tags?: string[]
   seoTitle?: string
   seoDescription?: string
-  date: { day: string; monthYear: string }
+  date?: { day: string; monthYear: string }
+  publishedDate?: string
   category: string
   author: string
   comments: number
@@ -47,57 +48,16 @@ export default function ArchiveNews(): React.JSX.Element {
         // Parse archive key (e.g., "2024-09") to get year and month
         const [year, month] = archiveKey.split('-')
         const startDate = new Date(parseInt(year), parseInt(month) - 1, 1)
-        const endDate = new Date(parseInt(year), parseInt(month), 0)
         
         // Set archive label for display
         setArchiveLabel(startDate.toLocaleString('en-US', { month: 'long', year: 'numeric' }))
         
-        // Get all posts and filter client-side since we need to handle both createdAt and date.monthYear
-        const res = await fetch(`${baseUrl}/api/news?page=1&limit=1000`)
+        // Fetch posts filtered by archiveKey on the server (uses publishedDate)
+        const res = await fetch(`${baseUrl}/api/news?archiveKey=${encodeURIComponent(archiveKey)}`)
         const data = await res.json()
         if (res.ok && data?.ok && Array.isArray(data.items)) {
-          // Filter posts by archive month/year
-          const filteredPosts = data.items.filter((post: Post) => {
-            let postDate: Date | undefined = undefined
-            
-            // Try createdAt first
-            if (post.createdAt) {
-              postDate = new Date(post.createdAt)
-            }
-            // If createdAt is invalid or doesn't exist, try parsing the date field
-            else if (post.date?.monthYear) {
-              // Parse monthYear format like "Sep'24" (short month + apostrophe + 2-digit year)
-              const monthYearMatch = post.date.monthYear.match(/(\w+)'(\d{2})/)
-              if (monthYearMatch) {
-                const monthAbbrev = monthYearMatch[1] // "Sep"
-                const year2Digit = parseInt(monthYearMatch[2]) // 24
-                const year = 2000 + year2Digit // Convert to 2024
-                
-                // Convert month abbreviation to month index
-                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                const monthIndex = monthNames.indexOf(monthAbbrev)
-                
-                if (monthIndex !== -1) {
-                  postDate = new Date(year, monthIndex, 1)
-                }
-              }
-            }
-            
-            if (postDate && !isNaN(postDate.getTime())) {
-              return postDate.getFullYear() === parseInt(year) && postDate.getMonth() === (parseInt(month) - 1)
-            }
-            
-            return false
-          })
-          
-          // Apply pagination to filtered results
-          const startIndex = (page - 1) * limit
-          const endIndex = startIndex + limit
-          const paginatedPosts = filteredPosts.slice(startIndex, endIndex)
-          
-          setPosts(paginatedPosts)
-          setTotal(filteredPosts.length)
+          setPosts(data.items as Post[])
+          setTotal((data.items as Post[]).length)
         } else {
           setError('Failed to load posts')
         }
@@ -108,68 +68,24 @@ export default function ArchiveNews(): React.JSX.Element {
       }
     }
     loadPosts()
-  }, [archiveKey, page, limit, baseUrl])
+  }, [archiveKey, baseUrl])
 
   useEffect(() => {
     const loadSidebar = async () => {
       try {
-        const res = await fetch(`${baseUrl}/api/news?page=1&limit=100`)
-        const data = await res.json()
-        if (res.ok && data?.ok && Array.isArray(data.items)) {
-          const items: Post[] = data.items
-          const monthKeyToCount = new Map<string, { count: number; date: Date }>()
-          const categoryToCount = new Map<string, number>()
-
-          items.forEach((p) => {
-            let created: Date | undefined = undefined
-            
-            // Try createdAt first
-            if (p.createdAt) {
-              created = new Date(p.createdAt)
-            }
-            // If createdAt is invalid or doesn't exist, try parsing the date field
-            else if (p.date?.monthYear) {
-              // Parse monthYear format like "Sep'24" (short month + apostrophe + 2-digit year)
-              const monthYearMatch = p.date.monthYear.match(/(\w+)'(\d{2})/)
-              if (monthYearMatch) {
-                const monthAbbrev = monthYearMatch[1] // "Sep"
-                const year2Digit = parseInt(monthYearMatch[2]) // 24
-                const year = 2000 + year2Digit // Convert to 2024
-                
-                // Convert month abbreviation to month index
-                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-                                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-                const monthIndex = monthNames.indexOf(monthAbbrev)
-                
-                if (monthIndex !== -1) {
-                  created = new Date(year, monthIndex, 1)
-                }
-              }
-            }
-            
-            if (created && !isNaN(created.getTime())) {
-              const key = `${created.getFullYear()}-${String(created.getMonth() + 1).padStart(2, '0')}`
-              const prev = monthKeyToCount.get(key)
-              monthKeyToCount.set(key, { count: (prev?.count || 0) + 1, date: created })
-            }
-
-            if (p.category) {
-              p.category.split(',').map((s) => s.trim()).filter(Boolean).forEach((cat) => {
-                categoryToCount.set(cat, (categoryToCount.get(cat) || 0) + 1)
-              })
-            }
-          })
-
-          const archivesArr = Array.from(monthKeyToCount.entries())
-            .sort((a, b) => b[1].date.getTime() - a[1].date.getTime())
-            .map(([key, val]) => ({ key, label: val.date.toLocaleString('en-US', { month: 'long', year: 'numeric' }), count: val.count }))
-
-          const categoriesArr = Array.from(categoryToCount.entries())
-            .sort((a, b) => b[1] - a[1])
-            .map(([name, count]) => ({ name, count }))
-
-          setArchives(archivesArr)
-          setCategories(categoriesArr)
+        const [archivesRes, categoriesRes] = await Promise.all([
+          fetch(`${baseUrl}/api/news/archives`),
+          fetch(`${baseUrl}/api/news/categories`)
+        ])
+        const [archivesData, categoriesData] = await Promise.all([
+          archivesRes.json(),
+          categoriesRes.json()
+        ])
+        if (archivesRes.ok && archivesData?.ok && Array.isArray(archivesData.items)) {
+          setArchives(archivesData.items)
+        }
+        if (categoriesRes.ok && categoriesData?.ok && Array.isArray(categoriesData.items)) {
+          setCategories(categoriesData.items)
         }
       } catch {
         // ignore sidebar errors
@@ -272,12 +188,32 @@ export default function ArchiveNews(): React.JSX.Element {
                           minWidth: '60px',
                           boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
                         }}>
-                          <div style={{ fontSize: '24px', fontWeight: '700', lineHeight: 1 }}>
-                            {post.date.day}
-                          </div>
-                          <div style={{ fontSize: '12px', fontWeight: '500', opacity: 0.9 }}>
-                            {post.date.monthYear}
-                          </div>
+                          {(() => {
+                            let dayStr = ''
+                            let monthYearStr = ''
+                            if (post.date?.day && post.date?.monthYear) {
+                              dayStr = post.date.day
+                              monthYearStr = post.date.monthYear
+                            } else if (post.publishedDate) {
+                              const d = new Date(post.publishedDate)
+                              if (!isNaN(d.getTime())) {
+                                dayStr = String(d.getDate()).padStart(2, '0')
+                                const mm = String(d.getMonth() + 1).padStart(2, '0')
+                                const yy = String(d.getFullYear()).slice(-2)
+                                monthYearStr = `${mm}/${yy}`
+                              }
+                            }
+                            return (
+                              <>
+                                <div style={{ fontSize: '24px', fontWeight: '700', lineHeight: 1 }}>
+                                  {dayStr}
+                                </div>
+                                <div style={{ fontSize: '12px', fontWeight: '500', opacity: 0.9 }}>
+                                  {monthYearStr}
+                                </div>
+                              </>
+                            )
+                          })()}
                         </div>
                       </div>
 
