@@ -110,8 +110,7 @@ export default function CategoryNews(): React.JSX.Element {
     }
   }
 
-  return (
-    <div>
+  return ( <div>
       <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">

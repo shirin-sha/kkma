@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { Edit, Trash2 } from 'lucide-react'
 
 const NEWS_CATEGORIES = [
 	'All News & Updates',
@@ -53,7 +54,7 @@ type Post = {
 	comments: number
 }
 
-type ApiList = { ok: boolean; items: Post[]; page: number; limit: number; total: number }
+type ApiList = { ok: boolean; items: Post[] }
 
 type Mode = 'list' | 'create' | 'edit'
 
@@ -71,9 +72,7 @@ const emptyPost: Post = {
 
 export default function AdminNews(): React.JSX.Element {
 	const [items, setItems] = useState<Post[]>([])
-	const [page, setPage] = useState(1)
-	const [total, setTotal] = useState(0)
-	const [limit] = useState(10)
+	// pagination removed
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
 	const [mode, setMode] = useState<Mode>('list')
@@ -96,11 +95,10 @@ export default function AdminNews(): React.JSX.Element {
 		setLoading(true)
 		setError('')
 		try {
-			const res = await fetch(`${baseUrl}/api/news?page=${page}&limit=${limit}`)
+			const res = await fetch(`${baseUrl}/api/news`)
 			const data: ApiList = await res.json()
 			if (res.ok && data.ok) {
 				setItems(data.items)
-				setTotal(data.total)
 			} else {
 				setError('Failed to load')
 			}
@@ -111,7 +109,7 @@ export default function AdminNews(): React.JSX.Element {
 		}
 	}
 
-	useEffect(() => { load() }, [page])
+	useEffect(() => { load() }, [])
 
 	function onNew() {
 		setForm(emptyPost)
@@ -180,7 +178,7 @@ export default function AdminNews(): React.JSX.Element {
 		}
 	}
 
-	const totalPages = Math.max(1, Math.ceil(total / limit))
+	// pagination removed
 
 	return (
 		<div>
@@ -274,10 +272,24 @@ export default function AdminNews(): React.JSX.Element {
 												</td>
 												<td style={{ padding: '12px', color: '#111827' }}>{p.category}</td>
 												<td style={{ padding: '12px', color: '#111827' }}>{p.author}</td>
-												<td style={{ padding: '12px' }}>
-													<button onClick={() => onEdit(p)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#2563eb', marginRight: 8 }}>Edit</button>
-													<button onClick={() => onDelete(p._id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#dc2626' }}>Delete</button>
-												</td>
+									<td style={{ padding: '12px' }}>
+										<button
+											aria-label="Edit"
+											title="Edit"
+											onClick={() => onEdit(p)}
+											style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#2563eb', marginRight: 10 }}
+										>
+											<Edit size={18} />
+										</button>
+										<button
+											aria-label="Delete"
+											title="Delete"
+											onClick={() => onDelete(p._id)}
+											style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#dc2626' }}
+										>
+											<Trash2 size={18} />
+										</button>
+									</td>
 											</tr>
 										))
 									)}
@@ -285,11 +297,7 @@ export default function AdminNews(): React.JSX.Element {
 							</table>
 						</div>
 
-						<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
-							<button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1} style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: page <= 1 ? 'not-allowed' : 'pointer' }}>Prev</button>
-							<div style={{ color: '#111827', fontSize: 14 }}>Page {page} of {totalPages}</div>
-							<button onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages} style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: page >= totalPages ? 'not-allowed' : 'pointer' }}>Next</button>
-						</div>
+						{/* pagination removed */}
 					</>
 				)}
 			</div>
