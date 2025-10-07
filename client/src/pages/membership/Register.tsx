@@ -5,6 +5,8 @@ type EmergencyContact = { name: string; relation: string; phone: string }
 
 type FormState = {
   membershipType: 'new' | 'renew'
+  branch: string
+  kkmaId: string
   fullName: string
   bloodGroup: string
   civilId: string
@@ -46,6 +48,8 @@ export default function Register(): React.JSX.Element {
 
   const [form, setForm] = useState<FormState>({
     membershipType: 'new',
+    branch: '',
+    kkmaId: '',
     fullName: '',
     bloodGroup: '',
     civilId: '',
@@ -132,12 +136,14 @@ export default function Register(): React.JSX.Element {
     try {
       const fd = new FormData()
       fd.append('applicationType', form.membershipType)
+      fd.append('branch', form.branch)
       fd.append('fullName', form.fullName)
       fd.append('phone', form.mobile)
       fd.append('address', form.addressinKuwait)
       if (form.photo) fd.append('photo', form.photo)
 
       const extra = {
+        kkmaId: form.kkmaId,
         bloodGroup: form.bloodGroup,
         civilId: form.civilId,
         passport: form.passport,
@@ -170,7 +176,7 @@ export default function Register(): React.JSX.Element {
       if (res.ok && data?.ok) {
         setMessage('Application submitted successfully.')
         setForm({
-          membershipType: 'new', fullName: '', bloodGroup: '', civilId: '', mobile: '', mobile2: '', whatsappnumber: '',
+          membershipType: 'new', branch: '', kkmaId: '', fullName: '', bloodGroup: '', civilId: '', mobile: '', mobile2: '', whatsappnumber: '',
           addressinKuwait: '', proffession: '', qualification: '', addressinIndia: '', contactnumberinIndia: '', contactnumberiindia2: '',
           emergencyContacts: [ { name: '', relation: '', phone: '' }, { name: '', relation: '', phone: '' } ], acknowledge: false, photo: null,
           passport: '',
@@ -295,20 +301,61 @@ export default function Register(): React.JSX.Element {
                     </div>
                   </div>
                   <div className="row clearfix">
-                    <div className="col-md-8 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
-                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഫോട്ടോ (Photo)*</label>
-                      <input type="file" name="photo" accept="image/*" onChange={handleChange} required style={{ 
-                        ...inputBoxStyle, 
-                        padding: '10px 14px',
-                        cursor: 'pointer'
-                      }} />
-                      <p style={{ fontSize: 12, color: '#6b7280', marginTop: 8, fontStyle: 'italic' }}>Upload a clear, recent passport-size photo (JPG/PNG).</p>
+                  <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
+                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>നിങ്ങൾ ചേരാൻ ആഗ്രഹിക്കുന്ന ബ്രാഞ്ച് (The branch you want to join)*</label>
+                      <select name="branch" value={form.branch} onChange={handleChange} required style={inputBoxStyle}>
+                        <option value="">തിരഞ്ഞെടുക്കുക (Select Branch)</option>
+                        <option value="ABBASIYA">ABBASIYA</option>
+                        <option value="ABU HALEEFA">ABU HALEEFA</option>
+                        <option value="CITY">CITY</option>
+                        <option value="FAHAHEEL">FAHAHEEL</option>
+                        <option value="FARWANIYA">FARWANIYA</option>
+                        <option value="FINTHAS">FINTHAS</option>
+                        <option value="HAWALLY">HAWALLY</option>
+                        <option value="JAHARA">JAHARA</option>
+                        <option value="JLEEB">JLEEB</option>
+                        <option value="KARNATAKA">KARNATAKA</option>
+                        <option value="KHAITHAN">KHAITHAN</option>
+                        <option value="MAHABOULA">MAHABOULA</option>
+                        <option value="MANGAF">MANGAF</option>
+                        <option value="SABHAN">SABHAN</option>
+                        <option value="SALMIYA">SALMIYA</option>
+                      </select>
+                      <p style={{ fontSize: 12, color: '#6b7280', marginTop: 8, fontStyle: 'italic' }}>പുതുക്കുന്നവർ അവരുടെ നിലവിലുള്ള ബ്രാഞ്ച് സെലക്ട് ചെയ്യുക (Renewals should select their current branch)</p>
                     </div>
-                  {previewUrl && <div className="col-md-4 col-sm-12 form-group" style={{ textAlign: 'center' }}>
-                      <div style={{ display: 'inline-block', border: '2px solid #83b253', borderRadius: 8, padding: 8, background: '#f9fafb' }}>
-                        <img src={previewUrl || 'https://via.placeholder.com/120x120?text=Preview'} alt="Preview" style={{ width: 120, height: 120, objectFit: 'cover', borderRadius: 6 }} />
+                    
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
+                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>കെ.കെ.എം.എ ഐഡി നമ്പർ <br/>KKMA ID Number</label>
+                      <input type="text" name="kkmaId" value={form.kkmaId} onChange={handleChange} style={inputBoxStyle} />
+                      <p style={{ fontSize: 12, color: '#6b7280', marginTop: 8, fontStyle: 'italic' }}>പുതുക്കുന്നവർക്ക് മാത്രം (For renewers only)</p>
+                    </div>
+                  
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
+                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഫോട്ടോ <br/> (Photo)*</label>
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                        <div style={{ flex: 1 }}>
+                          <input type="file" name="photo" accept="image/*" onChange={handleChange} required style={{ 
+                            ...inputBoxStyle, 
+                            padding: '10px 14px',
+                            cursor: 'pointer',
+                            fontSize: '14px'
+                          }} />
+                        </div>
+                        {previewUrl && (
+                          <div style={{ flexShrink: 0 }}>
+                            <img src={previewUrl} alt="Preview" style={{ 
+                              width: 60, 
+                              height: 60, 
+                              objectFit: 'cover', 
+                              borderRadius: 6,
+                              border: '2px solid #83b253',
+                              background: '#f9fafb'
+                            }} />
+                          </div>
+                        )}
                       </div>
-                    </div>}
+                      <p style={{ fontSize: 12, color: '#6b7280', marginTop: 8, fontStyle: 'italic' }}>വ്യക്തമായ, ഏറ്റവും പുതിയ പാസ്പോർട്ട് സൈസ് ഫോട്ടോ അപ്ലോഡ് ചെയ്യുക (JPG/PNG).<br/>(Upload a clear, recent passport-size photo (JPG/PNG))</p>
+                    </div>
                   </div>
                 </div>
 

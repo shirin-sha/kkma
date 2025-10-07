@@ -31,16 +31,7 @@ export default function AdminMembershipDetail(): React.JSX.Element {
   const handleDownloadPdf = async () => {
     const element = document.getElementById("pdf-content");
     if (!element) return;
-     // Before PDF generation, hide select dropdowns and show input fields for better PDF rendering
-    const selectElements = element.querySelectorAll('.branch-select');
-    const inputElements = element.querySelectorAll('.pdf-branch-value');
     
-    selectElements.forEach((select) => {
-      (select as HTMLElement).style.display = 'none';
-    });
-    inputElements.forEach((input) => {
-      (input as HTMLElement).style.display = 'block';
-    });
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
   
@@ -229,34 +220,6 @@ export default function AdminMembershipDetail(): React.JSX.Element {
                 </div>
               )}
 
-              {/* Official use only */}
-              <div className="sidebar-widget" style={{ 
-                padding: 24, 
-                border: '2px solid #e5e7eb', 
-                borderRadius: 12, 
-                marginBottom: 24,
-                background: '#fefefe',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
-              }}>
-                <h4 style={{ 
-                  marginBottom: 12, 
-                  color: '#83b253', 
-                  fontSize: 18,
-                  fontWeight: 700,
-                  borderBottom: '2px solid #83b253',
-                  paddingBottom: 8
-                }}>FOR OFFICIAL USE ONLY (ഉദ്യോഗസ്ഥ ഉപയോഗത്തിന് മാത്രം)</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
-                  <InputField label="സോണല്‍ (Zone)" value={item.extra?.zone || ''} />
-                  <BranchDropdown label="ബ്രാഞ്ച് (Branch)" value={item.extra?.branch || item.branch || ''} />
-                  <InputField label="യൂണിറ്റ് (Unit)" value={item.extra?.unit || ''} />
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 8, marginBottom: '20px' }}>
-                  <InputField label="കെ.കെ.എം.എ ഐഡി (KKMA ID)" value={item.extra?.recommenderKkmaId || ''} />
-                  <InputField label="BRANCH APPROVED BY (NAME) " value={item.extra?.branchApprovedByName || ''} />
-                  <InputField label="DATE (DD/MM/YYYY) (തീയ്യതി)" value={item.extra?.branchApprovedDate || ''} placeholder="DD/MM/YYYY" />
-                </div>
-              </div>
             </div>
 
           
@@ -278,96 +241,6 @@ function Field(props: { label: string; value: React.ReactNode; full?: boolean })
   )
 }
 
-function InputField(props: { label: string; value?: string; placeholder?: string }): React.JSX.Element {
-  const { label, value, placeholder } = props
-  return (
-    <div>
-      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block', fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: label }}></div>
-      <input type="text" defaultValue={value || ''} placeholder={placeholder} style={{ width: '100%', color: '#111827', border: '2px solid #d1d5db', borderRadius: 6, padding: '12px 14px', background: '#fff', fontSize: '16px', transition: 'border-color 0.2s ease, box-shadow 0.2s ease' }} />
-    </div>
-  )
-}
-
-function BranchDropdown(props: { label: string; value?: string }): React.JSX.Element {
-  const { label, value } = props
-  const [selectedBranch, setSelectedBranch] = useState(value || '')
-  
-  const branchOptions = [
-    'ABBASIYA',
-    'ABU HALEEFA',
-    'CITY',
-    'FAHAHEEL',
-    'FARWANIYA',
-    'FINTHAS',
-    'HAWALLY',
-    'JAHARA',
-    'JLEEB',
-    'KARNATAKA',
-    'KHAITHAN',
-    'MAHABOULA',
-    'MANGAF',
-    'SABHAN',
-    'SALMIYA'
-  ]
-
-  const handleBranchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newValue = e.target.value
-    setSelectedBranch(newValue)
-    
-    // Update the hidden input field for PDF generation
-    const hiddenInput = e.target.parentElement?.querySelector('.pdf-branch-value') as HTMLInputElement
-    if (hiddenInput) {
-      hiddenInput.value = newValue
-    }
-  }
-  
-  return (
-    <div>
-      <div className="field-label" style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block', fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: label }}></div>
-      {/* Hidden input for PDF generation - shows the selected value as text */}
-      <input 
-        type="text" 
-        value={selectedBranch} 
-        readOnly
-        style={{ 
-          width: '100%', 
-          color: '#111827', 
-          border: '2px solid #d1d5db', 
-          borderRadius: 6, 
-          padding: '12px 14px', 
-          background: '#fff', 
-          fontSize: '16px',
-          display: 'none' // Hidden by default, shown during PDF generation
-        }}
-        className="pdf-branch-value"
-      />
-      {/* Select dropdown for editing */}
-      <select 
-        value={selectedBranch} 
-        onChange={handleBranchChange}
-        style={{ 
-          width: '100%', 
-          color: '#111827', 
-          border: '2px solid #d1d5db', 
-          borderRadius: 6, 
-          padding: '12px 14px', 
-          background: '#fff', 
-          fontSize: '16px', 
-          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-          cursor: 'pointer'
-        }}
-        className="branch-select"
-      >
-        <option value="">Select Branch</option>
-        {branchOptions.map((branch) => (
-          <option key={branch} value={branch}>
-            {branch}
-          </option>
-        ))}
-      </select>
-    </div>
-  )
-}
 
 function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
   return (
@@ -382,10 +255,16 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
       <div style={{ marginTop: 16 }}>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
-          <Field label="സിവില്‍ ഐഡി നമ്പര് (Civil ID Number)*" value={selected.extra?.civilId || '—'} />
-          <Field label="പാസ്പോർട്ട് നമ്പര് (Passport Number)*" value={selected.extra?.passport || '—'} />
+        <Field label="നിങ്ങൾ ചേരാൻ ആഗ്രഹിക്കുന്ന ബ്രാഞ്ച് (The branch you want to join)" value={selected.branch || '—'} />
+          <Field label="കെ.കെ.എം.എ ഐഡി നമ്പർ<br/>KKMA ID Number" value={selected.extra?.kkmaId || '—'} />
+          <Field label="സിവില്‍ ഐഡി നമ്പര് <br/>(Civil ID Number)*" value={selected.extra?.civilId || '—'} />
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
+          <Field label="പാസ്പോർട്ട് നമ്പര് <br/>(Passport Number)*" value={selected.extra?.passport || '—'} />
           <Field label="മൊബൈൽ നമ്പര്‍ (Mobile Number)" value={selected.phone || '—'} />
           <Field label="മൊബൈൽ നമ്പര്‍ 2 (Mobile Number 2)" value={selected.extra?.mobile2 || '—'} />
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
           <Field label="വാട്സ്ആപ്പ് നമ്പര്‍ (WhatsApp Number)" value={selected.extra?.whatsappnumber || '—'} />
         </div>
       </div>
