@@ -103,15 +103,7 @@ export default function OverviewHistorySection() {
           <div className="content-column">
             <div className="content_block_1">
               <div className="content-box" style={{ paddingRight: 24 }}>
-                <div className="sec-title" style={{ marginBottom: 24 }}>
-                  <h6 style={{
-                    color: '#83B253',
-                    textTransform: 'uppercase',
-                    fontWeight: 500,
-                    fontSize: '14px',
-                    letterSpacing: 1.2,
-                    marginBottom: 12
-                  }}>
+              <div className="sec-title"><h6> 
                     A Legacy of Commitment and Growth
                   </h6>
                   <h2 style={{ fontSize: '36px', lineHeight: 1.2, fontWeight: 600, color: '#1a1a1a' }}>Our Story and Achievements</h2>
@@ -164,7 +156,7 @@ export default function OverviewHistorySection() {
                         textAlign: 'left'
                       }}
                     >
-                      <span>{item.title}</span>
+                      <span style={{ fontSize: 16, fontWeight: 600 }}>{item.title}</span>
                       <span
                         aria-hidden
                         style={{

@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import { Star, Mail } from 'lucide-react'
 import React, { useState } from 'react'
 
 export default function Schedules(): React.JSX.Element {
@@ -79,7 +79,7 @@ export default function Schedules(): React.JSX.Element {
                                         }}
                                     >
                                         <div className="icon-box">
-                                            <i className="flaticon-letter"></i>
+                                            <Mail size={48} strokeWidth={1.5} />
                                         </div>
                                         <h3>Subscribe Us</h3>
                                         <p>Get latest News &amp; Events Details.</p>

@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import { Star, Mail, Phone, Share2 } from 'lucide-react'
 import React from 'react'
 
 type Member = {
@@ -60,16 +60,17 @@ export default function Team({ members }: { members: Member[] }): React.JSX.Elem
                     </div>
                     <ul className="othre-info clearfix">
                       <li className="mail-box">
-                        <a href={`mailto:${member.email}`}>
-                          <i className="flaticon-mail-inbox-app"></i>Email
+                        <a href={`mailto:${member.email || 'info@kkma.net'}`} className="d-inline-flex align-items-center gap-1">
+                          <Mail size={18} className="mr-2" />
+                          <span>Email</span>
                         </a>
                       </li>
                       <li className="phone-box">
-                        <i className="flaticon-emergency-call"></i>
+                        <Phone size={18} />
                         <a href={`tel:${member.phone}`}>{member.phone}</a>
                       </li>
                       <li className="share-option">
-                        <i className="share-icon flaticon-share"></i>
+                        <Share2 size={18} className="share-icon" />
                         <ul className="share-links clearfix">
                           {member.social.facebook && (
                             <li>

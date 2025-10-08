@@ -1,7 +1,22 @@
-import { Star } from 'lucide-react'
+import { Star, Home, Activity, HeartPulse, GraduationCap, Shield, Users, TrendingUp, HandHeart, BookOpen, Plane, Hospital, Target } from 'lucide-react'
 import React from 'react'
 
 export default function Services(): React.JSX.Element {
+    const services = [
+        { title: 'Housing Improvement', icon: Home },
+        { title: 'Early Detection Center', icon: Activity },
+        { title: 'Medical Assistance Program', icon: HeartPulse },
+        { title: 'Educational Scholarship', icon: GraduationCap },
+        { title: 'Members Welfare Scheme', icon: Shield },
+        { title: 'Family Benefit Scheme', icon: Users },
+        { title: 'KKMA Investment Club', icon: TrendingUp },
+        { title: 'Community Welfare Activities', icon: HandHeart },
+        { title: 'Seminars & Religious Classes', icon: BookOpen },
+        { title: 'Hajj & Umrah Programs', icon: Plane },
+        { title: 'Kidney Dialysis Centre', icon: Hospital },
+        { title: 'Campaigns, Training & Development', icon: Target }
+    ]
+
     return (
         <section className="service-section" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/service-bg-4.jpg)' }}>
                <div className="sec-title centred">
@@ -11,8 +26,8 @@ export default function Services(): React.JSX.Element {
                 </div>
             <div className="auto-container">
                 <div className="row clearfix">
-                    {['Housing Improvement', 'Early Detection Center', 'Medical Assistance Program', 'Educational Scholarship', 'Members Welfare Scheme', 'Family Benefit Scheme', 'KKMA Investment Club', 'Community Welfare Activities', 'Seminars & Religious Classes', 'Hajj & Umrah Programs', 'Kidney Dialysis Centre', 'Campaigns, Training & Development'].map((title) => (
-                        <div key={title} className="col-lg-3 col-md-6 col-sm-12 service-block"><div className="service-block-one"><div className="inner-box"><h4><a href="#">{title}</a></h4><div className="btn-box"><a href="#">More</a></div><div className="icon-box"><i className="fa fa-check"></i></div></div></div></div>
+                    {services.map(({ title, icon: Icon }) => (
+                        <div key={title} className="col-lg-3 col-md-6 col-sm-12 service-block"><div className="service-block-one"><div className="inner-box"><h4><a href="#">{title}</a></h4><div className="btn-box"><a href="#">More</a></div><div className="icon-box"><Icon size={48} strokeWidth={1.5} /></div></div></div></div>
                     ))}
                 </div>
             </div>

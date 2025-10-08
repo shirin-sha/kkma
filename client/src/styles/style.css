@@ -425,7 +425,7 @@
   }
   
   .sec-title h6 span{
-    margin-left: 10px;
+  
   }
   
   .sec-title.centred h6 span{
@@ -1226,19 +1226,10 @@
   }
   
   .main-menu .navigation > li > ul > li > a:before{
-    position: absolute;
-    content: "\f127";
-    font-family: 'Flaticon';
-    font-size: 16px;
-    left: 0px;
-    top: 7px;
-    opacity: 0;
-    transition: all 500ms ease;
+    display: none;
   }
   
-  .main-menu .navigation > li > ul > li > a:hover:before{
-    opacity: 1;
-  }
+  .main-menu .navigation > li > ul > li > a:hover:before{ }
   
   .main-menu .navigation > li > ul > li > a:hover,
   .main-menu .navigation > li > .megamenu li > a:hover{
@@ -7892,7 +7883,6 @@
     position: relative;
     display: block;
     margin-bottom: 10px;
-    padding-left: 30px;
   }
   
   .content_block_5 .content-box .list li:last-child{
@@ -8286,13 +8276,7 @@
   }
   
   .information-block-one .inner-box:before{
-    position: absolute;
-    content: '';
-    background: #e6e6ea;
-    width: 1px;
-    height: 125px;
-    top: 60px;
-    left: 250px;
+    display: none;
   }
   
   .information-block-one .inner-box .count{
@@ -8753,7 +8737,7 @@
   }
   
   .history-section .sec-title{
-    padding-top: 103px;
+  
   }
   
   .history-section .sec-title .title-shape{
@@ -13360,6 +13344,7 @@
     height: 480px;
     border-radius: 5px;
   }
+
 
 
 

@@ -1,18 +1,18 @@
-import { Star } from 'lucide-react';
+import { Star, Building2, MapPin, HeartHandshake, ShieldCheck, Handshake, LayoutGrid, Award, UserCheck, Rocket, LucideIcon, Lightbulb } from 'lucide-react';
 import React from 'react'
 
-type Solution = { icon: string; title: string; desc: string }
+type Solution = { icon: LucideIcon; title: string; desc: string }
 
 const solutions: Solution[] = [
-    { icon: "fa fa-search-plus", title: "Established Legacy", desc: "Over two decades of service." },
-    { icon: "fa fa-map-marker-check", title: "Strong Community", desc: "Extensive Network in Kuwait." },
-    { icon: "fa fa-not-equal", title: "Non-Profit Initiatives", desc: "Focused on social good." },
-    { icon: "fa fa-badge-check", title: "Trusted Leadership", desc: "Guided by experienced leaders." },
-    { icon: "fa fa-users-medical", title: "Collaborative Efforts", desc: "Partnerships for greater impact." },
-    { icon: "fa fa-tasks", title: "Diverse Programs", desc: "Catering to various needs." },
-    { icon: "fa fa-award", title: "Volunteer Opportunities", desc: "Engage and contribute." },
-    { icon: "fa fa-hands-helping", title: "Member-Centric Approach", desc: "Prioritizing member welfare." },
-    { icon: "fa fa-rocket", title: "Progressive Vision", desc: "Adapting to modern challenges." },
+    { icon: Building2, title: "Established Legacy", desc: "Over two decades of service." },
+    { icon: MapPin, title: "Strong Community", desc: "Extensive Network in Kuwait." },
+    { icon: HeartHandshake, title: "Non-Profit Initiatives", desc: "Focused on social good." },
+    { icon: ShieldCheck, title: "Trusted Leadership", desc: "Guided by experienced leaders." },
+    { icon: Handshake, title: "Collaborative Efforts", desc: "Partnerships for greater impact." },
+    { icon: LayoutGrid, title: "Diverse Programs", desc: "Catering to various needs." },
+    { icon: Award, title: "Volunteer Opportunities", desc: "Engage and contribute." },
+    { icon: UserCheck, title: "Member-Centric Approach", desc: "Prioritizing member welfare." },
+    { icon: Rocket, title: "Progressive Vision", desc: "Adapting to modern challenges." },
 ]
 
 export default function Solutions(): React.JSX.Element {
@@ -74,17 +74,20 @@ export default function Solutions(): React.JSX.Element {
                 <div className="inner-container">
                     {/* Solutions Grid */}
                     <div className="upper-box clearfix">
-                        {solutions.map((item, index) => (
-                            <div className="solution-block-one" key={index}>
-                                <div className="inner-box">
-                                    <div className="icon-box">
-                                        <i className={item.icon}></i>
+                        {solutions.map((item, index) => {
+                            const IconComponent = item.icon;
+                            return (
+                                <div className="solution-block-one" key={index}>
+                                    <div className="inner-box">
+                                        <div className="icon-box">
+                                            <IconComponent size={40} strokeWidth={1.5} />
+                                        </div>
+                                        <h4>{item.title}</h4>
+                                        <p>{item.desc}</p>
                                     </div>
-                                    <h4>{item.title}</h4>
-                                    <p>{item.desc}</p>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {/* CTA lower box */}
@@ -98,7 +101,7 @@ export default function Solutions(): React.JSX.Element {
                         ></div>
                         <div className="text pull-left">
                             <div className="icon-box">
-                                <i className="icon flaticon-idea"></i>
+                                <Lightbulb size={48} strokeWidth={1.5} />
                             </div>
                             <h3>Transform Lives and Strengthen Our Community Together</h3>
                             <p>

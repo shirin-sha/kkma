@@ -1,5 +1,5 @@
 import React from 'react'
-import { Star } from 'lucide-react'
+import { Star, BookOpen, Mail, UsersRound, UserCheck, HeartHandshake } from 'lucide-react'
 
 export default function Explore(): React.JSX.Element {
     return (
@@ -22,7 +22,7 @@ export default function Explore(): React.JSX.Element {
                                 </figure>
                                 <div className="content-box">
                                     <div className="text">
-                                        <div className="icon-box"><i className="icon flaticon-teamwork"></i></div>
+                                        <div className="icon-box"><UsersRound size={48} strokeWidth={1.5} /></div>
                                         <h4>Social Projects &amp; <br />Initiatives </h4>
                                     </div>
                                     <div className="overlay-content">
@@ -31,14 +31,14 @@ export default function Explore(): React.JSX.Element {
                                         <ul className="link-box clearfix">
                                             <li>
                                                 <a href="#">
-                                                    <i className="flaticon-dog"></i>
+                                                    <BookOpen size={20} className="inline mr-2" />
                                                     <span>Read More</span>
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="mailto:info@example.com">
-                                                    <i className="flaticon-mail-inbox-app"></i>
+                                                    <Mail size={20} className="inline mr-2" />
                                                     <span>info@example.com</span>
                                                 </a>
                                             </li>
@@ -55,7 +55,7 @@ export default function Explore(): React.JSX.Element {
                                 </figure>
                                 <div className="content-box">
                                     <div className="text">
-                                        <div className="icon-box"><i className="fa fa-hand-heart"></i></div>
+                                        <div className="icon-box"><HeartHandshake size={48} strokeWidth={1.5} /></div>
                                         <h4>MAGNET <br />Volunteer Group</h4>
                                     </div>
                                     <div className="overlay-content">
@@ -64,14 +64,14 @@ export default function Explore(): React.JSX.Element {
                                         <ul className="link-box clearfix">
                                             <li>
                                                 <a href="#">
-                                                    <i className="flaticon-dog"></i>
+                                                    <BookOpen size={20} className="inline mr-2" />
                                                     <span>Read More</span>
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="mailto:info@example.com">
-                                                    <i className="flaticon-mail-inbox-app"></i>
+                                                    <Mail size={20} className="inline mr-2" />
                                                     <span>info@example.com</span>
                                                 </a>
                                             </li>
@@ -88,7 +88,7 @@ export default function Explore(): React.JSX.Element {
                                 </figure>
                                 <div className="content-box">
                                     <div className="text">
-                                        <div className="icon-box"><i className="icon flaticon-budget"></i></div>
+                                        <div className="icon-box"><UserCheck size={48} strokeWidth={1.5} /></div>
                                         <h4>Membership <br />Details</h4>
                                     </div>
                                     <div className="overlay-content">
@@ -97,14 +97,14 @@ export default function Explore(): React.JSX.Element {
                                         <ul className="link-box clearfix">
                                             <li>
                                                 <a href="#">
-                                                    <i className="flaticon-dog"></i>
+                                                    <BookOpen size={20} className="inline mr-2" />
                                                     <span>Read More</span>
                                                 </a>
                                             </li>
 
                                             <li>
                                                 <a href="mailto:info@example.com">
-                                                    <i className="flaticon-mail-inbox-app"></i>
+                                                    <Mail size={20} className="inline mr-2" />
                                                     <span>info@example.com</span>
                                                 </a>
                                             </li>

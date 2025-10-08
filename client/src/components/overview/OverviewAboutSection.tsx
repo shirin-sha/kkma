@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Star, Check, ArrowRight } from 'lucide-react';
 import React from 'react';
 
 export default function OverviewAboutSection(): React.JSX.Element {
@@ -29,19 +29,19 @@ export default function OverviewAboutSection(): React.JSX.Element {
 
 									<ul className="list clearfix">
 										<li>
-											<i className="flaticon-bird"></i>Family Support Programs
+											<Check size={16} className="inline mr-2" />Family Support Programs
 										</li>
 										<li>
-											<i className="flaticon-bird"></i>Educational Scholarships
+											<Check size={16} className="inline mr-2" />Educational Scholarships
 										</li>
 										<li>
-											<i className="flaticon-bird"></i>Medical Assistance
+											<Check size={16} className="inline mr-2" />Medical Assistance
 										</li>
 										<li>
-											<i className="flaticon-bird"></i>Social Projects
+											<Check size={16} className="inline mr-2" />Social Projects
 										</li>
 										<li>
-											<i className="flaticon-bird"></i>Community Welfare
+											<Check size={16} className="inline mr-2" />Community Welfare
 										</li>
 									</ul>
 								</div>
@@ -73,7 +73,7 @@ export default function OverviewAboutSection(): React.JSX.Element {
 								<div className="text">
 									<h4>Meet Our Visionaries</h4>
 									<a href="#">
-										<i className="flaticon-right-arrow"></i>
+										<ArrowRight size={16} />
 									</a>
 								</div>
 								<div className="overlay-content">
@@ -99,7 +99,7 @@ export default function OverviewAboutSection(): React.JSX.Element {
 								<div className="text">
 									<h4>Explore Our Journey</h4>
 									<a href="#">
-										<i className="flaticon-right-arrow"></i>
+										<ArrowRight size={16} />
 									</a>
 								</div>
 								<div className="overlay-content">

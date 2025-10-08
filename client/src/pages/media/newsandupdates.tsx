@@ -135,7 +135,7 @@ export default function NewsAndUpdates(): React.JSX.Element {
         const res = await fetch(`${baseUrl}/api/news`)
         const data = await res.json()
         if (res.ok && data?.ok && Array.isArray(data.items)) {
-          setPosts(data.items.length > 0 ? data.items.reverse() : [])
+          setPosts(data.items.length > 0 ? data.items : [])
         }
       } catch {
         setError('')

@@ -11,7 +11,7 @@ import Testimonials from '../components/home/Testimonials';
 import Team from '../components/home/Team';
 import News from '../components/home/News';
 import Funfacts from '../components/home/Funfacts';
-import { funfacts, newsItems, teamMembers } from '../components/home/homeData';
+import { funfacts, teamMembers } from '../components/home/homeData';
 
 export default function HomeWP(): React.JSX.Element {
     return (
@@ -26,7 +26,7 @@ export default function HomeWP(): React.JSX.Element {
             <Solutions />
             <Testimonials />
             <Team members={teamMembers} />
-            <News items={newsItems} />
+            <News />
             <Funfacts items={funfacts} />
         </div>
     );

@@ -1,103 +1,201 @@
-import { Star } from "lucide-react";
-import React from "react";
+import React, { useState } from 'react';
+import { Star, Users, Globe, Calendar, Download, ChevronRight } from 'lucide-react';
 
-// DiscoverSection.jsx
-// Converted from Elementor HTML to React with Tailwind CSS.
+type IconType = React.ElementType
 
-export default function OverviewDiscoverSection() {
-  const items = [
-    {
-      title: "Membership\nDetails",
-      description:
-        "Find out more about the benefits and requirements of becoming a KKMA member.",
-      icon: "flaticon-group",
-      count: "01",
-      link: "/membership",
-    },
-    {
-      title: "News &\nUpdates",
-      description:
-        "Stay informed & keep up with what's happening in our community.",
-      icon: "fa fa-globe",
-      count: "02",
-      link: "/media",
-    },
-    {
-      title: "Events\nCalendar",
-      description:
-        "Stay connected and participate in our vibrant community events.",
-      icon: "flaticon-teamwork",
-      count: "03",
-      link: "/media#events",
-    },
-    {
-      title: "Forms &\nDownloads",
-      description:
-        "Access important forms and documents. Download resources you need quickly and easily.",
-      icon: "flaticon-download",
-      count: "04",
-      link: "/downloads",
-    },
-  ];
+function DiscoverCard({
+    icon: Icon,
+    title,
+    description,
+    index
+}: {
+    icon: IconType
+    title: string
+    description: string
+    index: string
+}): React.JSX.Element {
+    const [hovered, setHovered] = useState(false)
 
-  return (
-    <section
-      className="relative py-16 bg-cover bg-center text-white"
-      style={{
-        backgroundImage:
-          "url(https://kkma.net/wp-content/uploads/2021/05/discover-bg-2.jpg)",
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h6 className="flex items-center justify-center space-x-2 text-white/90 uppercase tracking-wide">
-           <Star fill='currentColor' size={14} />
-            <span>Stay Connected with KKMA Resources</span>
-            <Star fill='currentColor' size={14} />
-          </h6>
-          <h2 className="text-3xl md:text-4xl font-extrabold mt-2">
-            Quick Access to Essential Resources and Updates.
-          </h2>
-          <div className="w-24 h-1 bg-[#83B253] mx-auto mt-4"></div>
+    return (
+        <div
+            className="discover-card"
+            style={{
+                backgroundColor: '#24243E',
+                padding: '40px 30px',
+                borderRadius: '10px',
+                border: '1px solid rgba(255,255,255,0.25)',
+                textAlign: 'center',
+                position: 'relative',
+                height: '360px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                transition: 'transform 0.3s ease',
+                cursor: 'pointer'
+            }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+        >
+            <div>
+                {!hovered && (
+                    <div className="icon-box" style={{ marginBottom: '20px' }}>
+                        <Icon size={48} color="white" />
+                    </div>
+                )}
+                {!hovered && (
+                    <div
+                        className="separator"
+                        style={{
+                            width: '40px',
+                            height: '2px',
+                            backgroundColor: '#8BC34A',
+                            margin: '0 auto 20px'
+                        }}
+                    ></div>
+                )}
+                <h4
+                    style={{
+                        fontSize: '22px',
+                        fontWeight: '800',
+                        color: 'white',
+                        marginBottom: hovered ? '10px' : '20px'
+                    }}
+                >
+                    {title}
+                </h4>
+                {hovered && (
+                    <>
+                        <div
+                            className="separator"
+                            style={{
+                                width: '40px',
+                                height: '2px',
+                                backgroundColor: '#8BC34A',
+                                margin: '0 auto 12px'
+                            }}
+                        ></div>
+                        <p
+                            style={{
+                                color: '#cdd1d9',
+                                fontSize: '16px',
+                                lineHeight: 1.6,
+                                margin: '0 auto',
+                                maxWidth: '260px'
+                            }}
+                        >
+                            {description}
+                        </p>
+                    </>
+                )}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <button
+                    style={{
+                        backgroundColor: '#4A4A5A',
+                        border: 'none',
+                        borderRadius: '5px',
+                        padding: '12px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    aria-label={`Open ${title}`}
+                >
+                    <ChevronRight size={16} color="white" />
+                </button>
+                <span
+                    style={{
+                        fontSize: '54px',
+                        fontWeight: '700',
+                        color: '#6C6C7E',
+                        opacity: '0.25'
+                    }}
+                >
+                    {index}
+                </span>
+            </div>
         </div>
+    )
+}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {items.map((item, index) => (
-            <a
-              key={index}
-              className="relative group bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden p-6 transition-transform transform hover:-translate-y-2 focus:outline-none focus:ring-2 focus:ring-white/50"
-              href={item.link}
-            >
-              {/* Front Content */}
-              <div className="content-box text-center">
-                <div className="icon-box text-4xl mb-3">
-                  <i className={item.icon}></i>
+export default function OverviewDiscoverSection(): React.JSX.Element {
+    return (
+        <section className="discover-section" style={{ 
+            backgroundColor: '#1A1A2E', 
+            padding: '80px 0',
+            color: 'white'
+        }}>
+            <div className="auto-container">
+                {/* Header Section */}
+                <div className="sec-title centred" style={{ marginBottom: '60px' }}>
+                    <h6 style={{ 
+                        fontSize: '16px', 
+                        fontWeight: '600', 
+                        color: '#8BC34A', 
+                        marginBottom: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px'
+                    }}>
+                        <Star fill='currentColor' size={14} />
+                        <span>STAY CONNECTED WITH KKMA RESOURCES</span>
+                        <Star fill='currentColor' size={14} />
+                    </h6>
+                    <h2 style={{ 
+                        fontSize: '42px', 
+                        fontWeight: '700', 
+                        color: 'white', 
+                        marginBottom: '20px',
+                        lineHeight: '1.2'
+                    }}>
+                        Quick Access to Essential Resources and Updates.
+                    </h2>
+                    <div className="title-shape" style={{ 
+                        width: '80px', 
+                        height: '3px', 
+                        backgroundColor: '#8BC34A',
+                        margin: '0 auto'
+                    }}></div>
                 </div>
-                <h4 className="font-semibold text-lg text-white whitespace-pre-line">
-                  {item.title}
-                </h4>
-                <span className="absolute bottom-3 right-3 text-4xl font-bold text-[#83B253] opacity-30">
-                  {item.count}
-                </span>
-              </div>
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-[#0b1b10]/90 p-6 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <h4 className="font-semibold text-lg mb-2 whitespace-pre-line">
-                  {item.title}
-                </h4>
-                <p className="text-sm mb-4 opacity-90">{item.description}</p>
-                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#83B253] text-black font-bold">
-                  <i className="flaticon-right-arrow"></i>
-                </span>
-                <span className="absolute bottom-3 right-3 text-4xl font-bold text-[#83B253] opacity-20">
-                  {item.count}
-                </span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+                {/* Cards Section */}
+                <div className="row clearfix">
+                    <div className="col-lg-3 col-md-6 col-sm-12 discover-block">
+                        <DiscoverCard
+                            icon={Users}
+                            title="Membership Details"
+                            description="Find out more about the benefits and requirements of becoming a KKMA member."
+                            index="01"
+                        />
+                    </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 discover-block">
+                        <DiscoverCard
+                            icon={Globe}
+                            title="News & Updates"
+                            description="Stay informed & keep up with what's happening in our community."
+                            index="02"
+                        />
+                    </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 discover-block">
+                        <DiscoverCard
+                            icon={Calendar}
+                            title="Events Calendar"
+                            description="Stay connected and participate in our vibrant community events."
+                            index="03"
+                        />
+                    </div>
+                    <div className="col-lg-3 col-md-6 col-sm-12 discover-block">
+                        <DiscoverCard
+                            icon={Download}
+                            title="Forms & Downloads"
+                            description="Access important forms and documents. Download resources you need quickly and easily."
+                            index="04"
+                        />
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
 }

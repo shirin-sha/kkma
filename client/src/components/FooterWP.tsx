@@ -1,4 +1,5 @@
 import React from 'react';
+import { Search, Check } from 'lucide-react';
 
 export default function FooterWP(): React.JSX.Element {
 	return (
@@ -35,14 +36,14 @@ export default function FooterWP(): React.JSX.Element {
 							<div className="footer-widget widget_nav_menu">
 								<div className="widget-title"><h3>Social Projects</h3></div>
 								<ul className="menu">
-									<li><a href="#">Family Benefit Scheme</a></li>
-									<li><a href="#">Kidney Dialysis Centre</a></li>
-									<li><a href="#">Medical Assistance Program</a></li>
-									<li><a href="#">Educational Scholarship</a></li>
-									<li><a href="#">Hajj & Umrah Programs</a></li>
-									<li><a href="#">Early Detection Center</a></li>
-									<li><a href="#">Housing Improvement Program</a></li>
-									<li><a href="#">Members Welfare Scheme</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Family Benefit Scheme</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Kidney Dialysis Centre</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Medical Assistance Program</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Educational Scholarship</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Hajj & Umrah Programs</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Early Detection Center</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Housing Improvement Program</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Members Welfare Scheme</a></li>
 								</ul>
 							</div>
 						</div>
@@ -50,14 +51,14 @@ export default function FooterWP(): React.JSX.Element {
 							<div className="footer-widget widget_nav_menu">
 								<div className="widget-title"><h3>Quick Links</h3></div>
 								<ul className="menu">
-									<li><a href="#">About Us</a></li>
-									<li><a href="#">People Behind</a></li>
-									<li><a href="#">Magnet Club</a></li>
-									<li><a href="#">Social Projects</a></li>
-									<li><a href="#">News & Updates</a></li>
-									<li><a href="#">Events & Programs</a></li>
-									<li><a href="#">Membership Information</a></li>
-									<li><a href="#">Downloads</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />About Us</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />People Behind</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Magnet Club</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Social Projects</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />News & Updates</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Events & Programs</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Membership Information</a></li>
+									<li><a href="#"><Check size={16} className="inline mr-2" />Downloads</a></li>
 								</ul>
 							</div>
 						</div>
@@ -80,7 +81,7 @@ export default function FooterWP(): React.JSX.Element {
 								<div className="register-widget">
 									<div className="inner-box">
 										<div className="upper">
-											<div className="icon-box"><i className="flaticon-search"></i></div>
+											<div className="icon-box"><Search size={24} /></div>
 											<h4>Explore Our Classifieds</h4>
 										</div>
 										<p>Discover our classifieds for top deals and opportunities. Explore the latest listings and uncover great opportunities now!</p>

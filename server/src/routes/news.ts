@@ -18,6 +18,35 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
+// GET /api/news/latest - Get latest 3 news posts for homepage
+router.get("/api/news/latest", async (req: Request, res: Response) => {
+  try {
+    const posts = await NewsPost.find({})
+      .sort({ createdAt: 1 })
+      .limit(3)
+      .lean()
+
+    // Transform the data to match the frontend NewsItem type
+    const transformedItems = posts.map((item: any) => ({
+      id: item._id,
+      date: item.date?.day || new Date(item.createdAt).getDate().toString(),
+      month: item.date?.monthYear || new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short' }),
+      link: item.href || '#',
+      title: item.title,
+      excerpt: item.excerpt || '',
+      author: item.author,
+      comments: item.comments?.toString() || '0',
+      commentsLink: '#',
+      img: item.imagePath || null
+    }))
+
+    return res.json(transformedItems)
+  } catch (err) {
+    console.error("[news latest] error:", err)
+    return res.status(500).json({ ok: false, error: "Server error" })
+  }
+})
+
 // GET /api/news - Get all news posts with filtering
 router.get("/api/news", async (req: Request, res: Response) => {
   try {
@@ -69,7 +98,7 @@ router.get("/api/news", async (req: Request, res: Response) => {
     }
 
     const posts = await NewsPost.find(filter)
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: 1 })
       .lean()
 
     return res.json({

@@ -93,6 +93,22 @@ ul, ol, li {
     margin-bottom: 39px !important;
 }
 
+.testimonial-block-one .inner-box .image-box .quote-icon {
+    position: absolute;
+    left: 46px;
+    bottom: -28px;
+    width: 44px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: #83B253;
+    border-radius: 30px;
+    border: 3px solid #252638;
+    z-index: 1;
+}
+
 .service-block-two .inner-box .image-box {
     margin-top: -45px !important;
 }
@@ -123,13 +139,10 @@ ul, ol, li {
   display: inline-block;
   font-size: 16px;
   color: #8e91a2;
-  padding-left: 26px;
 }
 
 .main-footer .footer-top-one ul.menu li a:before{
   position: absolute;
-  content: "\f00c";
-  font-family: 'Font Awesome 5 Pro';
   font-size: 13px;
   font-weight: 700;
   left: 0px;
