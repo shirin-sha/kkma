@@ -235,12 +235,12 @@ export default function MembershipInformation(): React.JSX.Element {
                   color: '#333333',
                   marginBottom: '0'
                 }}>
-                  Discover the benefits of joining KKMA, a thriving community of over 14,700 members united by a common mission.
-                  Engage with us through volunteer service, contribute to beneficial schemes, and participate in organizational events.
-                  Start your membership journey by submitting an application, photographs, and a nominal fee to our branch committees
-                  for a two-year membership. Join us today and contribute to a greater cause!
-                </p>
-              </div>
+                Discover the benefits of joining KKMA, a thriving community of over 14,700 members united by a common mission.
+                Engage with us through volunteer service, contribute to beneficial schemes, and participate in organizational events.
+                Start your membership journey by submitting an application, photographs, and a nominal fee to our branch committees
+                for a two-year membership. Join us today and contribute to a greater cause!
+              </p>
+            </div>
             </div>
 
             {/* Right Accordion Section */}
@@ -290,7 +290,7 @@ export default function MembershipInformation(): React.JSX.Element {
                           }}
                         >
                           {isOpen ? '−' : '+'}
-                        </span>
+                          </span>
                         <span 
                           className="accordion-title" 
                           style={{ 
@@ -311,9 +311,9 @@ export default function MembershipInformation(): React.JSX.Element {
                             backgroundColor: '#ffffff',
                             borderTop: '1px solid #e0e0e0'
                           }}
-                        >
-                          {item.content}
-                        </div>
+                      >
+                        {item.content}
+                      </div>
                       )}
                     </div>
                   )
@@ -352,13 +352,13 @@ export default function MembershipInformation(): React.JSX.Element {
               ].map((item, idx) => {
                 const IconComponent = item.icon;
                 return (
-                  <div className="solution-block-one" key={idx}>
-                    <div className="inner-box">
+                <div className="solution-block-one" key={idx}>
+                  <div className="inner-box">
                       <div className="icon-box"><IconComponent size={24} /></div>
-                      <h4>{item.title}</h4>
-                      <p>{item.text}</p>
-                    </div>
+                    <h4>{item.title}</h4>
+                    <p>{item.text}</p>
                   </div>
+                </div>
                 )
               })}
             </div>

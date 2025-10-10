@@ -64,7 +64,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="/">Home</a>
 						</li>
 						<li className="dropdown">
-						  <a href="#">About Us</a>
+						  <a href="#">About Us +</a>
 						  <ul className="submenu">
 															<li>
 								  <NavLink to="/about/overview">
@@ -84,7 +84,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Our Initiatives</a>
+						  <a href="#">Our Initiatives +</a>
 						  <ul className="submenu">
 							<li>
 							  <a href="/initiatives/social-projects">
@@ -99,7 +99,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Membership</a>
+						  <a href="#">Membership +</a>
 						  <ul className="submenu">
 							<li>
 							  <a href="/membership/membership-information">
@@ -117,7 +117,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Classifieds</a>
+						  <a href="#">Classifieds +</a>
 						  <ul className="submenu">
 							<li>
 							  <a href="/classifieds/view-classifieds">
@@ -147,7 +147,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li className="dropdown">
-						  <a href="#">Media</a>
+						  <a href="#">Media +</a>
 						  <ul className="submenu">
 							<li>
 							  <a href="/media/news-and-updates">
