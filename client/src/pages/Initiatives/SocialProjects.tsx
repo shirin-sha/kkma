@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import { Star, Phone } from 'lucide-react'
 import React from 'react'
 
 type ProjectCard = {
@@ -63,14 +63,14 @@ export default function SocialProjects(): React.JSX.Element {
     {
       title: 'Community Welfare Activities',
       desc: 'Enhancing community well-being through diverse social initiatives.',
-      icon: 'icon flaticon-group',
+      icon: 'fa fa-users',
       img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Community-welfare.jpg',
       link: 'https://kkma.net/social-projects/community-welfare-activities/'
     },
     {
       title: 'Seminars & Religious Classes',
       desc: 'Empowering members with knowledge through seminars and classes.',
-      icon: 'fa fa-users-class',
+      icon: 'fa fa-graduation-cap',
       img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Seminars-1.jpg',
       link: 'https://kkma.net/social-projects/seminars-religious-classes/'
     },
@@ -84,7 +84,7 @@ export default function SocialProjects(): React.JSX.Element {
     {
       title: 'Kidney Dialysis Centre',
       desc: 'Offering affordable dialysis treatment to patients in need.',
-      icon: 'fa fa-kidneys',
+      icon: 'fa fa-tint',
       img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Kidney-Dialysis-Center.jpg',
       link: 'https://kkma.net/social-projects/kidney-dialysis-centre/'
     },
@@ -123,10 +123,14 @@ export default function SocialProjects(): React.JSX.Element {
                 </p></div>
                 <div className="inner-box clearfix">
                   <div className="btn-box pull-left"><a href="/contact">Contact Now</a></div>
-                  <div className="support-box pull-left">
-                    <i className="flaticon-emergency-call"></i>
-                    <h5>KKMA Representative</h5>
-                    <p><a href="tel:96512345678">+965 123 456 78</a> (08: AM to 07:00 PM)</p>
+                  <div className="support-box pull-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 42, height: 42, borderRadius: '50%', background: '#7BB045' }}>
+                      <Phone color="#fff" size={22} strokeWidth={2} />
+                    </span>
+                    <div>
+                      <h5 style={{ margin: 0 }}>KKMA Representative</h5>
+                      <p style={{ margin: 0 }}><a href="tel:96512345678">+965 123 456 78</a> (08: AM to 07:00 PM)</p>
+                    </div>
                   </div>
                 </div>
               </div></div>
@@ -173,6 +177,7 @@ export default function SocialProjects(): React.JSX.Element {
     </div>
   )
 }
+
 
 
 

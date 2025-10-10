@@ -1,8 +1,8 @@
-import { Star } from 'lucide-react';
+import { Star, CheckCheck, Users, Hospital, Lightbulb, MousePointerClick } from 'lucide-react';
 import React, { useState } from 'react'
 
 export default function MagnetClub(): React.JSX.Element {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const accordionItems: { title: string; content: React.ReactNode }[] = [
     {
@@ -27,12 +27,12 @@ export default function MagnetClub(): React.JSX.Element {
         <div>
           <p>
             Love and caring are critical tools for helping patients get better. Visiting a sick friend or relation in
-            hospital really could make a difference to their health. It’s already well known that emotions have a powerful
-            effect on a patient’s health. So even if you have nothing to say, your presence at a sick friend’s bedside is enough.
+            hospital really could make a difference to their health. It's already well known that emotions have a powerful
+            effect on a patient's health. So even if you have nothing to say, your presence at a sick friend's bedside is enough.
           </p>
           <p>
             Our volunteers also coordinate possible and emergency financial assistance to needy poor patients for their
-            further treatment through KKMA’s charitable initiatives and the kind support of individuals and organizations.
+            further treatment through KKMA's charitable initiatives and the kind support of individuals and organizations.
           </p>
         </div>
       ),
@@ -91,7 +91,7 @@ export default function MagnetClub(): React.JSX.Element {
       content: (
         <div>
           <p>
-            MAGNET volunteers play a crucial role in coordinating patient care by working closely with hospital staff and KKMA’s
+            MAGNET volunteers play a crucial role in coordinating patient care by working closely with hospital staff and KKMA's
             charitable initiatives. This includes arranging emergency financial support for patients in need, managing logistical
             aspects of care, and ensuring that every patient receives the necessary resources and attention for their treatment and
             recovery.
@@ -104,7 +104,7 @@ export default function MagnetClub(): React.JSX.Element {
       content: (
         <div>
           <p>
-            The MAGNET Volunteer Program’s impact extends beyond individual patient support to foster a stronger, more compassionate
+            The MAGNET Volunteer Program's impact extends beyond individual patient support to foster a stronger, more compassionate
             community. Volunteers are recognized annually for their dedication, with opportunities to participate in community events
             and outreach activities. This recognition highlights their invaluable contributions and reinforces the importance of
             community service in improving lives.
@@ -149,8 +149,8 @@ export default function MagnetClub(): React.JSX.Element {
                   <div className="sec-title">
                     <h6>
                      <Star fill='currentColor' size={16} />
-                      <span>Compassionate Care and Support for Hospital Patients</span>
-                      <i className="flaticon-star"></i>
+                      <span>Compassionate Care and Support for Hospital Patients </span>
+                     <Star fill='currentColor' size={16} />
                     </h6>
                     <h2>MAGNET Volunteer Group</h2>
                     <div className="title-shape"></div>
@@ -167,12 +167,12 @@ export default function MagnetClub(): React.JSX.Element {
                   <div className="inner-box clearfix">
                     <div className="left-column pull-left">
                       <div className="single-item">
-                        <div className="icon-box"><i className="flaticon-double-tick-indicator"></i></div>
+                        <div className="icon-box"><CheckCheck /></div>
                         <h6>Provide Aids</h6>
                         <h4>Patient Assistance</h4>
                       </div>
                       <div className="single-item">
-                        <div className="icon-box"><i className="flaticon-double-tick-indicator"></i></div>
+                        <div className="icon-box"><CheckCheck /></div>
                         <h6>Hospital Visits</h6>
                         <h4>Hospital Outreach</h4>
                       </div>
@@ -195,7 +195,7 @@ export default function MagnetClub(): React.JSX.Element {
                 <div className="content-box">
                   <div className="left-column">
                     <div className="inner centred">
-                      <div className="icon-box"><i className="fa fa-users-medical"></i></div>
+                      <div className="icon-box"><Users /></div>
                       <h6>MAGNET Services</h6>
                       <h4>Supporting Patients</h4>
                     </div>
@@ -212,7 +212,7 @@ export default function MagnetClub(): React.JSX.Element {
                       <img src="https://kkma.net/wp-content/uploads/2024/09/Magnet-KKMA.jpg" alt="MAGNET" />
                     </figure>
                     <div className="inner centred">
-                      <div className="icon-box"><i className="fa fa-hospital-user"></i></div>
+                      <div className="icon-box"><Hospital /></div>
                       <h6>Hospital Outreach</h6>
                       <h4>Volunteer Opportunities</h4>
                     </div>
@@ -253,7 +253,7 @@ export default function MagnetClub(): React.JSX.Element {
               ].map((item, idx) => (
                 <div className="solution-block-one" key={idx}>
                   <div className="inner-box">
-                    <div className="icon-box"><i className="icon flaticon-click"></i></div>
+                    <div className="icon-box"><MousePointerClick /></div>
                     <h4>{item.title}</h4>
                     <p>{item.text}</p>
                   </div>
@@ -267,7 +267,7 @@ export default function MagnetClub(): React.JSX.Element {
                 style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/bg-1-2.jpg)' }}
               ></div>
               <div className="text pull-left">
-                <div className="icon-box"><i className="icon flaticon-idea"></i></div>
+                <div className="icon-box"><Lightbulb /></div>
                 <h3>Be the Light in Someone&apos;s Darkest Hour</h3>
                 <p>Your time and compassion can change lives. Join our volunteer team today.</p>
               </div>
@@ -280,58 +280,143 @@ export default function MagnetClub(): React.JSX.Element {
       </section>
       {/* solutions-section end */}
 
-      {/* Info + Accordion Section */}
-      <section className="magnet-info-accordion sec-pad">
-        <div className="auto-container">
-          <div className="row clearfix">
-            <div className="col-lg-6 col-md-12 col-sm-12">
-              <h2 style={{ marginBottom: 10 }}>Bringing Compassion for Patient Care</h2>
-              <h2 style={{ marginTop: 0 }}> A Heartfelt Commitment</h2>
-              <div className="title-shape" style={{ margin: '20px 0' }}></div>
-              <p>
-                The MAGNET Volunteer Program dedicates itself to supporting patients across major hospitals in Kuwait.
-                Volunteers provide emotional support, coordinate emergency financial aid, and enhance patient well-being through
-                their compassionate presence.
-              </p>
+      {/* Main Content + Accordion Section - New Design */}
+      <section className="magnet-info-accordion sec-pad" style={{ 
+        backgroundColor: '#ffffff', 
+        padding: '60px 0'
+      }}>
+        <div className="auto-container" style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '0 20px' 
+        }}>
+          <div className="row clearfix" style={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            margin: '0 -15px' 
+          }}>
+            {/* Left Content Section */}
+            <div className="col-lg-5 col-md-12 col-sm-12" style={{ 
+              padding: '0 15px',
+              flex: '0 0 41.666667%',
+              maxWidth: '41.666667%'
+            }}>
+              <div className="content-section" style={{ 
+                paddingRight: '40px',
+                marginTop: '60px'
+              }}>
+                <h6 style={{ 
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#28a745',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  marginBottom: '20px',
+                  lineHeight: '1.4'
+                }}>
+                  BRINGING COMPASSION FOR PATIENT CARE
+                </h6>
+                <h2 style={{ 
+                  fontSize: '48px',
+                  fontWeight: '700',
+                  color: '#000000',
+                  lineHeight: '1.2',
+                  marginBottom: '20px',
+                  marginTop: '0'
+                }}>
+                  A Heartfelt Commitment
+                </h2>
+                <div style={{ 
+                  width: '60px',
+                  height: '4px',
+                  backgroundColor: '#28a745',
+                  marginBottom: '30px'
+                }}></div>
+                <p style={{ 
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  color: '#333333',
+                  marginBottom: '0'
+                }}>
+                  The MAGNET Volunteer Program dedicates itself to supporting patients across major hospitals in Kuwait. 
+                  Volunteers provide emotional support, coordinate emergency financial aid, and enhance patient well-being through 
+                  their compassionate presence.
+                </p>
+              </div>
             </div>
-            <div className="col-lg-6 col-md-12 col-sm-12">
-              <div className="elementor-accordion">
+
+            {/* Right Accordion Section */}
+            <div className="col-lg-7 col-md-12 col-sm-12" style={{ 
+              padding: '0 15px',
+              flex: '0 0 58.333333%',
+              maxWidth: '58.333333%'
+            }}>
+              <div className="accordion-section" style={{ 
+                marginTop: '60px'
+              }}>
                 {accordionItems.map((item, index) => {
                   const isOpen = openIndex === index
                   return (
-                    <div className="elementor-accordion-item" key={index}>
+                    <div 
+                      key={index} 
+                      className="accordion-item" 
+                      style={{ 
+                        border: '1px solid #e0e0e0',
+                        borderBottom: index < accordionItems.length - 1 ? 'none' : '1px solid #e0e0e0',
+                        backgroundColor: '#ffffff'
+                      }}
+                    >
                       <div
-                        id={`elementor-tab-title-${index + 1}`}
-                        className="elementor-tab-title"
-                        role="button"
-                        aria-controls={`elementor-tab-content-${index + 1}`}
-                        aria-expanded={isOpen}
+                        className="accordion-header"
                         onClick={() => toggleItem(index)}
-                        style={{ cursor: 'pointer' }}
+                        style={{ 
+                          padding: '20px 25px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          backgroundColor: '#ffffff',
+                          transition: 'background-color 0.3s ease'
+                        }}
                       >
-                        <span className="elementor-accordion-icon elementor-accordion-icon-left" aria-hidden="true">
-                          <span className="elementor-accordion-icon-closed">
-                            <svg className="e-font-icon-svg e-fas-plus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
-                              <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
-                            </svg>
-                          </span>
-                          <span className="elementor-accordion-icon-opened">
-                            <svg className="e-font-icon-svg e-fas-minus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
-                              <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
-                            </svg>
-                          </span>
+                        <span 
+                          className="accordion-icon" 
+                          style={{ 
+                            marginRight: '15px',
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            color: '#000000',
+                            minWidth: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          {isOpen ? '−' : '+'}
                         </span>
-                        <a className="elementor-accordion-title" tabIndex={0}>{item.title}</a>
+                        <span 
+                          className="accordion-title" 
+                          style={{ 
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            color: '#000000',
+                            lineHeight: '1.4'
+                          }}
+                        >
+                          {item.title}
+                        </span>
                       </div>
-                      <div
-                        id={`elementor-tab-content-${index + 1}`}
-                        className="elementor-tab-content elementor-clearfix"
-                        role="region"
-                        aria-labelledby={`elementor-tab-title-${index + 1}`}
-                        style={{ display: isOpen ? 'block' : 'none' }}
-                      >
-                        {item.content}
-                      </div>
+                      {isOpen && (
+                        <div 
+                          className="accordion-content" 
+                          style={{ 
+                            padding: '0 25px 25px 60px',
+                            backgroundColor: '#ffffff',
+                            borderTop: '1px solid #e0e0e0'
+                          }}
+                        >
+                          {item.content}
+                        </div>
+                      )}
                     </div>
                   )
                 })}
@@ -340,25 +425,7 @@ export default function MagnetClub(): React.JSX.Element {
           </div>
         </div>
       </section>
-      {/* End Info + Accordion Section */}
+      {/* End Main Content + Accordion Section */}
     </div>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

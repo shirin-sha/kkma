@@ -39,7 +39,7 @@ export default function AdminLayout(): React.JSX.Element {
       >
         <div className="admin__brand" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 8, borderBottom: '1px solid #f1f5f9' }}>
           <Link to="/admin/contacts" className="admin__brand-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#000', textDecoration: 'none' }}>
-            <img src="/assets/img/logo2.png" alt="KKMA" className="admin__brand-logo" style={{ height: 28 }} />
+            <img src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png" alt="KKMA" className="admin__brand-logo"  style={{ height: '50px' }}  />
           </Link>
         </div>
 
@@ -97,8 +97,8 @@ export default function AdminLayout(): React.JSX.Element {
       {/* Content */}
       <main className="admin__content" style={{ marginLeft: 260, width: '100%' }}>
         <div className="admin__topbar" style={{ background: '#fff', borderBottom: '1px solid #e5e7eb' }}>
-          <div className="auto-container" style={{ height: 56, display: 'flex', alignItems: 'center' }}>
-            <h4 className="admin__title" style={{ margin: 0, color: '#111827', fontSize: 14, fontWeight: 600 }}>Total GTC Admin</h4>
+          <div className="auto-container" style={{ height: 74, display: 'flex', alignItems: 'center' }}>
+            <h4 className="admin__title" style={{ margin: 0, color: '#111827', fontSize: 14, fontWeight: 600 }}>KKMA Admin</h4>
           </div>
         </div>
         <div className="admin__page" style={{ padding: '16px 24px' }}>

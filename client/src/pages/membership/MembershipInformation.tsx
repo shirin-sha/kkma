@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react';
+import { Star, Phone, Users, UserCheck, FileText, Award, CheckCircle, Lightbulb } from 'lucide-react';
 import React, { useState } from 'react'
 
 export default function MembershipInformation(): React.JSX.Element {
@@ -101,7 +101,8 @@ export default function MembershipInformation(): React.JSX.Element {
                   <div className="sec-title light">
                     <h6>
                       <Star fill='currentColor' size={16} />  
-                      <span>Get Involved and Maximize Your Membership Experience</span>
+                      <span>Get Involved and Maximize Your Membership Experience </span>
+                      <Star fill='currentColor' size={16} />
                     </h6>
                     <h2>Explore KKMA Membership</h2>
                     <div className="title-shape"></div>
@@ -114,12 +115,73 @@ export default function MembershipInformation(): React.JSX.Element {
                       most of your membership and enjoy the rewards of being a social contributor.
                     </p>
                   </div>
-                  <div className="inner-box clearfix">
-                    <div className="btn-box pull-left"><a href="/contact">Contact Now</a></div>
-                    <div className="support-box pull-left">
-                      <i className="flaticon-emergency-call"></i>
-                      <h5>KKMA Representative</h5>
-                      <p><a href="tel:96512345678">+965 123 456 78</a> (08: AM to 07:00 PM)</p>
+                  <div className="inner-box clearfix" style={{
+                    backgroundColor: '#2c2c2c',
+                    padding: '25px 30px',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%'
+                  }}>
+                    <div className="btn-box">
+                      <a href="/contact" style={{
+                        backgroundColor: 'transparent',
+                        color: 'white',
+                        border: '2px solid #ffffff',
+                        padding: '12px 25px',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        display: 'inline-block',
+                        transition: 'all 0.3s ease'
+                      }}>Contact Now</a>
+                    </div>
+                    <div className="support-box" style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '15px'
+                    }}>
+                      <div style={{
+                        backgroundColor: '#28a745',
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative'
+                      }}>
+                        <Phone size={24} color="white" />
+                        <span style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          color: 'white',
+                          fontSize: '12px',
+                          fontWeight: 'bold'
+                        }}>*</span>
+                      </div>
+                      <div>
+                        <h5 style={{ 
+                          color: 'white', 
+                          margin: '0 0 5px 0',
+                          fontSize: '18px',
+                          fontWeight: 'bold'
+                        }}>KKMA Representative</h5>
+                        <p style={{ 
+                          color: 'white', 
+                          margin: '0',
+                          fontSize: '14px'
+                        }}>
+                          <a href="tel:96512345678" style={{ color: 'white', textDecoration: 'none' }}>
+                            +965 123 456 78
+                          </a> (08: AM to 07:00 PM)
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -136,58 +198,143 @@ export default function MembershipInformation(): React.JSX.Element {
       {/* End Hero */}
 
       {/* Mid Headings + Accordion */}
-      <section className="membership-accordion sec-pad">
-        <div className="auto-container">
-          <div className="row clearfix">
-            <div className="col-lg-6 col-md-12 col-sm-12">
-              <h2 style={{ marginBottom: 10 }}>Become Part of a Dynamic Network</h2>
-              <h2 style={{ marginTop: 0 }}>Join the KKMA Community</h2>
-              <div className="title-shape" style={{ margin: '20px 0' }}></div>
-              <p>
-                Discover the benefits of joining KKMA, a thriving community of over 14,700 members united by a common mission.
-                Engage with us through volunteer service, contribute to beneficial schemes, and participate in organizational events.
-                Start your membership journey by submitting an application, photographs, and a nominal fee to our branch committees
-                for a two-year membership. Join us today and contribute to a greater cause!
-              </p>
+      <section className="membership-accordion sec-pad" style={{ 
+        backgroundColor: '#ffffff', 
+        padding: '60px 0'
+      }}>
+        <div className="auto-container" style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          padding: '0 20px' 
+        }}>
+          <div className="row clearfix" style={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            margin: '0 -15px' 
+          }}>
+            {/* Left Content Section */}
+            <div className="col-lg-5 col-md-12 col-sm-12" style={{ 
+              padding: '0 15px',
+              flex: '0 0 41.666667%',
+              maxWidth: '41.666667%'
+            }}>
+              <div className="content-section" style={{ 
+                paddingRight: '40px',
+                marginTop: '60px'
+              }}>
+                <h6 style={{ 
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#28a745',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  marginBottom: '20px',
+                  lineHeight: '1.4'
+                }}>
+                  BECOME PART OF A DYNAMIC NETWORK
+                </h6>
+                <h2 style={{ 
+                  fontSize: '48px',
+                  fontWeight: '700',
+                  color: '#000000',
+                  lineHeight: '1.2',
+                  marginBottom: '20px',
+                  marginTop: '0'
+                }}>
+                  Join the KKMA Community
+                </h2>
+                <div style={{ 
+                  width: '60px',
+                  height: '4px',
+                  backgroundColor: '#28a745',
+                  marginBottom: '30px'
+                }}></div>
+                <p style={{ 
+                  fontSize: '16px',
+                  lineHeight: '1.6',
+                  color: '#333333',
+                  marginBottom: '0'
+                }}>
+                  Discover the benefits of joining KKMA, a thriving community of over 14,700 members united by a common mission.
+                  Engage with us through volunteer service, contribute to beneficial schemes, and participate in organizational events.
+                  Start your membership journey by submitting an application, photographs, and a nominal fee to our branch committees
+                  for a two-year membership. Join us today and contribute to a greater cause!
+                </p>
+              </div>
             </div>
-            <div className="col-lg-6 col-md-12 col-sm-12">
-              <div className="elementor-accordion">
+
+            {/* Right Accordion Section */}
+            <div className="col-lg-7 col-md-12 col-sm-12" style={{ 
+              padding: '0 15px',
+              flex: '0 0 58.333333%',
+              maxWidth: '58.333333%'
+            }}>
+              <div className="accordion-section" style={{ 
+                marginTop: '60px'
+              }}>
                 {accordionItems.map((item, index) => {
                   const isOpen = openIndex === index
                   return (
-                    <div className="elementor-accordion-item" key={index}>
+                    <div 
+                      key={index} 
+                      className="accordion-item" 
+                      style={{ 
+                        border: '1px solid #e0e0e0',
+                        borderBottom: index < accordionItems.length - 1 ? 'none' : '1px solid #e0e0e0',
+                        backgroundColor: '#ffffff'
+                      }}
+                    >
                       <div
-                        id={`mi-tab-title-${index + 1}`}
-                        className="elementor-tab-title"
-                        role="button"
-                        aria-controls={`mi-tab-content-${index + 1}`}
-                        aria-expanded={isOpen}
+                        className="accordion-header"
                         onClick={() => toggleItem(index)}
-                        style={{ cursor: 'pointer' }}
+                        style={{ 
+                          padding: '20px 25px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          backgroundColor: '#ffffff',
+                          transition: 'background-color 0.3s ease'
+                        }}
                       >
-                        <span className="elementor-accordion-icon elementor-accordion-icon-left" aria-hidden="true">
-                          <span className="elementor-accordion-icon-closed">
-                            <svg className="e-font-icon-svg e-fas-plus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
-                              <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
-                            </svg>
-                          </span>
-                          <span className="elementor-accordion-icon-opened">
-                            <svg className="e-font-icon-svg e-fas-minus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
-                              <path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path>
-                            </svg>
-                          </span>
+                        <span 
+                          className="accordion-icon" 
+                          style={{ 
+                            marginRight: '15px',
+                            fontSize: '18px',
+                            fontWeight: 'bold',
+                            color: '#000000',
+                            minWidth: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          {isOpen ? '−' : '+'}
                         </span>
-                        <a className="elementor-accordion-title" tabIndex={0}>{item.title}</a>
+                        <span 
+                          className="accordion-title" 
+                          style={{ 
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            color: '#000000',
+                            lineHeight: '1.4'
+                          }}
+                        >
+                          {item.title}
+                        </span>
                       </div>
-                      <div
-                        id={`mi-tab-content-${index + 1}`}
-                        className="elementor-tab-content elementor-clearfix"
-                        role="region"
-                        aria-labelledby={`mi-tab-title-${index + 1}`}
-                        style={{ display: isOpen ? 'block' : 'none' }}
-                      >
-                        {item.content}
-                      </div>
+                      {isOpen && (
+                        <div 
+                          className="accordion-content" 
+                          style={{ 
+                            padding: '0 25px 25px 60px',
+                            backgroundColor: '#ffffff',
+                            borderTop: '1px solid #e0e0e0'
+                          }}
+                        >
+                          {item.content}
+                        </div>
+                      )}
                     </div>
                   )
                 })}
@@ -203,9 +350,9 @@ export default function MembershipInformation(): React.JSX.Element {
         <div className="auto-container">
           <div className="sec-title centred light">
             <h6>
-              <i className="flaticon-star"></i>
-              <span>Joining, Engaging, and Enhancing Community Life</span>
-              <i className="flaticon-star"></i>
+              <Star fill='currentColor' size={16} />
+              <span>Joining, Engaging, and Enhancing Community Life </span>
+              <Star fill='currentColor' size={16} />
             </h6>
             <h2>Your Path to KKMA Membership</h2>
             <div className="title-shape"></div>
@@ -213,29 +360,32 @@ export default function MembershipInformation(): React.JSX.Element {
           <div className="inner-container mr-0">
             <div className="upper-box clearfix">
               {[
-                { title: 'Application Process', text: 'Steps to Apply for Membership' },
-                { title: 'Membership Fee', text: 'Cost and Payment Details' },
-                { title: 'Identification Card Issuance', text: 'Receiving Your KKMA ID' },
-                { title: 'Volunteer Opportunities', text: 'Engage in Community Service' },
-                { title: 'Member Benefits', text: 'Advantages of KKMA Membership' },
-                { title: 'Membership Criteria', text: 'Qualifications for Joining' },
-                { title: 'Committee Involvement', text: 'Participate in Leadership Roles' },
-                { title: 'Expectations from Members', text: 'Obligations & Responsibilities' },
-                { title: 'Encourage Others', text: 'Invite Friends and Family to Join' },
-              ].map((item, idx) => (
-                <div className="solution-block-one" key={idx}>
-                  <div className="inner-box">
-                    <div className="icon-box"><i className="icon flaticon-click"></i></div>
-                    <h4>{item.title}</h4>
-                    <p>{item.text}</p>
+                { title: 'Application Process', text: 'Steps to Apply for Membership', icon: FileText },
+                { title: 'Membership Fee', text: 'Cost and Payment Details', icon: Award },
+                { title: 'Identification Card Issuance', text: 'Receiving Your KKMA ID', icon: UserCheck },
+                { title: 'Volunteer Opportunities', text: 'Engage in Community Service', icon: Users },
+                { title: 'Member Benefits', text: 'Advantages of KKMA Membership', icon: CheckCircle },
+                { title: 'Membership Criteria', text: 'Qualifications for Joining', icon: UserCheck },
+                { title: 'Committee Involvement', text: 'Participate in Leadership Roles', icon: Users },
+                { title: 'Expectations from Members', text: 'Obligations & Responsibilities', icon: CheckCircle },
+                { title: 'Encourage Others', text: 'Invite Friends and Family to Join', icon: Users },
+              ].map((item, idx) => {
+                const IconComponent = item.icon;
+                return (
+                  <div className="solution-block-one" key={idx}>
+                    <div className="inner-box">
+                      <div className="icon-box"><IconComponent size={24} /></div>
+                      <h4>{item.title}</h4>
+                      <p>{item.text}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
             <div className="lower-box clearfix">
               <div className="bg-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/bg-1-2.jpg)' }}></div>
               <div className="text pull-left">
-                <div className="icon-box"><i className="icon flaticon-idea"></i></div>
+                <div className="icon-box"><Lightbulb size={24} /></div>
                 <h3>Embark on Your Journey with KKMA Membership</h3>
                 <p>Learn More About How to Join and Engage in Meaningful Community Initiatives</p>
               </div>
@@ -248,20 +398,57 @@ export default function MembershipInformation(): React.JSX.Element {
       </section>
       {/* End Solutions */}
 
-      {/* Closing Info */}
-      <section className="membership-closing sec-pad">
-        <div className="auto-container">
-          <div className="row clearfix">
-            <div className="col-lg-12 col-md-12 col-sm-12">
-              <h2 style={{ marginBottom: 10 }}>Easy Steps to Join Our Community</h2>
-              <h2 style={{ marginTop: 0 }}>Start Your Membership with KKMA</h2>
-              <div className="title-shape" style={{ margin: '20px 0' }}></div>
-              <p>
-                Joining KKMA is a straightforward process designed for your convenience. Simply obtain a membership form from any of our
-                branch committees, attach two personal photographs and a membership <strong>fee of KD 2.500</strong> for two years. Submit your
-                application to a branch office bearer, and upon approval, you will receive your KKMA Identification Card. Encourage your friends
-                and relatives to take this simple step towards becoming part of our supportive and dynamic community.
-              </p>
+      {/* Closing Info - Themed CTA */}
+      <section className="membership-closing sec-pad" style={{
+        backgroundColor: '#f8faf9',
+        padding: '70px 0'
+      }}>
+        <div className="auto-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <div className="row clearfix" style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="col-lg-8 col-md-12 col-sm-12">
+              <div style={{ maxWidth: 760 }}>
+                <h6 style={{
+                  color: '#28a745',
+                  fontWeight: 700,
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  margin: 0
+                }}>Easy Steps to Join Our Community</h6>
+                <h2 style={{
+                  marginTop: 10,
+                  marginBottom: 16,
+                  fontSize: 40,
+                  lineHeight: 1.2
+                }}>Start Your Membership with KKMA</h2>
+                <div style={{ width: 70, height: 4, background: '#28a745', marginBottom: 20 }}></div>
+                <p style={{ fontSize: 16, lineHeight: 1.7, color: '#333' }}>
+                  Apply online — click <strong>Apply Now</strong> to open the secure member registration form. Complete the
+                  details, upload two personal photographs, and pay the <strong>membership fee of KD 2.500</strong> for two
+                  years. No physical forms or branch visits required. After review and approval, you’ll receive your KKMA
+                  Identification Card. Invite friends and family to join our supportive and dynamic community.
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-12 col-sm-12" style={{ display: 'flex', justifyContent: 'flex-start' }}>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <a href="/member-registration" className="theme-btn" style={{
+                  backgroundColor: '#28a745',
+                  color: '#fff',
+                  padding: '12px 22px',
+                  borderRadius: 8,
+                  textDecoration: 'none',
+                  fontWeight: 700
+                }}>Apply Now</a>
+                <a href="/contact" className="theme-btn" style={{
+                  backgroundColor: '#202230',
+                  color: '#fff',
+                  padding: '12px 22px',
+                  borderRadius: 8,
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  border: '1px solid rgba(255,255,255,0.2)'
+                }}>Contact Us</a>
+              </div>
             </div>
           </div>
         </div>
@@ -270,6 +457,8 @@ export default function MembershipInformation(): React.JSX.Element {
     </div>
   )
 }
+
+
 
 
 
