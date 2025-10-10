@@ -21,10 +21,7 @@ app.use(express.json());
 // Serve static uploads
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 
-app.get('/', (_req: Request, res: Response) => {
-	res.send('KKMA API is running. Try GET /api/health');
-});
-
+// API health check
 app.get('/api/health', (_req: Request, res: Response) => {
 	res.json({ status: 'ok' });
 });
