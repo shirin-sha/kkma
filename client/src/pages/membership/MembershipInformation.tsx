@@ -116,8 +116,6 @@ export default function MembershipInformation(): React.JSX.Element {
                     </p>
                   </div>
                   <div className="inner-box clearfix" style={{
-                    backgroundColor: '#2c2c2c',
-                    padding: '25px 30px',
                     borderRadius: '12px',
                     display: 'flex',
                     alignItems: 'center',
@@ -129,7 +127,6 @@ export default function MembershipInformation(): React.JSX.Element {
                         backgroundColor: 'transparent',
                         color: 'white',
                         border: '2px solid #ffffff',
-                        padding: '12px 25px',
                         borderRadius: '8px',
                         textDecoration: 'none',
                         fontWeight: 'bold',
@@ -200,12 +197,12 @@ export default function MembershipInformation(): React.JSX.Element {
       {/* Mid Headings + Accordion */}
       <section className="membership-accordion sec-pad" style={{ 
         backgroundColor: '#ffffff', 
-        padding: '60px 0'
+        padding: '0px 0'
       }}>
         <div className="auto-container" style={{ 
           maxWidth: '1200px', 
           margin: '0 auto', 
-          padding: '0 20px' 
+          padding: '0px' 
         }}>
           <div className="row clearfix" style={{ 
             display: 'flex', 
@@ -407,13 +404,17 @@ export default function MembershipInformation(): React.JSX.Element {
           <div className="row clearfix" style={{ display: 'flex', alignItems: 'center' }}>
             <div className="col-lg-8 col-md-12 col-sm-12">
               <div style={{ maxWidth: 760 }}>
-                <h6 style={{
+              <h6 style={{ 
+                  fontSize: '14px',
+                  fontWeight: '600',
                   color: '#28a745',
-                  fontWeight: 700,
-                  letterSpacing: '1px',
                   textTransform: 'uppercase',
-                  margin: 0
-                }}>Easy Steps to Join Our Community</h6>
+                  letterSpacing: '1px',
+                  marginBottom: '20px',
+                  lineHeight: '1.4'
+                }}>
+                Easy Steps to Join Our Community
+                </h6>
                 <h2 style={{
                   marginTop: 10,
                   marginBottom: 16,
@@ -423,7 +424,7 @@ export default function MembershipInformation(): React.JSX.Element {
                 <div style={{ width: 70, height: 4, background: '#28a745', marginBottom: 20 }}></div>
                 <p style={{ fontSize: 16, lineHeight: 1.7, color: '#333' }}>
                   Apply online — click <strong>Apply Now</strong> to open the secure member registration form. Complete the
-                  details, upload two personal photographs, and pay the <strong>membership fee of KD 2.500</strong> for two
+                  details, and pay the <strong>membership fee of KD 2.500</strong> for two
                   years. No physical forms or branch visits required. After review and approval, you’ll receive your KKMA
                   Identification Card. Invite friends and family to join our supportive and dynamic community.
                 </p>
@@ -431,7 +432,7 @@ export default function MembershipInformation(): React.JSX.Element {
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12" style={{ display: 'flex', justifyContent: 'flex-start' }}>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <a href="/member-registration" className="theme-btn" style={{
+                <a href="/member/register" className="theme-btn" style={{
                   backgroundColor: '#28a745',
                   color: '#fff',
                   padding: '12px 22px',
