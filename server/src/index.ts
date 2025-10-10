@@ -35,6 +35,18 @@ app.use(newsRouter);
 app.use(eventsRouter);
 app.use(membershipRouter);
 
+// Serve React app in production
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from React build
+  const clientBuildPath = path.resolve(__dirname, '../../client/dist');
+  app.use(express.static(clientBuildPath));
+  
+  // Handle React routing - return index.html for all non-API routes
+  app.get('*', (req: Request, res: Response) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+}
+
 const PORT = process.env.PORT || 4001;
 
 async function start() {
