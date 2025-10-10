@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import {  MapPin, Clock, Star, ChevronRight } from 'lucide-react'
 
 type EventItem = {
   _id: string
@@ -81,12 +82,6 @@ export default function EventsPrograms(): React.JSX.Element {
         case 'upcoming':
           // Events that start today or in the future
           return eventDate >= today
-        
-        case 'meetings':
-          // Events categorized as meetings
-          return event.category?.toLowerCase().includes('meeting') || 
-                 event.title?.toLowerCase().includes('meeting') ||
-                 event.description?.toLowerCase().includes('meeting')
         
         default:
           // Filter by specific category if it matches the event's category
@@ -188,8 +183,7 @@ export default function EventsPrograms(): React.JSX.Element {
             {[
               { key: 'all', label: 'All Events' },
               { key: 'featured', label: 'Featured Events' },
-              { key: 'upcoming', label: 'Upcoming Events' },
-              { key: 'meetings', label: 'Upcoming Meetings' }
+              { key: 'upcoming', label: 'Upcoming Events' }
             ].map((category) => (
               <button
                 key={category.key}
@@ -261,7 +255,7 @@ export default function EventsPrograms(): React.JSX.Element {
                     <div key={event._id} className="col-lg-4 col-md-6 col-sm-12 schedule-block">
                 <div className="schedule-block-one">
                   <div className="inner-box">
-                    <div className="image-box">
+                    <div className="image-box" style={{ position: 'relative' }}>
                             <figure className="image">
                               {event.imagePath ? (
                                 <img 
@@ -289,38 +283,57 @@ export default function EventsPrograms(): React.JSX.Element {
                                 </div>
                               )}
                             </figure>
-                      <div className="content-box">
-                              <div className="post-date">
-                                <h3>{dateBadge.day}<span>{dateBadge.monthYear}</span></h3>
-                              </div>
+                            {/* Featured Badge - Top Right */}
+                            {event.category && event.category.toLowerCase().includes('featured') && (
+                              <span className="category" style={{ 
+                                position: 'absolute',
+                                top: '12px',
+                                right: '12px',
+                                background: '#83b253', 
+                                color: '#fff', 
+                                padding: '6px 10px', 
+                                borderRadius: '6px',
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                zIndex: 10,
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                              }}>
+                                <Star size={12} fill="currentColor" />
+                                Featured
+                              </span>
+                            )}
+                      <div className="content-box" style={{ padding: '20px' }}>
                         <div className="text">
-                                {event.category && (
-                                  <span className="category" style={{ 
-                                    background: '#83b253', 
-                                    color: '#fff', 
-                                    padding: '4px 8px', 
-                                    borderRadius: '4px',
-                                    fontSize: '12px',
-                                    fontWeight: '500'
-                                  }}>
-                                    <i className="flaticon-star" style={{ fontSize: '10px', marginRight: '4px' }}></i>
-                                    {event.category}
-                                  </span>
-                                )}
-                                <h4 style={{ color: '#83b253', fontSize: '18px', fontWeight: '700', margin: '10px 0' }}>
-                                  {event.title}
+                                <h4 style={{ margin: '0 0 15px 0' }}>
+                                  <Link 
+                                    to={`/media/events-and-programs/${event._id}`}
+                                    style={{
+                                      color: '#ffffff',
+                                      fontSize: '18px',
+                                      fontWeight: '700',
+                                      textDecoration: 'none',
+                                      transition: 'color 0.2s ease'
+                                    }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = '#e5e7eb'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
+                                  >
+                                    {event.title}
+                                  </Link>
                                 </h4>
                         </div>
                       </div>
                     </div>
-                    <div className="lower-content">
-                      <ul className="post-info clearfix">
-                              <li>
-                                <i className="flaticon-clock-circular-outline"></i>
+                    <div className="lower-content" style={{ padding: '0 20px 20px 20px' }}>
+                      <ul className="post-info clearfix" style={{ listStyle: 'none', padding: 0, margin: '0 0 15px 0' }}>
+                              <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#6b7280', fontSize: '14px' }}>
+                                <Clock size={16} color="#83b253" />
                                 {dateRange}
                               </li>
-                              <li>
-                                <i className="flaticon-gps"></i>
+                              <li style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280', fontSize: '14px' }}>
+                                <MapPin size={16} color="#83b253" />
                                 {location}
                               </li>
                             
@@ -333,16 +346,16 @@ export default function EventsPrograms(): React.JSX.Element {
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '8px',
-                                  color: '#83b253',
+                                  color: '#000000',
                                   textDecoration: 'none',
                                   fontWeight: '600',
                                   fontSize: '14px',
                                   transition: 'color 0.2s ease'
                                 }}
-                                onMouseEnter={(e) => e.currentTarget.style.color = '#6a9a3e'}
-                                onMouseLeave={(e) => e.currentTarget.style.color = '#83b253'}
+                                onMouseEnter={(e) => e.currentTarget.style.color = '#374151'}
+                                onMouseLeave={(e) => e.currentTarget.style.color = '#000000'}
                               >
-                                Read More<i className="flaticon-right-arrow"></i>
+                                Read More<ChevronRight size={16} color="#83b253" />
                               </Link>
                             </div>
                     </div>

@@ -142,26 +142,9 @@ export default function MembershipInformation(): React.JSX.Element {
                       alignItems: 'center',
                       gap: '15px'
                     }}>
-                      <div style={{
-                        backgroundColor: '#28a745',
-                        borderRadius: '50%',
-                        width: '50px',
-                        height: '50px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'relative'
-                      }}>
-                        <Phone size={24} color="white" />
-                        <span style={{
-                          position: 'absolute',
-                          top: '8px',
-                          right: '8px',
-                          color: 'white',
-                          fontSize: '12px',
-                          fontWeight: 'bold'
-                        }}>*</span>
-                      </div>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 42, height: 42, borderRadius: '50%', background: '#7BB045' }}>
+                      <Phone color="#fff" size={22} strokeWidth={2} />
+                    </span>
                       <div>
                         <h5 style={{ 
                           color: 'white', 
@@ -197,7 +180,8 @@ export default function MembershipInformation(): React.JSX.Element {
       {/* Mid Headings + Accordion */}
       <section className="membership-accordion sec-pad" style={{ 
         backgroundColor: '#ffffff', 
-        padding: '0px 0'
+        padding: '0px 0',
+        marginBottom: '110px'
       }}>
         <div className="auto-container" style={{ 
           maxWidth: '1200px', 
@@ -207,7 +191,6 @@ export default function MembershipInformation(): React.JSX.Element {
           <div className="row clearfix" style={{ 
             display: 'flex', 
             flexWrap: 'wrap', 
-            margin: '0 -15px' 
           }}>
             {/* Left Content Section */}
             <div className="col-lg-5 col-md-12 col-sm-12" style={{ 
@@ -217,7 +200,7 @@ export default function MembershipInformation(): React.JSX.Element {
             }}>
               <div className="content-section" style={{ 
                 paddingRight: '40px',
-                marginTop: '60px'
+                marginBottom: '60px'
               }}>
                 <h6 style={{ 
                   fontSize: '14px',
@@ -267,7 +250,7 @@ export default function MembershipInformation(): React.JSX.Element {
               maxWidth: '58.333333%'
             }}>
               <div className="accordion-section" style={{ 
-                marginTop: '60px'
+             
               }}>
                 {accordionItems.map((item, index) => {
                   const isOpen = openIndex === index
@@ -397,7 +380,6 @@ export default function MembershipInformation(): React.JSX.Element {
 
       {/* Closing Info - Themed CTA */}
       <section className="membership-closing sec-pad" style={{
-        backgroundColor: '#f8faf9',
         padding: '70px 0'
       }}>
         <div className="auto-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
@@ -432,7 +414,7 @@ export default function MembershipInformation(): React.JSX.Element {
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12" style={{ display: 'flex', justifyContent: 'flex-start' }}>
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <a href="/member/register" className="theme-btn" style={{
+                <a href="/membership/register" className="theme-btn" style={{
                   backgroundColor: '#28a745',
                   color: '#fff',
                   padding: '12px 22px',

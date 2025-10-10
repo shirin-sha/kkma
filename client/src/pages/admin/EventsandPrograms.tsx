@@ -26,6 +26,7 @@ type Mode = 'list' | 'create' | 'edit'
 
 const emptyEvent: EventItem = { title: '' }
 
+
 export default function AdminEvents(): React.JSX.Element {
   const [items, setItems] = useState<EventItem[]>([])
   const [page, setPage] = useState(1)
@@ -37,6 +38,7 @@ export default function AdminEvents(): React.JSX.Element {
   const [form, setForm] = useState<EventItem>(emptyEvent)
   const [file, setFile] = useState<File | null>(null)
   const [editingId, setEditingId] = useState<string>('')
+  const [isFeatured, setIsFeatured] = useState<boolean>(false)
 
   const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
 
@@ -72,12 +74,14 @@ export default function AdminEvents(): React.JSX.Element {
     setForm(emptyEvent)
     setFile(null)
     setEditingId('')
+    setIsFeatured(false)
     setMode('create')
   }
   function onEdit(ev: EventItem) {
     setForm({ ...ev })
     setFile(null)
     setEditingId(ev._id || '')
+    setIsFeatured(ev.category?.toLowerCase().includes('featured') || false)
     setMode('edit')
   }
   function onCancel() {
@@ -85,6 +89,7 @@ export default function AdminEvents(): React.JSX.Element {
     setForm(emptyEvent)
     setFile(null)
     setEditingId('')
+    setIsFeatured(false)
   }
 
   async function onDelete(id?: string) {
@@ -99,11 +104,22 @@ export default function AdminEvents(): React.JSX.Element {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     const fd = new FormData()
+    
+    // Build category based on featured selection
+    let category = 'Event'
+    if (isFeatured) {
+      category = 'Featured Event'
+    }
+    
     Object.entries(form).forEach(([k, v]) => {
-      if (v !== undefined && v !== null && k !== 'imagePath' && k !== '_id') {
+      if (v !== undefined && v !== null && k !== 'imagePath' && k !== '_id' && k !== 'category') {
         fd.append(k, String(v))
       }
     })
+    
+    // Set category based on featured checkbox
+    fd.append('category', category)
+    
     if (file) fd.append('image', file)
 
     const isEdit = mode === 'edit' && editingId
@@ -145,12 +161,20 @@ export default function AdminEvents(): React.JSX.Element {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
-                <label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Category</label>
-                <input value={form.category || ''} onChange={(e) => setForm({ ...form, category: e.target.value })} style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
-              </div>
-              <div>
                 <label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Cost</label>
-                <input value={form.cost || ''} onChange={(e) => setForm({ ...form, cost: e.target.value })} style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
+                <input value={form.cost || ''} onChange={(e) => setForm({ ...form, cost: e.target.value })} placeholder="e.g., Free, KD 5, etc." style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, paddingTop: 24 }}>
+                <input 
+                  type="checkbox" 
+                  id="featured" 
+                  checked={isFeatured} 
+                  onChange={(e) => setIsFeatured(e.target.checked)}
+                  style={{ width: 16, height: 16 }}
+                />
+                <label htmlFor="featured" style={{ fontWeight: 600, cursor: 'pointer' }}>
+                  Add to Featured Events
+                </label>
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -228,6 +252,7 @@ export default function AdminEvents(): React.JSX.Element {
                 <thead>
                   <tr style={{ background: '#f9fafb', color: '#111827', textAlign: 'left' }}>
                     <th style={{ fontWeight: 600, padding: '10px 12px', borderTopLeftRadius: 8, borderBottom: '1px solid #e5e7eb' }}>Title</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Category</th>
                     <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Date</th>
                     <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Location</th>
                     <th style={{ fontWeight: 600, padding: '10px 12px', borderTopRightRadius: 8, borderBottom: '1px solid #e5e7eb' }}>Action</th>
@@ -235,13 +260,29 @@ export default function AdminEvents(): React.JSX.Element {
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><td colSpan={4} style={{ padding: 16, color: '#6b7280' }}>Loading...</td></tr>
+                    <tr><td colSpan={5} style={{ padding: 16, color: '#6b7280' }}>Loading...</td></tr>
                   ) : items.length === 0 ? (
-                    <tr><td colSpan={4} style={{ padding: 16, color: '#6b7280' }}>No events found.</td></tr>
+                    <tr><td colSpan={5} style={{ padding: 16, color: '#6b7280' }}>No events found.</td></tr>
                   ) : (
                     items.map((ev) => (
                       <tr key={ev._id} style={{ borderTop: '1px solid #f3f4f6' }}>
                         <td style={{ padding: '12px', color: '#111827' }}>{ev.title}</td>
+                        <td style={{ padding: '12px', color: '#6b7280' }}>
+                          {ev.category ? (
+                            <span style={{ 
+                              background: '#e0f2fe', 
+                              color: '#0369a1', 
+                              padding: '4px 8px', 
+                              borderRadius: '4px', 
+                              fontSize: '12px', 
+                              fontWeight: '500' 
+                            }}>
+                              {ev.category}
+                            </span>
+                          ) : (
+                            <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>No category</span>
+                          )}
+                        </td>
                         <td style={{ padding: '12px', color: '#6b7280' }}>
                           {(ev.startDate || '')}{ev.endDate ? ` - ${ev.endDate}` : ''}
                         </td>

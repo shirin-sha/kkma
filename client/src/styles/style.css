@@ -603,7 +603,6 @@
   
   .main-header .weathre-box a:before{
     position: absolute;
-    content: "\f107";
     font-family: 'Font Awesome 5 Pro';
     font-size: 14px;
     top: -2px;
@@ -834,8 +833,6 @@
   
   .main-header .menu-right-content .language-box .text:before {
     position: absolute;
-    content: "\f107";
-    font-family: 'Font Awesome 5 Pro';
     font-size: 14px;
     top: 0px;
     right: 1px;
@@ -1369,7 +1366,6 @@
   
   .main-menu .navigation > li > ul > li > ul > li > a:before{
     position: absolute;
-    content: "\f127";
     font-family: 'Flaticon';
     font-size: 16px;
     left: 0px;
@@ -3468,7 +3464,6 @@
     display: block;
     font-size: 16px;
     color: #696b7e;
-    padding-left: 25px;
     margin-bottom: 4px;
   }
   
@@ -7275,7 +7270,6 @@
   
   .nice-select:after{
     position: absolute;
-    content: "\f107";
     font-family: 'Font Awesome 5 Pro';
     font-size: 16px;
     color: #9598a9;

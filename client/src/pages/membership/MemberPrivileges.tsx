@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import { Star, Phone } from 'lucide-react'
 import React from 'react'
 
 type Partner = {
@@ -187,12 +187,23 @@ export default function MemberPrivileges(): React.JSX.Element {
                       start enjoying the savings today!
                     </p>
                   </div>
-                  <div className="inner-box clearfix">
+                  <div className="inner-box clearfix" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
                     <div className="btn-box pull-left"><a href="/contact">Contact Now</a></div>
-                    <div className="support-box pull-left">
-                      <i className="flaticon-emergency-call"></i>
-                      <h5>KKMA Representative</h5>
-                      <p><a href="tel:96512345678">+965 123 456 78</a> (08: AM to 07:00 PM)</p>
+                    <div className="support-box pull-left" style={{
+                      borderRadius: 8,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12
+                    }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 42, height: 42, borderRadius: '50%', background: '#7BB045' }}>
+                      <Phone color="#fff" size={22} strokeWidth={2} />
+                    </span>
+                      <div>
+                        <h5 style={{ color: '#fff', margin: 0, fontWeight: 700 }}>KKMA Representative</h5>
+                        <p style={{ color: '#fff', margin: 0, opacity: .9 }}>
+                          <a href="tel:96512345678" style={{ color: '#fff', textDecoration: 'none' }}>+965 123 456 78</a> (08: AM to 07:00 PM)
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
