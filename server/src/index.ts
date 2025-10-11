@@ -32,17 +32,21 @@ app.use(newsRouter);
 app.use(eventsRouter);
 app.use(membershipRouter);
 
-// Serve React app in production
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files from React build
-  const clientBuildPath = path.resolve(__dirname, '../../client/dist');
-  app.use(express.static(clientBuildPath));
-  
-  // Handle React routing - return index.html for all non-API routes
-  app.get('*', (req: Request, res: Response) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
+// Root endpoint
+app.get('/', (_req: Request, res: Response) => {
+  res.json({ 
+    message: 'KKMA API Server',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      admin: '/api/admin/*',
+      contact: '/api/contact',
+      news: '/api/news',
+      events: '/api/events',
+      membership: '/api/membership'
+    }
   });
-}
+});
 
 const PORT = process.env.PORT || 4001;
 
