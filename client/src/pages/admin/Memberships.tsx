@@ -84,37 +84,39 @@ export default function AdminMemberships(): React.JSX.Element {
 
       <div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
-          <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <table className="table" style={{ width: '100%', minWidth: 600, borderCollapse: 'collapse' }}>
             <thead>
-              <tr>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Name</th>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Phone</th>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Type</th>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Created</th>
-                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: 10 }}>Actions</th>
+              <tr style={{ background: '#f9fafb' }}>
+                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: '10px 12px', fontWeight: 600, whiteSpace: 'nowrap' }}>Name</th>
+                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: '10px 12px', fontWeight: 600, whiteSpace: 'nowrap' }}>Phone</th>
+                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: '10px 12px', fontWeight: 600, whiteSpace: 'nowrap' }}>Type</th>
+                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: '10px 12px', fontWeight: 600, whiteSpace: 'nowrap' }}>Created</th>
+                <th style={{ textAlign: 'left', borderBottom: '1px solid #e5e7eb', padding: '10px 12px', fontWeight: 600, whiteSpace: 'nowrap' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={7} style={{ padding: 12, color: '#6b7280' }}>Loading...</td></tr>
+                <tr><td colSpan={5} style={{ padding: 12, color: '#6b7280' }}>Loading...</td></tr>
               ) : items.length === 0 ? (
-                <tr><td colSpan={7} style={{ padding: 12, color: '#6b7280' }}>No applications found.</td></tr>
+                <tr><td colSpan={5} style={{ padding: 12, color: '#6b7280' }}>No applications found.</td></tr>
               ) : (
                 items.map((it) => (
                   <tr key={it._id}>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.fullName}</td>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.phone || '—'}</td>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{it.applicationType}</td>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>{formatDate(it.createdAt)}</td>
-                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: 10 }}>
-                      <span
+                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: '10px 12px', whiteSpace: 'nowrap' }}>{it.fullName}</td>
+                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: '10px 12px', whiteSpace: 'nowrap' }}>{it.phone || '—'}</td>
+                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                      <span style={{ background: '#e0f2fe', color: '#0369a1', padding: '4px 8px', borderRadius: 4, fontSize: 12, fontWeight: 500 }}>
+                        {it.applicationType}
+                      </span>
+                    </td>
+                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: '10px 12px', whiteSpace: 'nowrap', fontSize: 13, color: '#6b7280' }}>{formatDate(it.createdAt)}</td>
+                    <td style={{ borderBottom: '1px solid #f3f4f6', padding: '10px 12px', whiteSpace: 'nowrap' }}>
+                      <button
                         onClick={() => navigate(`/admin/memberships/${it._id}`)}
-                        style={{ color: '#2563eb', cursor: 'pointer', fontWeight: 600 }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = '#000' }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = '#2563eb' }}
+                        style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', color: '#2563eb', fontWeight: 600, fontSize: 13 }}
                       >
                         View
-                      </span>
+                      </button>
                     </td>
                   </tr>
                 ))

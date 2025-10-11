@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, Link, useLocation } from 'react-router-dom'
 
 export default function AdminLayout(): React.JSX.Element {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   useEffect(() => {
     const token = localStorage.getItem('adminToken')
     if (token !== 'admin-authenticated') {
@@ -19,14 +21,29 @@ export default function AdminLayout(): React.JSX.Element {
   const isActive = (path: string) => location.pathname.startsWith(path)
 
   return (
-    <div className="admin__layout" style={{ display: 'flex', background: '#f6f7fb' }}>
-      {/* Fixed Sidebar */}
+    <div className="admin__layout" style={{ display: 'flex', background: '#f6f7fb', minHeight: '100vh' }}>
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="admin__overlay"
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            zIndex: 998,
+            display: 'block',
+          }}
+        />
+      )}
+
+      {/* Responsive Sidebar */}
       <aside
         className="admin__sidebar"
         style={{
           position: 'fixed',
           top: 0,
-          left: 0,
+          left: sidebarOpen ? 0 : -260,
           width: 260,
           height: '100vh',
           background: '#fff',
@@ -35,6 +52,9 @@ export default function AdminLayout(): React.JSX.Element {
           display: 'flex',
           flexDirection: 'column',
           gap: 12,
+          transition: 'left 0.3s ease',
+          zIndex: 999,
+          overflowY: 'auto',
         }}
       >
         <div className="admin__brand" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 8, borderBottom: '1px solid #f1f5f9' }}>
@@ -95,16 +115,55 @@ export default function AdminLayout(): React.JSX.Element {
       </aside>
 
       {/* Content */}
-      <main className="admin__content" style={{ marginLeft: 260, width: '100%' }}>
-        <div className="admin__topbar" style={{ background: '#fff', borderBottom: '1px solid #e5e7eb' }}>
-          <div className="auto-container" style={{ height: 74, display: 'flex', alignItems: 'center' }}>
-            <h4 className="admin__title" style={{ margin: 0, color: '#111827', fontSize: 14, fontWeight: 600 }}>KKMA Admin</h4>
+      <main className="admin__content" style={{ marginLeft: 0, width: '100%' }}>
+        <div className="admin__topbar" style={{ background: '#fff', borderBottom: '1px solid #e5e7eb', position: 'sticky', top: 0, zIndex: 100 }}>
+          <div style={{ height: 60, display: 'flex', alignItems: 'center', padding: '0 16px', gap: 12 }}>
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="admin__hamburger"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+                width: 32,
+                height: 32,
+              }}
+              aria-label="Toggle sidebar"
+            >
+              <span style={{ width: '100%', height: 2, background: '#111827', borderRadius: 2 }}></span>
+              <span style={{ width: '100%', height: 2, background: '#111827', borderRadius: 2 }}></span>
+              <span style={{ width: '100%', height: 2, background: '#111827', borderRadius: 2 }}></span>
+            </button>
+            <h4 className="admin__title" style={{ margin: 0, color: '#111827', fontSize: 16, fontWeight: 600 }}>KKMA Admin</h4>
           </div>
         </div>
-        <div className="admin__page" style={{ padding: '16px 24px' }}>
+        <div className="admin__page" style={{ padding: '16px' }}>
           <Outlet />
         </div>
       </main>
+
+      {/* Responsive CSS */}
+      <style>{`
+        @media (min-width: 768px) {
+          .admin__sidebar {
+            left: 0 !important;
+          }
+          .admin__content {
+            margin-left: 260px !important;
+          }
+          .admin__overlay {
+            display: none !important;
+          }
+          .admin__hamburger {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   )
 } 

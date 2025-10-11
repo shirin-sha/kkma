@@ -88,15 +88,15 @@ export default function AdminContacts(): React.JSX.Element {
               <div style={{ background: '#fee2e2', border: '1px solid #fecaca', color: '#b91c1c', padding: 12, borderRadius: 8, marginBottom: 16, fontSize: 14 }}>{error}</div>
             )}
 
-            <div className="table-responsive">
-              <table className="admin__table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0 }}>
+            <div className="table-responsive" style={{ overflowX: 'auto', marginBottom: 16 }}>
+              <table className="admin__table" style={{ width: '100%', minWidth: 600, borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead>
                   <tr style={{ background: '#f9fafb', color: '#111827', textAlign: 'left' }}>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopLeftRadius: 8, borderBottom: '1px solid #e5e7eb' }}>Name</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Email</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Subject</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Date</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopRightRadius: 8, borderBottom: '1px solid #e5e7eb' }}>Action</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopLeftRadius: 8, borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Name</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Email</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Subject</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Date</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopRightRadius: 8, borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -107,12 +107,12 @@ export default function AdminContacts(): React.JSX.Element {
                   ) : (
                     items.map((m) => (
                       <tr key={m._id} style={{ borderTop: '1px solid #f3f4f6' }}>
-                        <td style={{ padding: '12px', color: '#111827' }}>{m.name}</td>
-                        <td style={{ padding: '12px' }}><a href={`mailto:${m.email}`} style={{ color: '#111827' }}>{m.email}</a></td>
-                        <td style={{ padding: '12px', color: '#111827' }}>{m.subject || '-'}</td>
-                        <td style={{ padding: '12px', color: '#6b7280' }}>{formatDisplay(m.createdAt)}</td>
+                        <td style={{ padding: '12px', color: '#111827', whiteSpace: 'nowrap' }}>{m.name}</td>
+                        <td style={{ padding: '12px', whiteSpace: 'nowrap' }}><a href={`mailto:${m.email}`} style={{ color: '#111827', textDecoration: 'none' }}>{m.email}</a></td>
+                        <td style={{ padding: '12px', color: '#111827', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.subject || '-'}</td>
+                        <td style={{ padding: '12px', color: '#6b7280', whiteSpace: 'nowrap', fontSize: 13 }}>{formatDisplay(m.createdAt)}</td>
                         <td style={{ padding: '12px' }}>
-                          <button type="button" aria-label="View message" title="View message" onClick={() => onView(m)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#374151' }}>👁</button>
+                          <button type="button" aria-label="View message" title="View message" onClick={() => onView(m)} style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', color: '#374151', fontSize: 14 }}>View</button>
                         </td>
                       </tr>
                     ))

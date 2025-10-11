@@ -247,15 +247,15 @@ export default function AdminEvents(): React.JSX.Element {
         ) : (
           <>
             {error && <div style={{ background: '#fee2e2', border: '1px solid #fecaca', color: '#b91c1c', padding: 12, borderRadius: 8, marginBottom: 12 }}>{error}</div>}
-            <div className="table-responsive">
-              <table className="admin__table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0 }}>
+            <div className="table-responsive" style={{ overflowX: 'auto', marginBottom: 16 }}>
+              <table className="admin__table" style={{ width: '100%', minWidth: 700, borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead>
                   <tr style={{ background: '#f9fafb', color: '#111827', textAlign: 'left' }}>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopLeftRadius: 8, borderBottom: '1px solid #e5e7eb' }}>Title</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Category</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Date</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb' }}>Location</th>
-                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopRightRadius: 8, borderBottom: '1px solid #e5e7eb' }}>Action</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopLeftRadius: 8, borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Title</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Category</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Date</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Location</th>
+                    <th style={{ fontWeight: 600, padding: '10px 12px', borderTopRightRadius: 8, borderBottom: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -266,8 +266,8 @@ export default function AdminEvents(): React.JSX.Element {
                   ) : (
                     items.map((ev) => (
                       <tr key={ev._id} style={{ borderTop: '1px solid #f3f4f6' }}>
-                        <td style={{ padding: '12px', color: '#111827' }}>{ev.title}</td>
-                        <td style={{ padding: '12px', color: '#6b7280' }}>
+                        <td style={{ padding: '12px', color: '#111827', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.title}</td>
+                        <td style={{ padding: '12px', color: '#6b7280', whiteSpace: 'nowrap' }}>
                           {ev.category ? (
                             <span style={{ 
                               background: '#e0f2fe', 
@@ -275,7 +275,8 @@ export default function AdminEvents(): React.JSX.Element {
                               padding: '4px 8px', 
                               borderRadius: '4px', 
                               fontSize: '12px', 
-                              fontWeight: '500' 
+                              fontWeight: '500',
+                              whiteSpace: 'nowrap'
                             }}>
                               {ev.category}
                             </span>
@@ -283,13 +284,13 @@ export default function AdminEvents(): React.JSX.Element {
                             <span style={{ color: '#9ca3af', fontStyle: 'italic' }}>No category</span>
                           )}
                         </td>
-                        <td style={{ padding: '12px', color: '#6b7280' }}>
+                        <td style={{ padding: '12px', color: '#6b7280', whiteSpace: 'nowrap', fontSize: 13 }}>
                           {(ev.startDate || '')}{ev.endDate ? ` - ${ev.endDate}` : ''}
                         </td>
-                        <td style={{ padding: '12px', color: '#111827' }}>{[ev.venueCity, ev.venueState, ev.venueCountry].filter(Boolean).join(', ')}</td>
-                        <td style={{ padding: '12px' }}>
-                          <button onClick={() => onEdit(ev)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#2563eb', marginRight: 8 }}>Edit</button>
-                          <button onClick={() => onDelete(ev._id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#dc2626' }}>Delete</button>
+                        <td style={{ padding: '12px', color: '#111827', maxWidth: 150, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{[ev.venueCity, ev.venueState, ev.venueCountry].filter(Boolean).join(', ')}</td>
+                        <td style={{ padding: '12px', whiteSpace: 'nowrap' }}>
+                          <button onClick={() => onEdit(ev)} style={{ background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', color: '#2563eb', marginRight: 6, fontSize: 13 }}>Edit</button>
+                          <button onClick={() => onDelete(ev._id)} style={{ background: '#fee2e2', border: '1px solid #fecaca', borderRadius: 6, padding: '6px 12px', cursor: 'pointer', color: '#dc2626', fontSize: 13 }}>Delete</button>
                         </td>
                       </tr>
                     ))
