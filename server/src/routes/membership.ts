@@ -73,17 +73,23 @@ router.post('/api/membership/applications', upload.single('photo'), async (req: 
     const file = (req as any).file as Express.Multer.File | undefined
     const photoPath = file ? `/uploads/members/${file.filename}` : undefined
 
+    // Parse extra object if present
+    const extraData = extra ? JSON.parse(extra) : undefined
+    
+    // Get email from extra object if not provided at top level
+    const emailToSave = email || extraData?.email
+
     const app = new MemberApplication({
       applicationType: applicationType === 'renew' ? 'renew' : 'new',
       fullName,
       branch,
       phone,
-      email,
+      email: emailToSave,
       website,
       address,
       remarks,
       categories: typeof categories === 'string' ? categories.split(',').map((s) => s.trim()).filter(Boolean) : Array.isArray(categories) ? categories : [],
-      extra: extra ? JSON.parse(extra) : undefined,
+      extra: extraData,
       photoPath
     })
 

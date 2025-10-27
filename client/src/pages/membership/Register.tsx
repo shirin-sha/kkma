@@ -13,6 +13,7 @@ type FormState = {
   mobile: string
   mobile2: string
   whatsappnumber: string
+  email: string
   addressinKuwait: string
   proffession: string
   qualification: string
@@ -56,6 +57,7 @@ export default function Register(): React.JSX.Element {
     mobile: '',
     mobile2: '',
     whatsappnumber: '',
+    email: '',
 
     addressinKuwait: '',
     proffession: '',
@@ -149,6 +151,7 @@ export default function Register(): React.JSX.Element {
         passport: form.passport,
         mobile2: form.mobile2,
         whatsappnumber: form.whatsappnumber,
+        email: form.email,
         addressinKuwait: form.addressinKuwait,
         proffession: form.proffession,
         qualification: form.qualification,
@@ -176,7 +179,7 @@ export default function Register(): React.JSX.Element {
       if (res.ok && data?.ok) {
         setMessage('Application submitted successfully.')
         setForm({
-          membershipType: 'new', branch: '', kkmaId: '', fullName: '', bloodGroup: '', civilId: '', mobile: '', mobile2: '', whatsappnumber: '',
+          membershipType: 'new', branch: '', kkmaId: '', fullName: '', bloodGroup: '', civilId: '', mobile: '', mobile2: '', whatsappnumber: '', email: '',
           addressinKuwait: '', proffession: '', qualification: '', addressinIndia: '', contactnumberinIndia: '', contactnumberiindia2: '',
           emergencyContacts: [ { name: '', relation: '', phone: '' }, { name: '', relation: '', phone: '' } ], acknowledge: false, photo: null,
           passport: '',
@@ -397,6 +400,10 @@ export default function Register(): React.JSX.Element {
                     <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
                       <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>വാട്സ്ആപ് നമ്പര്‍ (WhatsApp Number)</label>
                       <input type="tel" name="whatsappnumber" value={form.whatsappnumber} onChange={handleChange} style={inputBoxStyle} />
+                    </div>
+                    <div className="col-md-4 col-sm-12 form-group" style={{ marginBottom: '20px' }}>
+                      <label style={{ fontWeight: 600, color: '#374151', marginBottom: 8, display: 'block' }}>ഇമെയില്‍ (Email)</label>
+                      <input type="email" name="email" value={form.email} onChange={handleChange} style={inputBoxStyle} />
                     </div>
                   </div>
                 </div>

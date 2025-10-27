@@ -255,17 +255,18 @@ function DetailBody({ baseUrl, selected }: { baseUrl: string; selected: any }) {
       <div style={{ marginTop: 16 }}>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
-        <Field label="നിങ്ങൾ ചേരാൻ ആഗ്രഹിക്കുന്ന ബ്രാഞ്ച് (The branch you want to join)" value={selected.branch || '—'} />
+        <Field label="നിങ്ങൾ ചേരാൻ ആഗ്രഹിക്കുന്ന ബ്രാഞ്ച് <br/>(The branch you want to join)" value={selected.branch || '—'} />
           <Field label="കെ.കെ.എം.എ ഐഡി നമ്പർ<br/>KKMA ID Number" value={selected.extra?.kkmaId || '—'} />
           <Field label="സിവില്‍ ഐഡി നമ്പര് <br/>(Civil ID Number)*" value={selected.extra?.civilId || '—'} />
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
-          <Field label="പാസ്പോർട്ട് നമ്പര് <br/>(Passport Number)*" value={selected.extra?.passport || '—'} />
+          <Field label="പാസ്പോർട്ട് നമ്പര്(Passport Number)*" value={selected.extra?.passport || '—'} />
           <Field label="മൊബൈൽ നമ്പര്‍ (Mobile Number)" value={selected.phone || '—'} />
           <Field label="മൊബൈൽ നമ്പര്‍ 2 (Mobile Number 2)" value={selected.extra?.mobile2 || '—'} />
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: '20px' }}>
           <Field label="വാട്സ്ആപ്പ് നമ്പര്‍ (WhatsApp Number)" value={selected.extra?.whatsappnumber || '—'} />
+          <Field label="ഇമെയില്‍  (Email)" value={selected.email || '—'} />
         </div>
       </div>
 
