@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { setUserToken, setUserData } from '../../utils/userAuth';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001';
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001';
 
 export default function UserLogin(): React.JSX.Element {
   const navigate = useNavigate();

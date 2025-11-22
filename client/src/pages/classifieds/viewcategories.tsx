@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001';
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001';
 
 type Category = {
   _id: string;

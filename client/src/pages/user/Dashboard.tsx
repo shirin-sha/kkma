@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isUserAuthenticated, getUserToken, getUserData, logout } from '../../utils/userAuth';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001';
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001';
 
 interface Classified {
   _id: string;
@@ -21,7 +21,7 @@ interface Classified {
   updatedAt: string;
 }
 
-export default function UserDashboard(): React.JSX.Element {
+export default function UserDashboard(): React.JSX.Element | null {
   const navigate = useNavigate();
   const [classifieds, setClassifieds] = useState<Classified[]>([]);
   const [loading, setLoading] = useState(true);
