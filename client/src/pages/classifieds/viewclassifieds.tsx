@@ -1,452 +1,766 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react';
 
-// Extend listing type to support UI elements shown in the live design
+const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001';
+
 type ClassifiedListing = {
-  title: string
-  permalink: string
-  thumb: string
-  price?: string
-  location?: string
-  phone?: string
-  email?: string
-  category?: { name: string; href: string }
-  views?: number
-  authorAvatar?: string
-  isPopular?: boolean
-  rating?: number
-  ratingCount?: number
-  likes?: number
-}
+  _id: string;
+  title: string;
+  description: string;
+  price: string;
+  category: string;
+  location: string;
+  phone?: string;
+  email?: string;
+  images: string[];
+  views: number;
+  likes: number;
+  status: string;
+  createdAt: string;
+  userId?: { name: string; email: string };
+};
 
 export default function ViewClassifieds(): React.JSX.Element {
-  const [view, setView] = useState<'list' | 'grid'>('list')
-  const [sortLabel, setSortLabel] = useState<string>('Sort By')
-  const [sortOpen, setSortOpen] = useState<boolean>(false)
-  const [filtersOpen, setFiltersOpen] = useState<boolean>(false)
+  const [sortBy, setSortBy] = useState<string>('latest');
+  const [listings, setListings] = useState<ClassifiedListing[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [priceRange, setPriceRange] = useState<'all' | 'low' | 'mid' | 'high'>('all');
+  const [selectedItem, setSelectedItem] = useState<ClassifiedListing | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const originalListings: ClassifiedListing[] = [
-    {
-      title: 'Demo Listing 1',
-      permalink: 'https://kkma.net/directory/demo-listing-1/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Mahboula',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Electronics', href: 'https://kkma.net/single-category/electronics/?directory_type=general' },
-      views: 111,
-      likes: 111,
-      isPopular: true,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 2',
-      permalink: 'https://kkma.net/directory/demo-listing-2/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Farwaniya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Car for Sale', href: 'https://kkma.net/single-category/car-for-sale/?directory_type=general' },
-      views: 116,
-      likes: 116,
-      isPopular: true,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 3',
-      permalink: 'https://kkma.net/directory/demo-listing-3/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Farwaniya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Car for Sale', href: 'https://kkma.net/single-category/car-for-sale/?directory_type=general' },
-      views: 133,
-      likes: 133,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 4',
-      permalink: 'https://kkma.net/directory/demo-listing-4/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Farwaniya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Car for Sale', href: 'https://kkma.net/single-category/car-for-sale/?directory_type=general' },
-      views: 116,
-      likes: 116,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 5',
-      permalink: 'https://kkma.net/directory/demo-listing-5/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Farwaniya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Car for Sale', href: 'https://kkma.net/single-category/car-for-sale/?directory_type=general' },
-      views: 112,
-      likes: 112,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 6',
-      permalink: 'https://kkma.net/directory/demo-listing-6/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Farwaniya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Car for Sale', href: 'https://kkma.net/single-category/car-for-sale/?directory_type=general' },
-      views: 113,
-      likes: 113,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 7',
-      permalink: 'https://kkma.net/directory/demo-listing-7/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Jleeb Al Shuyouk',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Furniture', href: 'https://kkma.net/single-category/furniture/?directory_type=general' },
-      views: 101,
-      likes: 101,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 8',
-      permalink: 'https://kkma.net/directory/demo-listing-8/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Jleeb Al Shuyouk',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Furniture', href: 'https://kkma.net/single-category/furniture/?directory_type=general' },
-      views: 111,
-      likes: 111,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 9',
-      permalink: 'https://kkma.net/directory/demo-listing-9/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Jleeb Al Shuyouk',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Furniture', href: 'https://kkma.net/single-category/furniture/?directory_type=general' },
-      views: 108,
-      likes: 108,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 10',
-      permalink: 'https://kkma.net/directory/demo-listing-10/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Jleeb Al Shuyouk',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Furniture', href: 'https://kkma.net/single-category/furniture/?directory_type=general' },
-      views: 111,
-      likes: 111,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 11',
-      permalink: 'https://kkma.net/directory/demo-listing-11/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Salmiya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Education', href: 'https://kkma.net/single-category/education/?directory_type=general' },
-      views: 112,
-      likes: 112,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-    {
-      title: 'Demo Listing 12',
-      permalink: 'https://kkma.net/directory/demo-listing-12/',
-      thumb: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg',
-      price: 'KD2,525.00',
-      location: 'Salmiya',
-      phone: '59589585298',
-      email: 'example@gmail.com',
-      category: { name: 'Education', href: 'https://kkma.net/single-category/education/?directory_type=general' },
-      views: 102,
-      likes: 102,
-      rating: 0,
-      ratingCount: 0,
-      authorAvatar:
-        'https://secure.gravatar.com/avatar/c888a6aa706d56eca97f8e346d420dcba106b657e3cb6a5e43c7b4bd10827998?s=32&d=mm&r=g',
-    },
-  ]
+  useEffect(() => {
+    fetchClassifieds();
+  }, []);
 
-  const displayListings = useMemo(() => {
-    const arr = [...originalListings]
-    const parsePrice = (price?: string): number => {
-      if (!price) return NaN
-      const num = Number(price.replace(/[^0-9.]/g, ''))
-      return isNaN(num) ? NaN : num
+  const fetchClassifieds = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/classifieds`);
+      if (!response.ok) throw new Error('Failed to fetch classifieds');
+      
+      const data = await response.json();
+      setListings(data.classifieds || []);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setLoading(false);
     }
-    switch (sortLabel) {
-      case 'A to Z (title)':
-        return arr.sort((a, b) => a.title.localeCompare(b.title))
-      case 'Z to A (title)':
-        return arr.sort((a, b) => b.title.localeCompare(a.title))
-      case 'Latest listings':
-        return arr.reverse()
-      case 'Oldest listings':
-        return arr
-      case 'Popular listings':
-        return arr.sort((a, b) => (b.views ?? 0) - (a.views ?? 0))
-      case 'Price (low to high)':
-        return arr.sort((a, b) => (parsePrice(a.price) || Infinity) - (parsePrice(b.price) || Infinity))
-      case 'Price (high to low)':
-        return arr.sort((a, b) => (parsePrice(b.price) || -Infinity) - (parsePrice(a.price) || -Infinity))
-      case 'Random listings':
-        return arr.sort(() => Math.random() - 0.5)
+  };
+
+  const categories = [
+    { name: 'All Categories', value: 'all', icon: '🏷️' },
+    { name: 'Education', value: 'Education', icon: '📚' },
+    { name: 'Furniture', value: 'Furniture', icon: '🛋️' },
+    { name: 'Car for Sale', value: 'Car for Sale', icon: '🚗' },
+    { name: 'Electronics', value: 'Electronics', icon: '📱' },
+    { name: 'Flat for Rent', value: 'Flat for Rent', icon: '🏠' },
+    { name: 'Jobs', value: 'Jobs', icon: '💼' },
+    { name: 'Part Time Jobs', value: 'Part Time Jobs', icon: '⏰' },
+    { name: 'Transportation', value: 'Transportation Services', icon: '🚌' },
+    { name: 'Computers', value: 'Computers & Accessories', icon: '💻' },
+    { name: 'Business', value: 'Business Opportunities', icon: '💰' },
+    { name: 'Pets & Animals', value: 'Pets & Animals', icon: '🐾' },
+    { name: 'Training', value: 'Training and Courses', icon: '🎓' },
+  ];
+
+  const filteredListings = useMemo(() => {
+    let filtered = [...listings];
+    
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(item => item.category === selectedCategory);
+    }
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(item => 
+        item.title.toLowerCase().includes(query) ||
+        item.description.toLowerCase().includes(query) ||
+        item.location.toLowerCase().includes(query)
+      );
+    }
+    
+    // Filter by price range
+    if (priceRange !== 'all') {
+      filtered = filtered.filter(item => {
+        const price = Number(item.price);
+        if (priceRange === 'low') return price < 100;
+        if (priceRange === 'mid') return price >= 100 && price < 500;
+        if (priceRange === 'high') return price >= 500;
+        return true;
+      });
+    }
+    
+    return filtered;
+  }, [listings, selectedCategory, searchQuery, priceRange]);
+
+  const sortedListings = useMemo(() => {
+    const arr = [...filteredListings];
+    
+    switch (sortBy) {
+      case 'latest':
+        return arr.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case 'oldest':
+        return arr.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      case 'price-low':
+        return arr.sort((a, b) => Number(a.price) - Number(b.price));
+      case 'price-high':
+        return arr.sort((a, b) => Number(b.price) - Number(a.price));
+      case 'popular':
+        return arr.sort((a, b) => b.views - a.views);
+      case 'title-az':
+        return arr.sort((a, b) => a.title.localeCompare(b.title));
       default:
-        return arr
+        return arr;
     }
-  }, [sortLabel, originalListings])
+  }, [filteredListings, sortBy]);
 
-  const sortOptions = [
-    { label: 'A to Z (title)' },
-    { label: 'Z to A (title)' },
-    { label: 'Latest listings' },
-    { label: 'Oldest listings' },
-    { label: 'Popular listings' },
-    { label: 'Price (low to high)' },
-    { label: 'Price (high to low)' },
-    { label: 'Random listings' },
-  ]
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return 'Today';
+    if (diffDays === 2) return 'Yesterday';
+    if (diffDays <= 7) return `${diffDays} days ago`;
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
+
+  const handleViewItem = (item: ClassifiedListing) => {
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const handleContactSeller = (item: ClassifiedListing, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedItem(null);
+  };
 
   return (
-    <div className="boxed_wrapper">
+    <div className="boxed_wrapper" style={{ background: '#f9fafb' }}>
+      {/* Hero Section */}
       {/* Page Title */}
       <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
-            <div className="title centred"><h1>All Listings</h1></div>
-            <ul className="bread-crumb clearfix"><li><a href="/">Home</a></li><li>All Listings</li></ul>
+            <div className="title centred"><h1>View Classifieds</h1></div>
+            <ul className="bread-crumb clearfix"><li><a href="/">Home</a></li><li>View Classifieds</li></ul>
           </div>
         </div>
       </section>
 
-      
-
-      {/* Listings */}
-      <section className="sidebar-page-container sec-pad-2">
-      <div className="directorist-header-bar">
+      {/* Main Content */}
+      <section style={{ padding: '40px 0 80px' }}>
         <div className="auto-container">
-          <div className="directorist-listings-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-            <div className="directorist-listings-header__left" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <button className="directorist-btn directorist-btn-sm directorist-filter-btn" aria-label="Filters" onClick={() => setFiltersOpen(true)} style={{ color: '#000', background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 9999, padding: '8px 14px', display: 'inline-flex', alignItems: 'center', gap: 8 }}><span className="directorist-icon-filter" style={{ marginRight: 6 }}></span>Filters</button>
-              <div className="directorist-dropdown directorist-dropdown-js directorist-sortby-dropdown">
-                <button className="directorist-dropdown__toggle directorist-dropdown__toggle-js directorist-btn directorist-btn-sm directorist-toggle-has-icon" aria-expanded={sortOpen} onClick={(e) => { e.preventDefault(); setSortOpen(!sortOpen) }} style={{ color: '#000', background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: 9999, padding: '8px 14px' }}>{sortLabel}<span className="directorist-icon-caret"></span></button>
-                <div className="directorist-dropdown__links directorist-dropdown__links-js directorist-dropdown__links__right" style={{ display: sortOpen ? 'block' : 'none', position: 'relative', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 8, marginTop: 8, boxShadow: '0 8px 20px rgba(0,0,0,0.08)' }}>
-                  <form>
-                    {sortOptions.map((opt) => (
-                      <a key={opt.label} href="#" className="directorist-dropdown__links__single directorist-dropdown__links__single-js" onClick={(e) => { e.preventDefault(); setSortLabel(opt.label); setSortOpen(false) }} style={{ color: '#000' }}>{opt.label}</a>
-                    ))}
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div className="directorist-listings-header__right" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <span className='directorist-header-found-title' style={{ color: '#000' }}><span>{displayListings.length}</span> Items Found</span>
-              <div className="directorist-viewas">
-                <a className={`directorist-viewas__item directorist-viewas__item--grid ${view === 'grid' ? 'active' : ''}`} href="#" onClick={(e) => { e.preventDefault(); setView('grid') }} aria-label="grid view"/>
-                <a className={`directorist-viewas__item directorist-viewas__item--list ${view === 'list' ? 'active' : ''}`} href="#" onClick={(e) => { e.preventDefault(); setView('list') }} aria-label="list view"/>
-              </div>
+          {/* Categories Filter - Horizontal Scroll */}
+          <div style={{ marginBottom: 32, overflowX: 'auto', paddingBottom: 8 }}>
+            <div style={{ display: 'flex', gap: 12, minWidth: 'max-content' }}>
+              {categories.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => setSelectedCategory(cat.value)}
+                  style={{
+                    background: selectedCategory === cat.value ? '#83B253' : '#fff',
+                    color: selectedCategory === cat.value ? '#fff' : '#374151',
+                    border: selectedCategory === cat.value ? 'none' : '1px solid #e5e7eb',
+                    borderRadius: 50,
+                    padding: '12px 24px',
+                    fontSize: 15,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    whiteSpace: 'nowrap',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    boxShadow: selectedCategory === cat.value ? '0 4px 12px rgba(131, 178, 83, 0.4)' : 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedCategory !== cat.value) {
+                      e.currentTarget.style.background = '#f3f4f6';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedCategory !== cat.value) {
+                      e.currentTarget.style.background = '#fff';
+                    }
+                  }}
+                >
+                  <span>{cat.icon}</span>
+                  <span>{cat.name}</span>
+                </button>
+              ))}
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* {filtersOpen && (
-        <div role="dialog" aria-modal="true" aria-label="Filters Panel">
-          <div onClick={() => setFiltersOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)' }} />
-          <aside style={{ position: 'fixed', top: 0, right: 0, height: '100%', width: 320, background: '#fff', boxShadow: '0 0 0 1px rgba(0,0,0,0.05), -8px 0 24px rgba(0,0,0,0.15)', padding: 16, zIndex: 1000 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <h3 style={{ margin: 0, color: '#000' }}>Filters</h3>
-              <button className="directorist-btn directorist-btn-sm" onClick={() => setFiltersOpen(false)} aria-label="Close filters" style={{ color: '#000' }}>Close</button>
+          {/* Filters & Sort Bar */}
+          <div style={{
+            background: '#fff',
+            borderRadius: 16,
+            padding: '20px 24px',
+            marginBottom: 32,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 16,
+            boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <div>
+                <span style={{ fontSize: 14, color: '#6b7280', marginRight: 8 }}>Price:</span>
+                <select
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(e.target.value as any)}
+                  style={{
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 8,
+                    padding: '8px 12px',
+                    fontSize: 14,
+                    color: '#374151',
+                    cursor: 'pointer',
+                    outline: 'none'
+                  }}
+                >
+                  <option value="all">All Prices</option>
+                  <option value="low">Under KD 100</option>
+                  <option value="mid">KD 100 - 500</option>
+                  <option value="high">Above KD 500</option>
+                </select>
+              </div>
+              
+              <div>
+                <span style={{ fontSize: 14, color: '#6b7280', marginRight: 8 }}>Sort:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  style={{
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 8,
+                    padding: '8px 12px',
+                    fontSize: 14,
+                    color: '#374151',
+                    cursor: 'pointer',
+                    outline: 'none'
+                  }}
+                >
+                  <option value="latest">Latest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="popular">Most Popular</option>
+                  <option value="title-az">Title: A to Z</option>
+                </select>
+              </div>
             </div>
-            <div style={{ color: '#000' }}>Filter controls coming soon.</div>
-          </aside>
-        </div>
-      )} */}
 
-        <div className="auto-container">
-          <div className="row clearfix">
-            <div className="content-side col-xs-12 col-sm-12 col-md-12">
-              <div className={`directorist-archive-items ${view === 'list' ? 'directorist-archive-list-view' : 'directorist-archive-grid-view'}`}>
-                <div className="directorist-container-fluid">
-                  <div className="directorist-row">
-                    {displayListings.map((item, idx) => (
-                      <div key={idx} className="directorist-col-12 directorist-all-listing-col" style={{ marginBottom: 16 }}>
-                        <article
-                          className={`directorist-listing-single directorist-listing-single--bg ${view === 'list' ? 'directorist-listing-list' : 'directorist-listing-grid'} directorist-listing-has-thumb`}
-                          style={view === 'list' ? { position: 'relative', display: 'grid', gridTemplateColumns: '300px 1fr', columnGap: 16, alignItems: 'stretch', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', background: '#fff', padding: 12 } : { position: 'relative', border: '1px solid #e5e7eb', borderRadius: 12, overflow: 'hidden', background: '#fff', padding: 12 }}
-                        >
-                          {/* top-right favorite like live design */}
-                          <a href="#" className="directorist-favorite-action directorist-favorite-top" onClick={(e) => e.preventDefault()} aria-label="Save to favorites" style={{ position: 'absolute', right: 16, top: 12 }}>
-                            <i className="directorist-icon-heart" aria-hidden="true" style={{ color: '#000' }}></i>
-                          </a>
-                          <div className="directorist-listing-single__thumb" style={view === 'list' ? { margin: 0, position: 'relative', height: '100%', borderRadius: 8, overflow: 'hidden' } : { position: 'relative', borderRadius: 8, overflow: 'hidden' }}>
-                            {item.isPopular && (
-                              <span
-                                className="directorist-badge directorist-badge-popular"
-                                style={{
-                                  position: 'absolute',
-                                  top: 8,
-                                  left: 8,
-                                  backgroundColor: '#dc2626',
-                                  color: '#fff',
-                                  padding: '4px 10px',
-                                  borderRadius: 4,
-                                  fontWeight: 600,
-                                  fontSize: 12,
-                                  lineHeight: 1,
-                                  zIndex: 2,
-                                  boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
-                                }}
-                              >
-                                POPULAR
-                              </span>
-                            )}
-                            <a href={item.permalink}>
-                              <figure
-                                style={{
-                                  backgroundImage: item.thumb ? `url(${item.thumb})` : undefined,
-                                  backgroundColor: '#eee',
-                                  backgroundSize: 'cover',
-                                  backgroundPosition: 'center',
-                                  backgroundRepeat: 'no-repeat',
-                                  width: '100%',
-                                  height: view === 'list' ? '100%' : 160,
-                                }}
-                                aria-label={item.title}
-                              />
-                            </a>
-                          </div>
-                          <section className="directorist-listing-single__content" style={{ color: '#000' }}>
-                            <div className="directorist-listing-single__info">
-                              <div className="directorist-listing-single__info__top-right">
-                                <header className="directorist-listing-single__info__top">
-                                  <h2 className="directorist-listing-title"><a href={item.permalink} style={{ color: '#000' }}>{item.title}</a></h2>
-                                  <div className="directorist-listing-top-meta">
-                                    <div className="directorist-rating">
-                                      <span className="directorist-rating-stars">
-                                        {Array.from({ length: 5 }).map((_, i) => (
-                                          <i key={i} className="directorist-icon-star" aria-hidden="true" style={{ color: '#000' }}></i>
-                                        ))}
-                                      </span>
-                                      <span className="directorist-rating__review" style={{ color: '#000' }}>{(item.rating ?? 0).toFixed(1)} ({item.ratingCount ?? 0})</span>
-                                      <span className="directorist-listing-meta-sep" style={{ color: '#000' }}> • </span>
-                                  {item.price && (
-                                    <span className="directorist-info-item directorist-pricing-meta"><span className="directorist-listing-price" style={{ color: '#000' }}>{item.price}</span></span>
-                                  )}
-                                    </div>
-                               
-                                  </div>
-                                </header>
-                                <ul className="directorist-listing-single__info__list">
-                                  {item.location && (
-                                    <li className="directorist-listing-card-location">
-                                      <i className="directorist-icon-mask" aria-hidden="true" style={{ color: '#000' }}></i>
-                                      <div className="directorist-listing-card-location-list" style={{ color: '#000' }}><span>{item.location}</span></div>
-                                    </li>
-                                  )}
-                                  {item.phone && (
-                                    <li className="directorist-listing-card-phone">
-                                      <i className="directorist-icon-phone" aria-hidden="true" style={{ color: '#000' }}></i>
-                                      <a href={`tel:${item.phone}`} style={{ color: '#000' }}>{item.phone}</a>
-                                    </li>
-                                  )}
-                                  {item.email && (
-                                    <li className="directorist-listing-card-email">
-                                      <i className="directorist-icon-mail" aria-hidden="true" style={{ color: '#000' }}></i>
-                                      <a href={`mailto:${item.email}`} style={{ color: '#000' }}>{item.email}</a>
-                                    </li>
-                                  )}
-                                </ul>
-                              </div>
-                            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ fontSize: 16, color: '#111827', fontWeight: 600 }}>
+                {sortedListings.length}
+              </span>
+              <span style={{ fontSize: 14, color: '#6b7280' }}>
+                {sortedListings.length === 1 ? 'listing' : 'listings'} found
+              </span>
+            </div>
+          </div>
 
-                            <footer className="directorist-listing-single__meta" style={{ borderTop: '1px solid #eee', paddingTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              <div className="directorist-listing-single__meta__left">
-                                {item.category && (
-                                  <div className="directorist-listing-category" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#f7f7f7', padding: '6px 10px', borderRadius: 20 }}>
-                                    <i className="directorist-icon-folder" aria-hidden="true" style={{ color: '#000' }}></i>
-                                    <a href={item.category.href} style={{ color: '#000' }}>{item.category.name}</a>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="directorist-listing-single__meta__right" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                <a href="#" className="directorist-favorite-action" onClick={(e) => e.preventDefault()} aria-label="Save to favorites" style={{ color: '#000' }}>
-                                  <i className="directorist-icon-heart" aria-hidden="true"></i>
-                                  <span className="directorist-favorite-count">{item.likes ?? 0}</span>
-                                </a>
-                                {item.authorAvatar && (
-                                  <div className="directorist-thumb-listing-author directorist-alignment-center">
-                                    <img alt='author' src={item.authorAvatar} className='avatar avatar-32 photo' height={32} width={32} />
-                                  </div>
-                                )}
-                              </div>
-                            </footer>
-                          </section>
-                        </article>
+          {/* Loading State */}
+          {loading && (
+            <div style={{ textAlign: 'center', padding: '80px 20px' }}>
+              <div style={{
+                width: 50,
+                height: 50,
+                border: '4px solid #f3f4f6',
+                borderTop: '4px solid #83B253',
+                borderRadius: '50%',
+                margin: '0 auto 16px',
+                animation: 'spin 1s linear infinite'
+              }} />
+              <p style={{ color: '#6b7280', fontSize: 16 }}>Loading classifieds...</p>
+              <style>{`
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div style={{
+              background: '#fee2e2',
+              border: '1px solid #fecaca',
+              borderRadius: 12,
+              padding: 20,
+              color: '#dc2626',
+              textAlign: 'center'
+            }}>
+              <span style={{ fontSize: 32, marginBottom: 8, display: 'block' }}>⚠️</span>
+              {error}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && sortedListings.length === 0 && !error && (
+            <div style={{ textAlign: 'center', padding: '80px 20px' }}>
+              <span style={{ fontSize: 64, marginBottom: 16, display: 'block' }}>🔍</span>
+              <h3 style={{ fontSize: 24, color: '#111827', marginBottom: 8 }}>No classifieds found</h3>
+              
+            </div>
+          )}
+
+          {/* Grid of Classifieds */}
+          {!loading && sortedListings.length > 0 && (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: 24
+            }}>
+              {sortedListings.map((item) => (
+                <article
+                  key={item._id}
+                  onClick={() => handleViewItem(item)}
+                  style={{
+                    background: '#fff',
+                    borderRadius: 16,
+                    overflow: 'hidden',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer',
+                    border: '1px solid #e5e7eb',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.12)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  {/* Image */}
+                  <div style={{ 
+                    position: 'relative', 
+                    height: 250, 
+                    overflow: 'hidden',
+                    background: '#f3f4f6',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <img
+                      src={item.images[0]
+                        ? `${API_URL}${item.images[0]}`
+                        : 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg'}
+                      alt={item.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        transition: 'transform 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
+                    />
+                    
+                    {/* Date Badge */}
+                    <span style={{
+                      position: 'absolute',
+                      top: 12,
+                      right: 12,
+                      background: 'rgba(0,0,0,0.6)',
+                      backdropFilter: 'blur(8px)',
+                      color: '#fff',
+                      padding: '6px 12px',
+                      borderRadius: 20,
+                      fontSize: 12,
+                      fontWeight: 500,
+                      zIndex: 2
+                    }}>
+                      {formatDate(item.createdAt)}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div style={{ padding: 20, display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    {/* Category */}
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      background: '#f3f4f6',
+                      padding: '6px 12px',
+                      borderRadius: 20,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: '#83B253',
+                      marginBottom: 12,
+                      width: 'fit-content'
+                    }}>
+                      📁 {item.category}
+                    </div>
+
+                    {/* Title */}
+                    <h3 style={{
+                      fontSize: 18,
+                      fontWeight: 700,
+                      color: '#111827',
+                      marginBottom: 8,
+                      lineHeight: 1.4,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical'
+                    }}>
+                      {item.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p style={{
+                      fontSize: 14,
+                      color: '#6b7280',
+                      lineHeight: 1.6,
+                      marginBottom: 16,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical'
+                    }}>
+                      {item.description}
+                    </p>
+
+                    {/* Location */}
+                    {item.location && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        fontSize: 14,
+                        color: '#6b7280',
+                        marginBottom: 16
+                      }}>
+                        <span>📍</span>
+                        <span>{item.location}</span>
                       </div>
-                    ))}
+                    )}
+
+                    {/* Footer */}
+                    <div style={{
+                      marginTop: 'auto',
+                      paddingTop: 16,
+                      borderTop: '1px solid #f3f4f6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}>
+                      {/* Price */}
+                      <div>
+                        <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 2 }}>Price</div>
+                        <div style={{
+                          fontSize: 24,
+                          fontWeight: 700,
+                          color: '#83B253'
+                        }}>
+                          KD {Number(item.price).toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Contact Button */}
+                    {(item.phone || item.email) && (
+                      <button 
+                        onClick={(e) => handleContactSeller(item, e)}
+                        style={{
+                          marginTop: 16,
+                          background: '#83B253',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: 10,
+                          padding: '12px 24px',
+                          fontSize: 15,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          width: '100%'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#6a9944';
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 8px 16px rgba(131, 178, 83, 0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#83B253';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}>
+                        📞 Contact Seller
+                      </button>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Detail Modal */}
+      {showModal && selectedItem && (
+        <div 
+          onClick={closeModal}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.7)',
+            zIndex: 9999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+            overflow: 'auto'
+          }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#fff',
+              borderRadius: 16,
+              maxWidth: 800,
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              position: 'relative'
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              style={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                background: '#fff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '50%',
+                width: 40,
+                height: 40,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: 20,
+                color: '#6b7280',
+                zIndex: 10,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}
+            >
+              ✕
+            </button>
+
+            {/* Image Gallery */}
+            {selectedItem.images && selectedItem.images.length > 0 && (
+              <div style={{ 
+                position: 'relative', 
+                background: '#f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: 400,
+                maxHeight: 500
+              }}>
+                <img 
+                  src={`${API_URL}${selectedItem.images[0]}`}
+                  alt={selectedItem.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    maxHeight: 500,
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Content */}
+            <div style={{ padding: 32 }}>
+              {/* Category */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                background: '#f3f4f6',
+                padding: '8px 16px',
+                borderRadius: 20,
+                fontSize: 13,
+                fontWeight: 600,
+                color: '#83B253',
+                marginBottom: 16
+              }}>
+                📁 {selectedItem.category}
+              </div>
+
+              {/* Title */}
+              <h2 style={{
+                fontSize: 32,
+                fontWeight: 700,
+                color: '#111827',
+                marginBottom: 16,
+                lineHeight: 1.3
+              }}>
+                {selectedItem.title}
+              </h2>
+
+              {/* Price */}
+              <div style={{
+                fontSize: 36,
+                fontWeight: 700,
+                color: '#83B253',
+                marginBottom: 24
+              }}>
+                KD {Number(selectedItem.price).toFixed(2)}
+              </div>
+
+              {/* Meta Info */}
+              <div style={{
+                display: 'flex',
+                gap: 24,
+                marginBottom: 24,
+                paddingBottom: 24,
+                borderBottom: '1px solid #e5e7eb',
+                flexWrap: 'wrap'
+              }}>
+                {selectedItem.location && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280' }}>
+                    <span>📍</span>
+                    <span>{selectedItem.location}</span>
+                  </div>
+                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280' }}>
+                  <span>📅</span>
+                  <span>{formatDate(selectedItem.createdAt)}</span>
+                </div>
+              </div>
+
+              {/* Description */}
+              <div style={{ marginBottom: 32 }}>
+                <h3 style={{ 
+                  fontSize: 18, 
+                  fontWeight: 600, 
+                  color: '#111827', 
+                  marginBottom: 12 
+                }}>
+                  Description
+                </h3>
+                <p style={{
+                  fontSize: 16,
+                  lineHeight: 1.8,
+                  color: '#4b5563',
+                  whiteSpace: 'pre-wrap'
+                }}>
+                  {selectedItem.description}
+                </p>
+              </div>
+
+              {/* Contact Information */}
+              {(selectedItem.phone || selectedItem.email) && (
+                <div style={{
+                  background: '#f9fafb',
+                  borderRadius: 12,
+                  padding: 24,
+                  marginBottom: 24
+                }}>
+                  <h3 style={{ 
+                    fontSize: 18, 
+                    fontWeight: 600, 
+                    color: '#111827', 
+                    marginBottom: 16 
+                  }}>
+                    Contact Seller
+                  </h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {selectedItem.phone && (
+                      <a 
+                        href={`tel:${selectedItem.phone}`}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 12,
+                          padding: '12px 16px',
+                          background: '#fff',
+                          borderRadius: 8,
+                          textDecoration: 'none',
+                          color: '#111827',
+                          border: '1px solid #e5e7eb',
+                          transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#83B253';
+                          e.currentTarget.style.color = '#fff';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#fff';
+                          e.currentTarget.style.color = '#111827';
+                        }}
+                      >
+                        <span style={{ fontSize: 20 }}>📞</span>
+                        <span style={{ fontSize: 16, fontWeight: 500 }}>{selectedItem.phone}</span>
+                      </a>
+                    )}
+                    {selectedItem.email && (
+                      <a 
+                        href={`mailto:${selectedItem.email}`}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 12,
+                          padding: '12px 16px',
+                          background: '#fff',
+                          borderRadius: 8,
+                          textDecoration: 'none',
+                          color: '#111827',
+                          border: '1px solid #e5e7eb',
+                          transition: 'all 0.3s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = '#83B253';
+                          e.currentTarget.style.color = '#fff';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = '#fff';
+                          e.currentTarget.style.color = '#111827';
+                        }}
+                      >
+                        <span style={{ fontSize: 20 }}>✉️</span>
+                        <span style={{ fontSize: 16, fontWeight: 500 }}>{selectedItem.email}</span>
+                      </a>
+                    )}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
-      </section>
-      {/* End Listings */}
+      )}
     </div>
-  )
+  );
 }

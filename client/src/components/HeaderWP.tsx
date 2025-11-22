@@ -1,8 +1,41 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { isUserAuthenticated, getUserData, logout } from '../utils/userAuth';
 
 export default function HeaderWP(): React.JSX.Element {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [userName, setUserName] = useState('');
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		setIsAuthenticated(isUserAuthenticated());
+		const userData = getUserData();
+		if (userData) {
+			setUserName(userData.name);
+		}
+	}, []);
+
+	const handleAddPost = (e: React.MouseEvent) => {
+		e.preventDefault();
+		if (!isAuthenticated) {
+			alert('Please login to add a post');
+			navigate('/user');
+		} else {
+			navigate('/classifieds/add-post');
+		}
+	};
+
+	const handleDashboard = (e: React.MouseEvent) => {
+		e.preventDefault();
+		if (!isAuthenticated) {
+			alert('Please login to access your dashboard');
+			navigate('/user');
+		} else {
+			navigate('/user/dashboard');
+		}
+	};
+
 	return (
 		<>
 		{/* Main Header */}
@@ -120,28 +153,19 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Classifieds +</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/classifieds/view-classifieds">
+							  <NavLink to="/classifieds/view-classifieds">
 								View Classifieds
-							  </a>
+							  </NavLink>
 							</li>
+							
 							<li>
-							  <a href="/classifieds/view-categories">
-								View Categories
-							  </a>
-							</li>
-							<li>
-							  <a href="/classifieds/quick-search">
-								Quick Search
-							  </a>
-							</li>
-							<li>
-							  <a href="https://kkma.net/add-listing/">
+							  <a href="#" onClick={handleAddPost}>
 								Add Your Post
 							  </a>
 							</li>
 							<li>
-							  <a href="https://kkma.net/dashboard/">
-								Your Dashboard
+							  <a href="#" onClick={handleDashboard}>
+								{isAuthenticated ? `Dashboard (${userName})` : 'Your Dashboard'}
 							  </a>
 							</li>
 						  </ul>

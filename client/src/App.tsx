@@ -17,6 +17,9 @@ import MemberPrivileges from "./pages/membership/MemberPrivileges";
 import ViewClassifieds from "./pages/classifieds/viewclassifieds";
 import ClassifiedsCategories from "./pages/classifieds/viewcategories";
 import QuickSearch from "./pages/classifieds/QuickSearch";
+import AddPost from "./pages/classifieds/AddPost";
+import UserLogin from "./pages/user/Login";
+import UserDashboard from "./pages/user/Dashboard";
 import NewsAndUpdates from "./pages/media/newsandupdates";
 import EventsAndPrograms from "./pages/media/eventsprograms";
 import ContactPage from "./pages/Contact";
@@ -28,6 +31,7 @@ import AdminNews from "./pages/admin/News";
 import AdminEvents from "./pages/admin/EventsandPrograms";
 import AdminMemberships from "./pages/admin/Memberships";
 import AdminMembershipDetail from "./pages/admin/MembershipDetail";
+import AdminClassifieds from "./pages/admin/Classifieds";
 import EventDetail from "./pages/media/EventDetail";
 import NewsDetail from "./pages/media/NewsDetail";
 import CategoryNews from "./pages/media/CategoryNews";
@@ -63,6 +67,9 @@ path: "/",
 { path: "classifieds/quick-search", element: <QuickSearch /> },
 { path: "classifieds/view-categories", element: <ClassifiedsCategories /> },
 { path: "classifieds/view-classifieds", element: <ViewClassifieds /> },
+{ path: "classifieds/add-post", element: <AddPost /> },
+{ path: "user", element: <UserLogin /> },
+{ path: "user/dashboard", element: <UserDashboard /> },
 { path: "membership/member-privileges", element: <MemberPrivileges /> },
 { path: "membership/membership-information", element: <MembershipInformation /> },
 { path: "membership/register", element: <Register /> },
@@ -85,6 +92,7 @@ path: "/admin",
  element: <AdminLayout />,
  children: [
 { path: "contacts", element: <AdminContacts /> },
+{ path: "classifieds", element: <AdminClassifieds /> },
 { path: "news", element: <AdminNews /> },
 { path: "events", element: <AdminEvents /> },
 { path: "memberships", element: <AdminMemberships /> },

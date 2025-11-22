@@ -9,6 +9,8 @@ import contactRouter from './routes/contact';
 import newsRouter from './routes/news';
 import eventsRouter from './routes/events';
 import membershipRouter from './routes/membership';
+import userRouter from './routes/user';
+import classifiedsRouter from './routes/classifieds';
 
 // Load env from project root first, then override with server/.env if present
 dotenv.config();
@@ -31,6 +33,8 @@ app.use(contactRouter);
 app.use(newsRouter);
 app.use(eventsRouter);
 app.use(membershipRouter);
+app.use('/api/user', userRouter);
+app.use('/api/classifieds', classifiedsRouter);
 
 // Root endpoint
 app.get('/', (_req: Request, res: Response) => {
@@ -43,7 +47,9 @@ app.get('/', (_req: Request, res: Response) => {
       contact: '/api/contact',
       news: '/api/news',
       events: '/api/events',
-      membership: '/api/membership'
+      membership: '/api/membership',
+      user: '/api/user/*',
+      classifieds: '/api/classifieds/*'
     }
   });
 });
