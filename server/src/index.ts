@@ -45,23 +45,33 @@ app.use(membershipRouter);
 app.use('/api/user', userRouter);
 app.use('/api/classifieds', classifiedsRouter);
 
-// Root endpoint
-app.get('/', (_req: Request, res: Response) => {
-  res.json({ 
-    message: 'KKMA API Server',
-    status: 'running',
-    endpoints: {
-      health: '/api/health',
-      admin: '/api/admin/*',
-      contact: '/api/contact',
-      news: '/api/news',
-      events: '/api/events',
-      membership: '/api/membership',
-      user: '/api/user/*',
-      classifieds: '/api/classifieds/*'
-    }
+// Serve static files from client dist (for production)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, '../../client/dist')));
+  
+  // Handle SPA routing - serve index.html for all non-API routes
+  app.get('*', (_req: Request, res: Response) => {
+    res.sendFile(path.resolve(__dirname, '../../client/dist/index.html'));
   });
-});
+} else {
+  // Root endpoint (development only)
+  app.get('/', (_req: Request, res: Response) => {
+    res.json({ 
+      message: 'KKMA API Server',
+      status: 'running',
+      endpoints: {
+        health: '/api/health',
+        admin: '/api/admin/*',
+        contact: '/api/contact',
+        news: '/api/news',
+        events: '/api/events',
+        membership: '/api/membership',
+        user: '/api/user/*',
+        classifieds: '/api/classifieds/*'
+      }
+    });
+  });
+}
 
 const PORT = process.env.PORT || 4001;
 
