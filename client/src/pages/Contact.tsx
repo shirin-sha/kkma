@@ -123,7 +123,7 @@ export default function Contact(): React.JSX.Element {
                       Whether you have a question, need assistance, or want to learn more about our initiatives, we're just a message away. Connect with us through the form, and our team will get back to you promptly.
                     </p>
                     <div className="contact_box_n two"><p><span><i className="fa fa fa-envelope"></i>Email : </span>info@kkma.net</p></div>
-                    <div className="contact_box_n two"><p><span><i className="fa fa fa-phone-office"></i>Phone : </span>+965 506 49506</p></div>
+                    <div className="contact_box_n two"><p><span><i className="fa fa fa-phone"></i>Phone : </span>+965 506 49506</p></div>
                     <div className="contact_box_n two"><p><span><i className="fa fa fa-mobile"></i>Magnet : </span>+965 506 49506</p></div>
                   </div>
                   <div className="social-box">
