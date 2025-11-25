@@ -196,26 +196,44 @@ export default function Contact(): React.JSX.Element {
           <div className="row clearfix">
             <div className="col-lg-6 col-md-12 col-sm-12 content-column">
               <div className="content_block_3">
-                <div className="content-box">
-                  <div className="icon-box" style={{ 
-                    width: '60px', 
-                    height: '60px', 
-                    backgroundColor: 'white', 
-                    borderRadius: '50%', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center',
-                    marginBottom: '20px'
-                  }}>
-                    <i className="fa fa-map" style={{ color: '#22c55e', fontSize: '24px' }}></i>
-                  </div>
-                  <h4 style={{ color: 'white', fontWeight: 'bold', marginBottom: '20px' }}>
-                    Contact Your Local KKMA Office for Personalized Assistance and Support.
-                  </h4>
-                  <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '2.5rem', lineHeight: '1.2' }}>
-                    Get in Touch with Any of Our Branches Across Kuwait.
-                  </h2>
-                </div>
+              <div className="content-box">
+  {/* Flex container with flex-wrap */}
+  <div style={{ 
+    display: 'flex', 
+    alignItems: 'flex-start',  // Align to top
+    gap: '15px', 
+    marginBottom: '20px' 
+  }}>
+    <div className="icon-box" style={{ 
+      width: '60px', 
+      height: '60px', 
+      minWidth: '60px',  // Ensure minimum width
+      backgroundColor: 'white', 
+      borderRadius: '50%', 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      flexShrink: 0
+    }}>
+      <i className="fa fa-map" style={{ color: '#22c55e', fontSize: '24px' }}></i>
+    </div>
+    <h4 style={{ 
+      color: 'white', 
+      fontWeight: 'bold', 
+      margin: 0,
+      flex: 1,  // Take remaining space
+      fontSize: '1.1rem',
+      lineHeight: '1.4',
+      paddingLeft:'0px'
+    }}>
+      Contact Your Local KKMA Office for Personalized Assistance and Support.
+    </h4>
+  </div>
+  
+  <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '2.5rem', lineHeight: '1.2' }}>
+    Get in Touch with Any of Our Branches Across Kuwait.
+  </h2>
+</div>
               </div>
             </div>
             <div className="col-lg-6 col-md-12 col-sm-12 inner-column">

@@ -160,7 +160,7 @@ export default function ViewClassifieds(): React.JSX.Element {
 
       {/* Main Content */}
       <section style={{ padding: '40px 0 80px' }}>
-        <div className="auto-container">
+          <div className="auto-container">
           {/* Categories Filter - Horizontal Scroll */}
           <div style={{ marginBottom: 32, overflowX: 'auto', paddingBottom: 8 }}>
             <div style={{ display: 'flex', gap: 12, minWidth: 'max-content' }}>
@@ -168,7 +168,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                 <button
                   key={cat.value}
                   onClick={() => setSelectedCategory(cat.value)}
-                  style={{
+              style={{
                     background: selectedCategory === cat.value ? '#83B253' : '#fff',
                     color: selectedCategory === cat.value ? '#fff' : '#374151',
                     border: selectedCategory === cat.value ? 'none' : '1px solid #e5e7eb',
@@ -179,8 +179,8 @@ export default function ViewClassifieds(): React.JSX.Element {
                     cursor: 'pointer',
                     transition: 'all 0.3s ease',
                     whiteSpace: 'nowrap',
-                    display: 'flex',
-                    alignItems: 'center',
+                display: 'flex',
+                alignItems: 'center',
                     gap: 8,
                     boxShadow: selectedCategory === cat.value ? '0 4px 12px rgba(131, 178, 83, 0.4)' : 'none'
                   }}
@@ -193,11 +193,11 @@ export default function ViewClassifieds(): React.JSX.Element {
                     if (selectedCategory !== cat.value) {
                       e.currentTarget.style.background = '#fff';
                     }
-                  }}
-                >
+                    }}
+                  >
                   <span>{cat.icon}</span>
                   <span>{cat.name}</span>
-                </button>
+                  </button>
               ))}
             </div>
           </div>
@@ -221,16 +221,16 @@ export default function ViewClassifieds(): React.JSX.Element {
                 <select
                   value={priceRange}
                   onChange={(e) => setPriceRange(e.target.value as any)}
-                  style={{
-                    border: '1px solid #e5e7eb',
+                    style={{
+                      border: '1px solid #e5e7eb',
                     borderRadius: 8,
                     padding: '8px 12px',
                     fontSize: 14,
                     color: '#374151',
                     cursor: 'pointer',
                     outline: 'none'
-                  }}
-                >
+                    }}
+                  >
                   <option value="all">All Prices</option>
                   <option value="low">Under KD 100</option>
                   <option value="mid">KD 100 - 500</option>
@@ -270,11 +270,11 @@ export default function ViewClassifieds(): React.JSX.Element {
               <span style={{ fontSize: 14, color: '#6b7280' }}>
                 {sortedListings.length === 1 ? 'listing' : 'listings'} found
               </span>
-            </div>
           </div>
+        </div>
 
           {/* Loading State */}
-          {loading && (
+              {loading && (
             <div style={{ textAlign: 'center', padding: '80px 20px' }}>
               <div style={{
                 width: 50,
@@ -292,11 +292,11 @@ export default function ViewClassifieds(): React.JSX.Element {
                   100% { transform: rotate(360deg); }
                 }
               `}</style>
-            </div>
-          )}
+                </div>
+              )}
 
           {/* Error State */}
-          {error && (
+              {error && (
             <div style={{
               background: '#fee2e2',
               border: '1px solid #fecaca',
@@ -306,9 +306,9 @@ export default function ViewClassifieds(): React.JSX.Element {
               textAlign: 'center'
             }}>
               <span style={{ fontSize: 32, marginBottom: 8, display: 'block' }}>⚠️</span>
-              {error}
-            </div>
-          )}
+                  {error}
+                </div>
+              )}
 
           {/* Empty State */}
           {!loading && sortedListings.length === 0 && !error && (
@@ -316,8 +316,8 @@ export default function ViewClassifieds(): React.JSX.Element {
               <span style={{ fontSize: 64, marginBottom: 16, display: 'block' }}>🔍</span>
               <h3 style={{ fontSize: 24, color: '#111827', marginBottom: 8 }}>No classifieds found</h3>
               
-            </div>
-          )}
+                </div>
+              )}
 
           {/* Grid of Classifieds */}
           {!loading && sortedListings.length > 0 && (
@@ -328,14 +328,14 @@ export default function ViewClassifieds(): React.JSX.Element {
             }}>
               {sortedListings.map((item) => (
                 <article
-                  key={item._id}
+                          key={item._id}
                   onClick={() => handleViewItem(item)}
                   style={{
                     background: '#fff',
                     borderRadius: 16,
-                    overflow: 'hidden',
-                    transition: 'all 0.3s ease',
-                    cursor: 'pointer',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.3s ease',
+                                    cursor: 'pointer',
                     border: '1px solid #e5e7eb',
                     display: 'flex',
                     flexDirection: 'column'
@@ -351,7 +351,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                 >
                   {/* Image */}
                   <div style={{ 
-                    position: 'relative', 
+                                    position: 'relative',
                     height: 250, 
                     overflow: 'hidden',
                     background: '#f3f4f6',
@@ -437,7 +437,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                       color: '#6b7280',
                       lineHeight: 1.6,
                       marginBottom: 16,
-                      overflow: 'hidden',
+                                    overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
@@ -497,18 +497,18 @@ export default function ViewClassifieds(): React.JSX.Element {
                           fontSize: 15,
                           fontWeight: 600,
                           cursor: 'pointer',
-                          transition: 'all 0.3s ease',
+                                    transition: 'all 0.3s ease',
                           width: '100%'
                         }}
-                        onMouseEnter={(e) => {
+                            onMouseEnter={(e) => {
                           e.currentTarget.style.background = '#6a9944';
                           e.currentTarget.style.transform = 'translateY(-2px)';
                           e.currentTarget.style.boxShadow = '0 8px 16px rgba(131, 178, 83, 0.3)';
-                        }}
-                        onMouseLeave={(e) => {
+                            }}
+                            onMouseLeave={(e) => {
                           e.currentTarget.style.background = '#83B253';
                           e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = 'none';
+                              e.currentTarget.style.boxShadow = 'none';
                         }}>
                         📞 Contact Seller
                       </button>
@@ -538,9 +538,9 @@ export default function ViewClassifieds(): React.JSX.Element {
             justifyContent: 'center',
             padding: 20,
             overflow: 'auto'
-          }}
-        >
-          <div 
+                            }}
+                          >
+                            <div
             onClick={(e) => e.stopPropagation()}
             style={{
               background: '#fff',
@@ -551,12 +551,12 @@ export default function ViewClassifieds(): React.JSX.Element {
               overflow: 'auto',
               position: 'relative'
             }}
-          >
+                            >
             {/* Close Button */}
             <button
               onClick={closeModal}
-              style={{
-                position: 'absolute',
+                                  style={{
+                                    position: 'absolute',
                 top: 16,
                 right: 16,
                 background: '#fff',
@@ -572,8 +572,8 @@ export default function ViewClassifieds(): React.JSX.Element {
                 color: '#6b7280',
                 zIndex: 10,
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-              }}
-            >
+                                  }}
+                                >
               ✕
             </button>
 
@@ -591,14 +591,14 @@ export default function ViewClassifieds(): React.JSX.Element {
                 <img 
                   src={`${API_URL}${selectedItem.images[0]}`}
                   alt={selectedItem.title}
-                  style={{
-                    width: '100%',
+                                style={{
+                                  width: '100%',
                     height: '100%',
                     maxHeight: 500,
                     objectFit: 'contain'
-                  }}
-                />
-              </div>
+                                }}
+                              />
+                            </div>
             )}
 
             {/* Content */}
@@ -628,7 +628,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                 lineHeight: 1.3
               }}>
                 {selectedItem.title}
-              </h2>
+                                    </h2>
 
               {/* Price */}
               <div style={{
@@ -638,7 +638,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                 marginBottom: 24
               }}>
                 KD {Number(selectedItem.price).toFixed(2)}
-              </div>
+                                      </div>
 
               {/* Meta Info */}
               <div style={{
@@ -653,13 +653,13 @@ export default function ViewClassifieds(): React.JSX.Element {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280' }}>
                     <span>📍</span>
                     <span>{selectedItem.location}</span>
-                  </div>
+                                        </div>
                 )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#6b7280' }}>
                   <span>📅</span>
                   <span>{formatDate(selectedItem.createdAt)}</span>
-                </div>
-              </div>
+                                </div>
+                              </div>
 
               {/* Description */}
               <div style={{ marginBottom: 32 }}>
@@ -701,9 +701,9 @@ export default function ViewClassifieds(): React.JSX.Element {
                     {selectedItem.phone && (
                       <a 
                         href={`tel:${selectedItem.phone}`}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
                           gap: 12,
                           padding: '12px 16px',
                           background: '#fff',
@@ -729,9 +729,9 @@ export default function ViewClassifieds(): React.JSX.Element {
                     {selectedItem.email && (
                       <a 
                         href={`mailto:${selectedItem.email}`}
-                        style={{
+                                      style={{
                           display: 'flex',
-                          alignItems: 'center',
+                                        alignItems: 'center',
                           gap: 12,
                           padding: '12px 16px',
                           background: '#fff',
@@ -749,7 +749,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                           e.currentTarget.style.background = '#fff';
                           e.currentTarget.style.color = '#111827';
                         }}
-                      >
+                                >
                         <span style={{ fontSize: 20 }}>✉️</span>
                         <span style={{ fontSize: 16, fontWeight: 500 }}>{selectedItem.email}</span>
                       </a>
