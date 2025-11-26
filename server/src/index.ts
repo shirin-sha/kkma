@@ -17,16 +17,7 @@ dotenv.config();
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
-
-// CORS configuration
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 // Serve static uploads
@@ -45,33 +36,23 @@ app.use(membershipRouter);
 app.use('/api/user', userRouter);
 app.use('/api/classifieds', classifiedsRouter);
 
-// Serve static files from client dist (for production)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, '../../client/dist')));
-  
-  // Handle SPA routing - serve index.html for all non-API routes
-  app.get('*', (_req: Request, res: Response) => {
-    res.sendFile(path.resolve(__dirname, '../../client/dist/index.html'));
+// Root endpoint
+app.get('/', (_req: Request, res: Response) => {
+  res.json({ 
+    message: 'KKMA API Server',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      admin: '/api/admin/*',
+      contact: '/api/contact',
+      news: '/api/news',
+      events: '/api/events',
+      membership: '/api/membership',
+      user: '/api/user/*',
+      classifieds: '/api/classifieds/*'
+    }
   });
-} else {
-  // Root endpoint (development only)
-  app.get('/', (_req: Request, res: Response) => {
-    res.json({ 
-      message: 'KKMA API Server',
-      status: 'running',
-      endpoints: {
-        health: '/api/health',
-        admin: '/api/admin/*',
-        contact: '/api/contact',
-        news: '/api/news',
-        events: '/api/events',
-        membership: '/api/membership',
-        user: '/api/user/*',
-        classifieds: '/api/classifieds/*'
-      }
-    });
-  });
-}
+});
 
 const PORT = process.env.PORT || 4001;
 
