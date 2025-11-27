@@ -17,10 +17,14 @@ RUN npm install
 COPY . .
 
 # Build server
-RUN cd server && npm run build
+RUN cd server && npm run build && \
+    test -f dist/src/index.js || (echo "ERROR: Server build failed - dist/src/index.js not found" && exit 1) && \
+    echo "✅ Server build successful"
 
 # Build client
-RUN cd client && npm run build
+RUN cd client && npm run build && \
+    test -f dist/index.html || (echo "ERROR: Client build failed - dist/index.html not found" && exit 1) && \
+    echo "✅ Client build successful"
 
 # Stage 2: Production image
 FROM node:20-alpine
