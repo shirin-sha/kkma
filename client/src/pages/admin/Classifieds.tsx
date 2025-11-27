@@ -135,7 +135,6 @@ export default function AdminClassifieds(): React.JSX.Element {
       
       const data = await res.json()
       if (res.ok && data.ok) {
-        alert('Classified deleted successfully')
         fetchClassifieds()
         if (viewModal) setViewModal(false)
       } else {
