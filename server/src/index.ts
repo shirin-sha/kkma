@@ -2,6 +2,7 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { connectToDatabase } from './db';
 import adminRouter from './routes/admin';
 import { ensureAdminUser } from './models/AdminUser';
@@ -37,11 +38,43 @@ app.use('/api/user', userRouter);
 app.use('/api/classifieds', classifiedsRouter);
 
 // Serve static files from client dist (both development and production)
-app.use(express.static(path.resolve(__dirname, '../../client/dist')));
+// Try multiple possible paths to find client dist
+const possiblePaths = [
+  path.resolve(__dirname, '../../../client/dist'),  // Production: /app/server/dist/src -> /app/client/dist
+  path.resolve(__dirname, '../../client/dist'),     // Alternative path
+  path.resolve(__dirname, '../../../../client/dist'), // Another alternative
+  path.resolve(process.cwd(), 'client/dist'),       // From current working directory
+];
+
+let clientDistPath = possiblePaths[0]; // Default to first path
+let found = false;
+
+for (const testPath of possiblePaths) {
+  if (fs.existsSync(testPath) && fs.existsSync(path.join(testPath, 'index.html'))) {
+    clientDistPath = testPath;
+    found = true;
+    console.log(`[INFO] Serving client from: ${clientDistPath}`);
+    break;
+  }
+}
+
+if (!found) {
+  console.error('[ERROR] Client dist directory not found! Tried:');
+  possiblePaths.forEach(p => console.error(`  - ${p}`));
+  console.error(`[DEBUG] __dirname: ${__dirname}`);
+  console.error(`[DEBUG] process.cwd(): ${process.cwd()}`);
+}
+
+app.use(express.static(clientDistPath));
 
 // Handle SPA routing - serve index.html for all non-API routes
 app.get('*', (_req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, '../../client/dist/index.html'));
+  const indexPath = path.join(clientDistPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({ error: 'Frontend not found. Client dist directory may not be built correctly.' });
+  }
 });
 
 const PORT = process.env.PORT || 4001;
