@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
 export default function AdminMembershipDetail(): React.JSX.Element {
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = (import.meta as any).env?.VITE_API_URL || ''
   const { id } = useParams()
   const [item, setItem] = useState<any>(null)
   const [loading, setLoading] = useState(true)

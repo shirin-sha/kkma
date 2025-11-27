@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001';
+import { API_URL } from '../../utils/config';
 
 type ClassifiedListing = {
   _id: string;

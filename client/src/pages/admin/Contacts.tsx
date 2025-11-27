@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { API_URL } from '../../utils/config'
 
 type ContactItem = {
   _id: string
@@ -39,8 +40,7 @@ export default function AdminContacts(): React.JSX.Element {
       setLoading(true)
       setError('')
       try {
-        const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
-        const res = await fetch(`${baseUrl}/api/contact?page=${page}&limit=${limit}`)
+        const res = await fetch(`${API_URL}/api/contact?page=${page}&limit=${limit}`)
         const data: ApiResponse = await res.json()
         if (res.ok && data.ok) {
           setItems(data.items)

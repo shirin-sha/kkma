@@ -22,7 +22,7 @@ export default function News(): React.JSX.Element {
     // Resolve API base once for render (used for image URLs too)
     const envBase = (import.meta as any)?.env?.VITE_API_BASE
     const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-    const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+    const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
     useEffect(() => {
         const fetchNews = async () => {
             try {

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isUserAuthenticated, getUserToken, getUserData, logout } from '../../utils/userAuth';
-
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001';
+import { API_URL } from '../../utils/config';
 
 interface Classified {
   _id: string;

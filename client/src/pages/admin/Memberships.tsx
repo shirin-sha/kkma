@@ -24,7 +24,7 @@ type ListResponse = {
 }
 
 export default function AdminMemberships(): React.JSX.Element {
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
   const [items, setItems] = useState<ApplicationItem[]>([])
   const [page, setPage] = useState(1)
   const [limit] = useState(20)

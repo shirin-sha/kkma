@@ -37,7 +37,7 @@ type FormState = {
 }
 
 export default function Register(): React.JSX.Element {
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   const getTodayDdMmYy = (): string => {
     const now = new Date()

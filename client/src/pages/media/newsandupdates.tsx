@@ -127,7 +127,7 @@ export default function NewsAndUpdates(): React.JSX.Element {
 
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState('')
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const load = async () => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { API_URL } from '../../utils/config'
 
 type ClassifiedItem = {
   _id: string
@@ -51,7 +52,7 @@ export default function AdminClassifieds(): React.JSX.Element {
     setLoading(true)
     setError('')
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
+      const baseUrl = API_URL
       const url = filterStatus === 'all' 
         ? `${baseUrl}/api/admin/classifieds`
         : `${baseUrl}/api/admin/classifieds?status=${filterStatus}`
@@ -75,7 +76,7 @@ export default function AdminClassifieds(): React.JSX.Element {
     
     setProcessing(id)
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
+      const baseUrl = API_URL
       const res = await fetch(`${baseUrl}/api/admin/classifieds/${id}/approve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' }
@@ -101,7 +102,7 @@ export default function AdminClassifieds(): React.JSX.Element {
     
     setProcessing(id)
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
+      const baseUrl = API_URL
       const res = await fetch(`${baseUrl}/api/admin/classifieds/${id}/reject`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' }
@@ -127,7 +128,7 @@ export default function AdminClassifieds(): React.JSX.Element {
     
     setProcessing(id)
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
+      const baseUrl = API_URL
       const res = await fetch(`${baseUrl}/api/admin/classifieds/${id}`, {
         method: 'DELETE'
       })

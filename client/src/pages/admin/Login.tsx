@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react"
+import { API_URL } from "../../utils/config"
 
 interface LoginFormData {
   username: string
@@ -28,8 +29,7 @@ export default function AdminLogin(): React.JSX.Element {
     setError("")
 
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
-      const res = await fetch(`${baseUrl}/api/admin/login`, {
+      const res = await fetch(`${API_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: formData.username, password: formData.password }),

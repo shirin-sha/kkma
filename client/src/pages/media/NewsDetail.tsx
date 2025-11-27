@@ -33,7 +33,7 @@ export default function NewsDetail(): React.JSX.Element {
   const [archives, setArchives] = useState<{ key: string; label: string; count: number }[]>([])
   const [categories, setCategories] = useState<{ name: string; count: number }[]>([])
   const [galleryIndex, setGalleryIndex] = useState(0)
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const load = async () => {

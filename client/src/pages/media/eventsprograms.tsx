@@ -35,7 +35,7 @@ export default function EventsPrograms(): React.JSX.Element {
   const [selectedCategory, setSelectedCategory] = useState<string>(() => {
     return searchParams.get('category') || 'all'
   })
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const loadEvents = async () => {

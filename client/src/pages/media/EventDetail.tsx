@@ -26,7 +26,7 @@ export default function EventDetail(): React.JSX.Element {
   const [item, setItem] = useState<EventItem | null>(null)
   const [error, setError] = useState('')
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const load = async () => {

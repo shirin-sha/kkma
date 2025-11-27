@@ -40,7 +40,7 @@ export default function AdminEvents(): React.JSX.Element {
   const [editingId, setEditingId] = useState<string>('')
   const [isFeatured, setIsFeatured] = useState<boolean>(false)
 
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken')

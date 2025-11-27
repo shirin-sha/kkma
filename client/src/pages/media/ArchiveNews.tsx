@@ -37,7 +37,7 @@ export default function ArchiveNews(): React.JSX.Element {
   const [total, setTotal] = useState(0)
   const [limit] = useState(10)
   const [archiveLabel, setArchiveLabel] = useState('')
-  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const loadPosts = async () => {

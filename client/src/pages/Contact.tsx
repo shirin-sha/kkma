@@ -1,6 +1,7 @@
 import { Star } from 'lucide-react';
 import React, { useState } from 'react'
 import { useEffect } from 'react'
+import { API_URL } from '../utils/config'
 
 export default function Contact(): React.JSX.Element {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -71,8 +72,7 @@ export default function Contact(): React.JSX.Element {
     setSubmitting(true)
     setStatus(null)
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001'
-      const res = await fetch(`${baseUrl}/api/contact`, {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

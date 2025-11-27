@@ -82,7 +82,7 @@ export default function AdminNews(): React.JSX.Element {
 	const [dateInput, setDateInput] = useState<string>('')
 	const [galleryFiles, setGalleryFiles] = useState<File[]>([])
 
-	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || 'http://localhost:4001', [])
+	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
 	useEffect(() => {
 		const token = localStorage.getItem('adminToken')
