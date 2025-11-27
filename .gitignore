@@ -5,3 +5,4 @@ server/.env
 /client/dist
 server/dist
 client/tsconfig.tsbuildinfo
+server/uploads/
