@@ -25,29 +25,26 @@ RUN cd client && npm run build
 # Stage 2: Production image
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /app/server
 
-# Copy package files
-COPY package*.json ./
-COPY server/package*.json ./server/
+# Copy server package files
+COPY server/package*.json ./
 
-# Install production dependencies only
-RUN npm install --production --workspaces
+# Install production dependencies for server only
+RUN npm install --production
 
-# Copy built files from builder
-COPY --from=builder /app/server/dist ./server/dist
-COPY --from=builder /app/client/dist ./client/dist
+# Copy built server files from builder
+COPY --from=builder /app/server/dist ./dist
 
-# Verify dist files exist
-RUN ls -la /app/server/dist/ && ls -la /app/client/dist/ || true
+# Copy client dist to serve static files
+COPY --from=builder /app/client/dist ../client/dist
 
 # Copy uploads directory structure
-RUN mkdir -p /app/server/uploads/classifieds
+RUN mkdir -p uploads/classifieds uploads/news uploads/members
 
 # Expose port
 EXPOSE 4001
 
-# Start the server
-WORKDIR /app
-CMD ["node", "server/dist/index.js"]
+# Start the server from server directory
+CMD ["node", "dist/index.js"]
 
