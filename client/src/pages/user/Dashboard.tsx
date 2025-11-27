@@ -74,7 +74,6 @@ export default function UserDashboard(): React.JSX.Element | null {
       }
 
       setClassifieds(classifieds.filter((c) => c._id !== id));
-      alert('Classified deleted successfully');
     } catch (err: unknown) {
       alert(err instanceof Error ? err.message : 'Failed to delete');
     }
