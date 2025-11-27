@@ -32,12 +32,14 @@ COPY package*.json ./
 COPY server/package*.json ./server/
 
 # Install production dependencies only
-RUN npm install --production
-RUN cd server && npm install --production
+RUN npm install --production --workspaces
 
 # Copy built files from builder
 COPY --from=builder /app/server/dist ./server/dist
 COPY --from=builder /app/client/dist ./client/dist
+
+# Verify dist files exist
+RUN ls -la /app/server/dist/ && ls -la /app/client/dist/ || true
 
 # Copy uploads directory structure
 RUN mkdir -p /app/server/uploads/classifieds
@@ -46,5 +48,6 @@ RUN mkdir -p /app/server/uploads/classifieds
 EXPOSE 4001
 
 # Start the server
-CMD ["npm", "start"]
+WORKDIR /app
+CMD ["node", "server/dist/index.js"]
 
