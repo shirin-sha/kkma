@@ -85,10 +85,10 @@ export default function AdminNews(): React.JSX.Element {
 	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
 	useEffect(() => {
-		const token = localStorage.getItem('adminToken')
-		if (token !== 'admin-authenticated') {
-			window.location.href = '/admin/login'
-		}
+    const token = localStorage.getItem('adminToken')
+    if (token !== 'admin-authenticated') {
+      window.location.href = '/admin'
+    }
 	}, [])
 
 	async function load() {

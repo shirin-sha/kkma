@@ -7,14 +7,14 @@ export default function AdminLayout(): React.JSX.Element {
   useEffect(() => {
     const token = localStorage.getItem('adminToken')
     if (token !== 'admin-authenticated') {
-      window.location.href = '/admin/login'
+      window.location.href = '/admin'
     }
   }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken')
     localStorage.removeItem('adminUser')
-    window.location.href = '/admin/login'
+    window.location.href = '/admin'
   }
 
   const location = useLocation()
