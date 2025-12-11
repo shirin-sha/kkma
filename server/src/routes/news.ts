@@ -22,7 +22,7 @@ const upload = multer({ storage })
 router.get("/api/news/latest", async (req: Request, res: Response) => {
   try {
     const posts = await NewsPost.find({})
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .limit(3)
       .lean()
 
@@ -98,7 +98,7 @@ router.get("/api/news", async (req: Request, res: Response) => {
     }
 
     const posts = await NewsPost.find(filter)
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .lean()
 
     return res.json({
