@@ -3,14 +3,17 @@ import jwt from 'jsonwebtoken';
 import Classified from '../models/Classified';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
 // Configure multer for file uploads
+const uploadDir = path.resolve(__dirname, '../../../uploads/classifieds');
+fs.mkdirSync(uploadDir, { recursive: true });
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/classifieds/');
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);

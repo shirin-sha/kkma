@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static uploads
-app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
+app.use('/uploads', express.static(path.resolve(__dirname, '../../uploads')));
 
 // API health check
 app.get('/api/health', (_req: Request, res: Response) => {

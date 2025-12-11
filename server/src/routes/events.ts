@@ -6,7 +6,7 @@ import { EventModel } from '../models/Event'
 
 const router = Router()
 
-const uploadDir = path.resolve(__dirname, '../../uploads/events')
+const uploadDir = path.resolve(__dirname, '../../../uploads/events')
 fs.mkdirSync(uploadDir, { recursive: true })
 
 const storage = multer.diskStorage({

@@ -6,7 +6,7 @@ import fs from 'fs'
 
 const router = Router()
 
-const uploadDir = path.resolve(__dirname, '../../uploads/news')
+const uploadDir = path.resolve(__dirname, '../../../uploads/news')
 fs.mkdirSync(uploadDir, { recursive: true })
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadDir),

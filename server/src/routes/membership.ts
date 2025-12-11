@@ -6,7 +6,7 @@ import { MemberApplication } from '../models/MemberApplication'
 
 const router = Router()
 
-const uploadDir = path.resolve(__dirname, '../../uploads/members')
+const uploadDir = path.resolve(__dirname, '../../../uploads/members')
 fs.mkdirSync(uploadDir, { recursive: true })
 
 const storage = multer.diskStorage({
