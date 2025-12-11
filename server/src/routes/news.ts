@@ -143,7 +143,7 @@ router.get('/api/news/:id([0-9a-fA-F]{24})', async (req: Request, res: Response)
 // POST /api/news - Create a new news post
 router.post("/api/news", upload.fields([
   { name: 'image', maxCount: 1 },
-  { name: 'gallery', maxCount: 10 },
+  { name: 'gallery', maxCount: 20 },
 ]), async (req: Request, res: Response) => {
   try {
     const { title, href, category, author, comments, content, contentHtml, excerpt, publishedDate, slug, featuredAlt, featuredCaption, tags, seoTitle, seoDescription } = req.body as any
