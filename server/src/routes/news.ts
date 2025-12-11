@@ -18,13 +18,25 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
-// GET /api/news/latest - Get latest 3 news posts for homepage
-router.get("/api/news/latest", async (req: Request, res: Response) => {
+// GET /api/news/latest - Get latest 3 news posts for homepage (sorted by publishedDate desc, fallback createdAt)
+router.get("/api/news/latest", async (_req: Request, res: Response) => {
   try {
-    const posts = await NewsPost.find({})
-      .sort({ createdAt: -1 })
-      .limit(3)
-      .lean()
+    const posts = await NewsPost.aggregate([
+      {
+        $addFields: {
+          publishedDateObj: {
+            $dateFromString: {
+              dateString: '$publishedDate',
+              format: '%d/%m/%Y',
+              onError: '$createdAt',
+              onNull: '$createdAt',
+            },
+          },
+        },
+      },
+      { $sort: { publishedDateObj: -1, createdAt: -1, _id: -1 } },
+      { $limit: 3 },
+    ])
 
     // Transform the data to match the frontend NewsItem type
     const transformedItems = posts.map((item: any) => ({
@@ -97,9 +109,22 @@ router.get("/api/news", async (req: Request, res: Response) => {
       }
     }
 
-    const posts = await NewsPost.find(filter)
-      .sort({ createdAt: -1 })
-      .lean()
+    const posts = await NewsPost.aggregate([
+      { $match: filter },
+      {
+        $addFields: {
+          publishedDateObj: {
+            $dateFromString: {
+              dateString: '$publishedDate',
+              format: '%d/%m/%Y',
+              onError: '$createdAt',
+              onNull: '$createdAt',
+            },
+          },
+        },
+      },
+      { $sort: { publishedDateObj: -1, createdAt: -1, _id: -1 } },
+    ])
 
     return res.json({
       ok: true,
