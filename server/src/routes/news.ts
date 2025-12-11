@@ -6,6 +6,21 @@ import fs from 'fs'
 
 const router = Router()
 
+// Parse dd/mm/yyyy string to a timestamp (0 if invalid)
+const toPublishedTs = (item: any): number => {
+  if (item?.publishedDate && typeof item.publishedDate === 'string') {
+    const parts = item.publishedDate.split('/')
+    if (parts.length === 3) {
+      const d = parseInt(parts[0], 10)
+      const m = parseInt(parts[1], 10) - 1
+      const y = parseInt(parts[2], 10)
+      const dt = new Date(y, m, d)
+      if (!isNaN(dt.getTime())) return dt.getTime()
+    }
+  }
+  return 0
+}
+
 const uploadDir = path.resolve(__dirname, '../../../uploads/news')
 fs.mkdirSync(uploadDir, { recursive: true })
 const storage = multer.diskStorage({
@@ -18,28 +33,17 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
-// GET /api/news/latest - Get latest 3 news posts for homepage (sorted by publishedDate desc, fallback createdAt)
-router.get("/api/news/latest", async (_req: Request, res: Response) => {
+// GET /api/news/latest - Get latest 3 news posts for homepage
+router.get("/api/news/latest", async (req: Request, res: Response) => {
   try {
-    const posts = await NewsPost.aggregate([
-      {
-        $addFields: {
-          publishedDateObj: {
-            $dateFromString: {
-              dateString: '$publishedDate',
-              format: '%d/%m/%Y',
-              onError: '$createdAt',
-              onNull: '$createdAt',
-            },
-          },
-        },
-      },
-      { $sort: { publishedDateObj: -1, createdAt: -1, _id: -1 } },
-      { $limit: 3 },
-    ])
+    const posts = await NewsPost.find({}).lean()
+    const sorted = posts
+      .slice()
+      .sort((a, b) => toPublishedTs(b) - toPublishedTs(a))
+      .slice(0, 3)
 
     // Transform the data to match the frontend NewsItem type
-    const transformedItems = posts.map((item: any) => ({
+    const transformedItems = sorted.map((item: any) => ({
       id: item._id,
       date: item.date?.day || new Date(item.createdAt).getDate().toString(),
       month: item.date?.monthYear || new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short' }),
@@ -109,26 +113,14 @@ router.get("/api/news", async (req: Request, res: Response) => {
       }
     }
 
-    const posts = await NewsPost.aggregate([
-      { $match: filter },
-      {
-        $addFields: {
-          publishedDateObj: {
-            $dateFromString: {
-              dateString: '$publishedDate',
-              format: '%d/%m/%Y',
-              onError: '$createdAt',
-              onNull: '$createdAt',
-            },
-          },
-        },
-      },
-      { $sort: { publishedDateObj: -1, createdAt: -1, _id: -1 } },
-    ])
+    const posts = await NewsPost.find(filter).lean()
+    const sorted = posts
+      .slice()
+      .sort((a, b) => toPublishedTs(b) - toPublishedTs(a))
 
     return res.json({
       ok: true,
-      items: posts
+      items: sorted
     })
   } catch (err) {
     console.error("[news get] error:", err)
