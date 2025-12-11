@@ -123,7 +123,7 @@ export default function MagnetClub(): React.JSX.Element {
       {/* Page Title */}
       <section
         className="page-title"
-        style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}
+        style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}
       >
         <div className="auto-container">
           <div className="content-box">
@@ -209,7 +209,7 @@ export default function MagnetClub(): React.JSX.Element {
                   </div>
                   <div className="right-column">
                     <figure className="image-box">
-                      <img src="https://kkma.net/wp-content/uploads/2024/09/Magnet-KKMA.jpg" alt="MAGNET" />
+                      <img src="/images/initiatives/Magnet-KKMA.jpg" alt="MAGNET" />
                     </figure>
                     <div className="inner centred">
                       <div className="icon-box"><Hospital /></div>
@@ -264,7 +264,7 @@ export default function MagnetClub(): React.JSX.Element {
             <div className="lower-box clearfix">
               <div
                 className="bg-layer"
-                style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/bg-1-2.jpg)' }}
+                style={{ backgroundImage: 'url(/images/initiatives/2021/05/bg-1-2.jpg)' }}
               ></div>
               <div className="text pull-left">
                 <div className="icon-box"><Lightbulb /></div>

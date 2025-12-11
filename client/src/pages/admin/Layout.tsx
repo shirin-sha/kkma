@@ -59,7 +59,7 @@ export default function AdminLayout(): React.JSX.Element {
       >
         <div className="admin__brand" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingBottom: 8, borderBottom: '1px solid #f1f5f9' }}>
           <Link to="/admin/contacts" className="admin__brand-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: '#000', textDecoration: 'none' }}>
-            <img src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png" alt="KKMA" className="admin__brand-logo"  style={{ height: '50px' }}  />
+            <img src="/images/logo/KKMA-LOGO-WITH-TEXT-1.png" alt="KKMA" className="admin__brand-logo"  style={{ height: '50px' }}  />
           </Link>
         </div>
 

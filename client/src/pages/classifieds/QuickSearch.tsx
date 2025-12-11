@@ -27,7 +27,7 @@ export default function QuickSearch(): React.JSX.Element {
   return (
     <div className="boxed_wrapper">
       {/* Page Title */}
-      <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
+      <section className="page-title" style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred"><h1>Quick Search</h1></div>

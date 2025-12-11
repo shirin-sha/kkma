@@ -4,9 +4,9 @@ import { Star, BookOpen, Mail, UsersRound, UserCheck, HeartHandshake } from 'luc
 export default function Explore(): React.JSX.Element {
     return (
         <section className="explore-section centred bg-color-2">
-            <figure className="vector-image"><img decoding="async" src="https://kkma.net/wp-content/uploads/2021/05/vector-1-2.png" alt="Background Image" />
+            <figure className="vector-image"><img decoding="async" src="/images/home/vector-1-2.png" alt="Background Image" />
             </figure>
-            <div className="pattern-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/shape-1-2.png)' }}></div>
+            <div className="pattern-layer" style={{ backgroundImage: 'url(/images/home/shape-1-2.png)' }}></div>
             <div className="auto-container">
                 <div className="sec-title centred light">
                     <h6><Star size={16} fill='currentColor' className="inline mr-2" /><span>Discover Our Initiatives and Opportunities to Make a Difference</span><Star size={16} fill='currentColor' className="inline ml-2" /></h6>
@@ -18,7 +18,7 @@ export default function Explore(): React.JSX.Element {
                     <div className="col-lg-4 col-md-6 col-sm-12 explore-block">
                         <div className="explore-block-one wow fadeInUp animated animated" data-wow-delay="300ms" data-wow-duration="1500ms">
                             <div className="inner-box">
-                                <figure className="image-box"><img decoding="async" src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-Social_Projects.jpg" alt="Awesome Image" />
+                                <figure className="image-box"><img decoding="async" src="/images/home/KKMA-Homepage-Social_Projects.jpg" alt="Awesome Image" />
                                 </figure>
                                 <div className="content-box">
                                     <div className="text">
@@ -51,7 +51,7 @@ export default function Explore(): React.JSX.Element {
                     <div className="col-lg-4 col-md-6 col-sm-12 explore-block">
                         <div className="explore-block-one wow fadeInUp animated animated" data-wow-delay="300ms" data-wow-duration="1500ms">
                             <div className="inner-box">
-                                <figure className="image-box"><img decoding="async" src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-Volunteer.jpg" alt="Awesome Image" />
+                                <figure className="image-box"><img decoding="async" src="/images/home/KKMA-Homepage-Volunteer.jpg" alt="Awesome Image" />
                                 </figure>
                                 <div className="content-box">
                                     <div className="text">
@@ -84,7 +84,7 @@ export default function Explore(): React.JSX.Element {
                     <div className="col-lg-4 col-md-6 col-sm-12 explore-block">
                         <div className="explore-block-one wow fadeInUp animated animated" data-wow-delay="300ms" data-wow-duration="1500ms">
                             <div className="inner-box">
-                                <figure className="image-box"><img decoding="async" src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-Memebership.jpg" alt="Awesome Image" />
+                                <figure className="image-box"><img decoding="async" src="/images/home/KKMA-Homepage-Memebership.jpg" alt="Awesome Image" />
                                 </figure>
                                 <div className="content-box">
                                     <div className="text">

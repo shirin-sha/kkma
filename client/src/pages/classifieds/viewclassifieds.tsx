@@ -149,7 +149,7 @@ export default function ViewClassifieds(): React.JSX.Element {
     <div className="boxed_wrapper" style={{ background: '#f9fafb' }}>
       {/* Hero Section */}
       {/* Page Title */}
-      <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
+      <section className="page-title" style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred"><h1>View Classifieds</h1></div>
@@ -362,7 +362,7 @@ export default function ViewClassifieds(): React.JSX.Element {
                     <img
                       src={item.images[0]
                         ? `${API_URL}${item.images[0]}`
-                        : 'https://kkma.net/wp-content/uploads/2024/09/KKMA-CLASSIFIEDS.jpg'}
+                        : '/images/classifieds/KKMA-CLASSIFIEDS.jpg'}
                       alt={item.title}
                       style={{
                         width: '100%',

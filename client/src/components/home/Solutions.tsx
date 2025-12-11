@@ -21,7 +21,7 @@ export default function Solutions(): React.JSX.Element {
             {/* Background & Patterns */}
             <figure className="image-layer">
                 <img
-                    src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Kuwait-Tower.jpg"
+                    src="/images/home/KKMA-Kuwait-Tower.jpg"
                     alt="Awesome Image"
                 />
             </figure>
@@ -31,28 +31,28 @@ export default function Solutions(): React.JSX.Element {
                     className="pattern-1"
                     style={{
                         backgroundImage:
-                            "url(https://kkma.net/wp-content/themes/whitehall/assets/images/shape/shape-2.png)",
+                            "url(/images/home/shape-2.png)",
                     }}
                 ></div>
                 <div
                     className="pattern-2"
                     style={{
                         backgroundImage:
-                            "url(https://kkma.net/wp-content/themes/whitehall/assets/images/shape/shape-3.png)",
+                            "url(/images/home/shape-3.png)",
                     }}
                 ></div>
                 <div
                     className="pattern-3"
                     style={{
                         backgroundImage:
-                            "url(https://kkma.net/wp-content/themes/whitehall/assets/images/shape/shape-3.png)",
+                            "url(/images/home/shape-3.png)",
                     }}
                 ></div>
                 <div
                     className="pattern-4 float-bob-y"
                     style={{
                         backgroundImage:
-                            "url(https://kkma.net/wp-content/uploads/2021/05/shape-4-2.png)",
+                            "url(/images/home/shape-4-2.png)",
                     }}
                 ></div>
             </div>
@@ -96,7 +96,7 @@ export default function Solutions(): React.JSX.Element {
                             className="bg-layer"
                             style={{
                                 backgroundImage:
-                                    "url(https://kkma.net/wp-content/uploads/2021/05/bg-1-2.jpg)",
+                                    "url(/images/home/2021/05/bg-1-2.jpg)",
                             }}
                         ></div>
                         <div className="text pull-left">

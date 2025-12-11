@@ -22,47 +22,47 @@ export default function MemberPrivileges(): React.JSX.Element {
       partners: [
         {
           title: 'CITY CLINIC GROUP',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-CITY-CLINIC-GROUP.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-CITY-CLINIC-GROUP.jpg',
         },
         {
           title: 'SALMIYA CLINIC',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-SALMIYA-CLINIC.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-SALMIYA-CLINIC.jpg',
         },
         {
           title: 'MEDX MEDICAL GROUP',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-MEDX-MEDICAL-CARE.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-MEDX-MEDICAL-CARE.jpg',
         },
         {
           title: 'ASTER MIMS',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-ASTER-MIMS-HOSPITAL.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-ASTER-MIMS-HOSPITAL.jpg',
         },
         {
           title: 'APOLLO CLINIC',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-APOLLO-CLINIC.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-APOLLO-CLINIC.jpg',
         },
         {
           title: 'KIMS ALSHIFA',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-KIMS-ALSHIFA-HOSPITAL.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-KIMS-ALSHIFA-HOSPITAL.jpg',
         },
         {
           title: 'MOULANA HOSPITAL',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-MOULANA-HOSPITAL.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-MOULANA-HOSPITAL.jpg',
         },
         {
           title: 'SYRUS MM HOSPITAL',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-MM-HOSPITAL.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-MM-HOSPITAL.jpg',
         },
         {
           title: 'KALYANI MEDICALS & CLINIC',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-KALYANI-MEDICALS-CLINIC.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-KALYANI-MEDICALS.jpg',
         },
         {
           title: 'NATIONAL MEDICALS',
-          img: 'https://kkma.net/wp-content/uploads/2024/10/Demo-Logo-1.jpg',
+          img: '/images/member-privileges/Demo-Logo-1.jpg',
         },
         {
           title: 'KANNUR Med. Col. PHARMACY',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-KANNUR-MEDICAL-COLLEGE.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-KANNUR-MEDICAL-COLLEGE.jpg',
         },
       ],
     },
@@ -71,11 +71,11 @@ export default function MemberPrivileges(): React.JSX.Element {
       partners: [
         {
           title: 'GRAND HYPERMARKET',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-GRAND-HYPERMARKET.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-GRAND-HYPERMARKET.jpg',
         },
         {
           title: 'MANGO HYPERMARKET',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-MANGO-HYPERMARKET.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-MANGO-HYPERMARKET.jpg',
         },
       ],
     },
@@ -84,19 +84,19 @@ export default function MemberPrivileges(): React.JSX.Element {
       partners: [
         {
           title: 'THAKKARA RESTAURANT',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-THAKKARA-RESTAURANT.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-THAKKARA-RESTAURANT.jpg',
         },
         {
           title: 'ALIYANS THAKKARA',
-          img: 'https://kkma.net/wp-content/uploads/2024/10/Demo-Logo-1.jpg',
+          img: '/images/member-privileges/Demo-Logo-1.jpg',
         },
         {
           title: 'CALICUT CHEF',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-CALICUT-CHEF-REASTAURANT-JLEEB-PARK.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-CALICUT-CHEF-REASTAURANT-JLEEB-PARK.jpg',
         },
         {
           title: 'SANGEETHA VEG.',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-SANGEETHA-VEG-REASTAURANT.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-SANGEETHA-VEG-REASTAURANT.jpg',
         },
       ],
     },
@@ -105,15 +105,15 @@ export default function MemberPrivileges(): React.JSX.Element {
       partners: [
         {
           title: 'JOY ALUKKAS',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-JOY-ALUKKAS-GOLD-DIAMONDS.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-JOY-ALUKKAS-GOLD-DIAMONDS.jpg',
         },
         {
           title: 'MANAVATTY',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-MANAVATTY-GOLD-AND-DIAMONDS.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-MANAVATTY-GOLD-AND-DIAMONDS.jpg',
         },
         {
           title: 'MILORA',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-MILORA-GOLD-AND-DIAMONDS.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-MILORA-GOLD-AND-DIAMONDS.jpg',
         },
       ],
     },
@@ -122,23 +122,23 @@ export default function MemberPrivileges(): React.JSX.Element {
       partners: [
         {
           title: 'SPEEDEX CARGO',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-SPEEDEX-CARGO-SERVICE.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-SPEEDEX-CARGO-SERVICE.jpg',
         },
         {
           title: 'ALBERTO GARAGE',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-ALBERTO-GARAGE.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-ALBERTO-GARAGE.jpg',
         },
         {
           title: 'BAHRAN EXCHANGE CO. (BEC)',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-BEC-BAHRAIN-EXCHANGE.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-BEC-BAHRAIN-EXCHANGE.jpg',
         },
         {
           title: 'SULFEX',
-          img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-MEMBER-PRIVILEGES-SULFEX.jpg',
+          img: '/images/member-privileges/KKMA-MEMBER-PRIVILEGES-SULFEX.jpg',
         },
         {
           title: 'TILEX',
-          img: 'https://kkma.net/wp-content/uploads/2024/10/Tilex-.jpg',
+          img: '/images/member-privileges/Tilex-.jpg',
         },
       ],
     },
@@ -149,7 +149,7 @@ export default function MemberPrivileges(): React.JSX.Element {
       {/* Page Title */}
       <section
         className="page-title"
-        style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}
+        style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}
       >
         <div className="auto-container">
           <div className="content-box">
@@ -211,7 +211,7 @@ export default function MemberPrivileges(): React.JSX.Element {
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 image-column">
               <figure className="image-box">
-                <img src="https://kkma.net/wp-content/uploads/2024/09/Privilege-member.jpg" alt="Privileges" />
+                <img src="/images/member-privileges/Privilege-member.jpg" alt="Privileges" />
               </figure>
             </div>
           </div>

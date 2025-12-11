@@ -6,7 +6,7 @@ import 'swiper/css'
 
 export default function Testimonials(): React.JSX.Element {
     return (
-        <section className="testimonial-section centred" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/testimonial-bg-3.jpg)' }}>
+        <section className="testimonial-section centred" style={{ backgroundImage: 'url(/images/home/testimonial-bg-3.jpg)' }}>
             <div className="auto-container">
                 <Swiper
                     modules={[Autoplay, Pagination]}
@@ -24,7 +24,7 @@ export default function Testimonials(): React.JSX.Element {
                         <div className="testimonial-block-one">
                             <div className="inner-box">
                                 <figure className="image-box">
-                                    <img decoding="async" width="120" height="120" src="https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview.png" className="attachment-whitehall_120x120 size-whitehall_120x120 wp-post-image" alt="" srcSet="https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview.png 120w, https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview-60x60.png 60w, https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview-70x70.png 70w" sizes="(max-width: 120px) 100vw, 120px" />
+                                    <img decoding="async" width="120" height="120" src="/images/home/Demo-Profile-removebg-preview.png" className="attachment-whitehall_120x120 size-whitehall_120x120 wp-post-image" alt="" srcSet="/images/home/Demo-Profile-removebg-preview.png 120w, /images/home/Demo-Profile-removebg-preview-60x60.png 60w, /images/home/Demo-Profile-removebg-preview-70x70.png 70w" sizes="(max-width: 120px) 100vw, 120px" />
                                     <span className="quote-icon">
                                         <Quote size={20} fill="currentColor" />
                                     </span>
@@ -43,7 +43,7 @@ export default function Testimonials(): React.JSX.Element {
                         <div className="testimonial-block-one">
                             <div className="inner-box">
                                 <figure className="image-box">
-                                    <img decoding="async" width="120" height="120" src="https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview.png" className="attachment-whitehall_120x120 size-whitehall_120x120 wp-post-image" alt="" srcSet="https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview.png 120w, https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview-60x60.png 60w, https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview-70x70.png 70w" sizes="(max-width: 120px) 100vw, 120px" />
+                                    <img decoding="async" width="120" height="120" src="/images/home/Demo-Profile-removebg-preview.png" className="attachment-whitehall_120x120 size-whitehall_120x120 wp-post-image" alt="" srcSet="/images/home/Demo-Profile-removebg-preview.png 120w, /images/home/Demo-Profile-removebg-preview-60x60.png 60w, /images/home/Demo-Profile-removebg-preview-70x70.png 70w" sizes="(max-width: 120px) 100vw, 120px" />
                                     <span className="quote-icon">
                                         <Quote size={20} fill="currentColor" />
                                     </span>
@@ -62,7 +62,7 @@ export default function Testimonials(): React.JSX.Element {
                         <div className="testimonial-block-one">
                             <div className="inner-box">
                                 <figure className="image-box">
-                                    <img decoding="async" width="120" height="120" src="https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview.png" className="attachment-whitehall_120x120 size-whitehall_120x120 wp-post-image" alt="" srcSet="https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview.png 120w, https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview-60x60.png 60w, https://kkma.net/wp-content/uploads/2021/05/Demo-Profile-removebg-preview-70x70.png 70w" sizes="(max-width: 120px) 100vw, 120px" />
+                                    <img decoding="async" width="120" height="120" src="/images/home/Demo-Profile-removebg-preview.png" className="attachment-whitehall_120x120 size-whitehall_120x120 wp-post-image" alt="" srcSet="/images/home/Demo-Profile-removebg-preview.png 120w, /images/home/Demo-Profile-removebg-preview-60x60.png 60w, /images/home/Demo-Profile-removebg-preview-70x70.png 70w" sizes="(max-width: 120px) 100vw, 120px" />
                                     <span className="quote-icon">
                                         <Quote size={20} fill="currentColor" />
                                     </span>

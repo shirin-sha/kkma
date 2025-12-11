@@ -10,7 +10,7 @@ export default function Schedules(): React.JSX.Element {
                 className="bg-layer"
                 style={{
                     backgroundImage:
-                        "url(https://kkma.net/wp-content/uploads/2021/06/schedule-bg-2.jpg)",
+                        "url(/images/home/2021/06/schedule-bg-2.jpg)",
                 }}
             ></div>
 
@@ -75,7 +75,7 @@ export default function Schedules(): React.JSX.Element {
                                         className="upper-box"
                                         style={{
                                             backgroundImage:
-                                                "url(https://kkma.net/wp-content/uploads/2024/09/KKMA-Events-Homepage.jpg)",
+                                                "url(/images/home/KKMA-Events-Homepage.jpg)",
                                         }}
                                     >
                                         <div className="icon-box">

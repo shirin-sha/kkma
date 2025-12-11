@@ -11,7 +11,7 @@ export default function Overview(): React.JSX.Element {
 		<>
 			<PageTitle
 				title="About Us"
-				backgroundImageUrl="https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg"
+				backgroundImageUrl="/images/page-title/KKMA-page-title.jpg"
 				breadcrumb={[
 					{ label: 'Home', url: '/' },
 					{ label: 'About Us' }
@@ -81,7 +81,7 @@ export default function Overview(): React.JSX.Element {
           className="bg-layer"
           style={{
             backgroundImage:
-              "url(https://kkma.net/wp-content/uploads/2024/08/KKMA_ABOUT-1.jpg)",
+              "url(/images/about/KKMA_ABOUT-1.jpg)",
           }}
         ></div>
         <div className="auto-container">
@@ -106,7 +106,7 @@ export default function Overview(): React.JSX.Element {
       <section className="award-section bg-color-1">
         <figure className="image-layer">
           <img
-            src="https://kkma.net/wp-content/uploads/2024/08/About-Awards.jpg"
+            src="/images/about/About-Awards.jpg"
             alt="Awesome Image"
           />
         </figure>
@@ -114,7 +114,7 @@ export default function Overview(): React.JSX.Element {
           className="vector-image"
           style={{
             backgroundImage:
-              "url(https://kkma.net/wp-content/themes/whitehall/assets/images/icons/icon-bg-2.png)",
+              "url(/images/about/vector-2-2.png)",
           }}
         ></div>
         <div className="auto-container">
@@ -135,11 +135,11 @@ export default function Overview(): React.JSX.Element {
                       className="bg-pattern"
                       style={{
                         backgroundImage:
-                          "url(https://kkma.net/wp-content/themes/whitehall/assets/images/icons/icon-bg-1.png)",
+                          "url(/images/about/icon-bg-1.png)",
                       }}
                     ></div>
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/Demo-Awards-1.png"
+                      src="/images/about/Demo-Awards-1.png"
                       alt="Award Image"
                     />
                   </figure>
@@ -168,11 +168,11 @@ export default function Overview(): React.JSX.Element {
                       className="bg-pattern"
                       style={{
                         backgroundImage:
-                          "url(https://kkma.net/wp-content/themes/whitehall/assets/images/icons/icon-bg-1.png)",
+                          "url(/images/about/icon-bg-1.png)",
                       }}
                     ></div>
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/Demo-Awards-1.png"
+                      src="/images/about/Demo-Awards-1.png"
                       alt="Award Image"
                     />
                   </figure>
@@ -201,11 +201,11 @@ export default function Overview(): React.JSX.Element {
                       className="bg-pattern"
                       style={{
                         backgroundImage:
-                          "url(https://kkma.net/wp-content/themes/whitehall/assets/images/icons/icon-bg-1.png)",
+                          "url(/images/about/icon-bg-1.png)",
                       }}
                     ></div>
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/Demo-Awards-1.png"
+                      src="/images/about/Demo-Awards-1.png"
                       alt="Award Image"
                     />
                   </figure>
@@ -236,7 +236,7 @@ export default function Overview(): React.JSX.Element {
         className="feature-section sec-pad"
         style={{
           backgroundImage:
-            "url(https://kkma.net/wp-content/uploads/2021/05/feature-bg-2.jpg)",
+            "url(/images/about/feature-bg-2.jpg)",
         }}
       >
         <div className="auto-container">
@@ -257,7 +257,7 @@ export default function Overview(): React.JSX.Element {
                 <div className="inner-box">
                   <figure className="image-box">
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/Magnet-Club-About-Page.jpg"
+                      src="/images/about/Magnet-Club-About-Page.jpg"
                       alt="Awesome Image"
                     />
                   </figure>
@@ -282,7 +282,7 @@ export default function Overview(): React.JSX.Element {
                 <div className="inner-box">
                   <figure className="image-box">
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/KKMA_ABOUT-Software-System.jpg"
+                      src="/images/about/KKMA_ABOUT-Software-System.jpg"
                       alt="Awesome Image"
                     />
                   </figure>
@@ -306,7 +306,7 @@ export default function Overview(): React.JSX.Element {
                 <div className="inner-box">
                   <figure className="image-box">
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/Magnet-Club-About-Page-1.jpg"
+                      src="/images/about/Magnet-Club-About-Page-1.jpg"
                       alt="Awesome Image"
                     />
                   </figure>
@@ -331,7 +331,7 @@ export default function Overview(): React.JSX.Element {
                 <div className="inner-box">
                   <figure className="image-box">
                     <img
-                      src="https://kkma.net/wp-content/uploads/2024/08/KKMA_ABOUT-Classifieds.jpg"
+                      src="/images/about/KKMA_ABOUT-Classifieds.jpg"
                       alt="Awesome Image"
                     />
                   </figure>

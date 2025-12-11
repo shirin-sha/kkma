@@ -11,7 +11,7 @@ export default function About(): React.JSX.Element {
                             <div className="sec-title"><h6> <Star fill='currentColor' size={16} /><span>A Tradition of Service and Community Empowerment</span></h6><h2>Empowering the Community, Shaping the Future</h2><div className="title-shape"></div></div>
                             <div className="text"><h5>Established in 2001, KKMA is dedicated to uplifting the Indian community in Kuwait through education, healthcare, and social initiatives. We connect members with opportunities for personal and professional growth.</h5><p>Our efforts focus on making a tangible difference, from scholarships to healthcare support, ensuring that our community thrives. Together, we build a brighter future for all.</p></div>
                             <div className="inner-box clearfix">
-                                <figure className="signature pull-left"><img decoding="async" src="https://kkma.net/wp-content/uploads/2024/08/Connect-us-on-.png" alt="Signature" />
+                                <figure className="signature pull-left"><img decoding="async" src="/images/home/Connect-us-on-.png" alt="Signature" />
                                 </figure>
                                 <ul className="social-style-one clearfix">
                                     <li><a href="https://facebook.com/kkma.net" target="_blank" rel="noopener noreferrer"><img src="https://cdn.simpleicons.org/facebook/fff" alt="Facebook" width={18} height={18} /></a></li>
@@ -28,7 +28,7 @@ export default function About(): React.JSX.Element {
                     </div>
                     <div className="col-lg-6 col-md-12 col-sm-12 image-column">
                         <div className="image_block_1"><div className="image-box">
-                            <figure className="image"><img src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-Image-1.jpg" alt="Awesome Image" /></figure>
+                            <figure className="image"><img src="/images/home/KKMA-Homepage-Image-1.jpg" alt="Awesome Image" /></figure>
                             <div className="text"><h4>"Our strength lies in our unity, and our future is built on the foundation of giving back to the community."</h4></div>
                         </div></div>
                     </div>

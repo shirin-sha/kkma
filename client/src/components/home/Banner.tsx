@@ -18,7 +18,7 @@ export default function Banner(): React.JSX.Element {
             >
                 <SwiperSlide>
                     <div className="slide-item">
-                        <div className="image-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-BG-2.jpg)' }}></div>
+                        <div className="image-layer" style={{ backgroundImage: 'url(/images/herobanner/hero1.jpg)' }}></div>
                         <div className="auto-container">
                             <div className="content-box wh-anim">
                                 <h6 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, padding: 0 }}>
@@ -36,7 +36,7 @@ export default function Banner(): React.JSX.Element {
 
                 <SwiperSlide>
                     <div className="slide-item">
-                        <div className="image-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-BG-3.jpg)' }}></div>
+                        <div className="image-layer" style={{ backgroundImage: 'url(/images/herobanner/hero2.jpg)' }}></div>
                         <div className="auto-container">
                             <div className="content-box wh-anim">
                                 <h6 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, padding: 0 }}>
@@ -53,7 +53,7 @@ export default function Banner(): React.JSX.Element {
 
                 <SwiperSlide>
                     <div className="slide-item">
-                        <div className="image-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-BG-5.jpg)' }}></div>
+                        <div className="image-layer" style={{ backgroundImage: 'url(/images/herobanner/hero3.jpg)' }}></div>
                         <div className="auto-container">
                             <div className="content-box wh-anim">
                                 <h6 style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, padding: 0 }}>

@@ -23,7 +23,7 @@ export default function Team({ members }: { members: Member[] }): React.JSX.Elem
         className="pattern-layer"
         style={{
           backgroundImage:
-            "url(https://kkma.net/wp-content/uploads/2021/05/shape-5-2.png)",
+            "url(/images/home/shape-5-2.png)",
         }}
       ></div>
 

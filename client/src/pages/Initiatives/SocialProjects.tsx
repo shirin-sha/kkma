@@ -15,91 +15,91 @@ export default function SocialProjects(): React.JSX.Element {
       title: 'Housing Improvement',
       desc: 'Providing safe and improved housing for underprivileged families.',
       icon: 'fa fa-house-damage',
-      img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Social-Projects-Housing-Improvement.jpg',
-      link: 'https://kkma.net/social-projects/housing-improvement-program/'
+      img: '/images/initiatives/KKMA-Social-Projects-Housing-Improvement.jpg',
+      link: '#'
     },
     {
       title: 'Early Detection Center',
       desc: 'Promoting early diagnosis to prevent and manage serious health conditions.',
       icon: 'fa fa-heartbeat',
-      img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Social-Projects-Early-Detection-Center.jpg',
-      link: 'https://kkma.net/social-projects/early-detection-center-for-heart-diseases/'
+      img: '/images/initiatives/KKMA-Social-Projects-Early-Detection-Center.jpg',
+      link: '#'
     },
     {
       title: 'Medical Assistance Program',
       desc: 'We are offering essential medical aid to those in urgent need.',
       icon: 'fa fa-clinic-medical',
-      img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Social-Projects-Medical-Assistance-Program.jpg',
-      link: 'https://kkma.net/social-projects/medical-assistance-program/'
+      img: '/images/initiatives/KKMA-Social-Projects-Medical-Assistance-Program.jpg',
+      link: '#'
     },
     {
       title: 'Educational Scholarship',
       desc: 'Supporting education for deserving students through scholarships.',
       icon: 'fa fa-book',
-      img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Social-Projects-Educational-Scholarship-Program.jpg',
-      link: 'https://kkma.net/social-projects/educational-scholarship-program/'
+      img: '/images/initiatives/KKMA-Social-Projects-Educational-Scholarship-Program.jpg',
+      link: '#'
     },
     {
       title: 'Members Welfare Scheme',
       desc: 'Ensuring welfare and support for members in challenging times.',
       icon: 'fa fa-hands-helping',
-      img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Social-Projects-Members-Benefit-Scheme.jpg',
-      link: 'https://kkma.net/social-projects/members-welfare-scheme/'
+      img: '/images/initiatives/KKMA-Social-Projects-Members-Benefit-Scheme.jpg',
+      link: '#'
     },
     {
       title: 'Family Benefit Scheme',
       desc: 'We are providing financial aid to families of deceased members.',
       icon: 'fa fa-users',
-      img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Social-Projects-Family-Benefit-Scheme.jpg',
-      link: 'https://kkma.net/social-projects/family-benefit-scheme/'
+      img: '/images/initiatives/KKMA-Social-Projects-Family-Benefit-Scheme.jpg',
+      link: '#'
     },
     {
       title: 'KKMA Investment Club',
       desc: 'Encouraging savings and investments among members for financial security.',
       icon: 'fa fa-money-check',
-      img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Investment.jpg',
-      link: 'https://kkma.net/social-projects/kkma-investment-club/'
+      img: '/images/initiatives/KKMA-Social-Projects-Investment.jpg',
+      link: '#'
     },
     {
       title: 'Community Welfare Activities',
       desc: 'Enhancing community well-being through diverse social initiatives.',
       icon: 'fa fa-users',
-      img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Community-welfare.jpg',
-      link: 'https://kkma.net/social-projects/community-welfare-activities/'
+      img: '/images/initiatives/KKMA-Social-Projects-Community-welfare.jpg',
+      link: '#'
     },
     {
       title: 'Seminars & Religious Classes',
       desc: 'Empowering members with knowledge through seminars and classes.',
       icon: 'fa fa-graduation-cap',
-      img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Seminars-1.jpg',
-      link: 'https://kkma.net/social-projects/seminars-religious-classes/'
+      img: '/images/initiatives/KKMA-Social-Projects-Seminars-1.jpg',
+      link: '#'
     },
     {
       title: 'Hajj & Umrah Programs',
       desc: 'Facilitating Hajj and Umrah journeys for members.',
       icon: 'fa fa-mosque',
-      img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Hajj-Umrah.jpg',
-      link: 'https://kkma.net/social-projects/hajj-umrah-programs/'
+      img: '/images/initiatives/KKMA-Social-Projects-Hajj-Umrah.jpg',
+      link: '#'
     },
     {
       title: 'Kidney Dialysis Centre',
       desc: 'Offering affordable dialysis treatment to patients in need.',
       icon: 'fa fa-tint',
-      img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Kidney-Dialysis-Center.jpg',
-      link: 'https://kkma.net/social-projects/kidney-dialysis-centre/'
+      img: '/images/initiatives/KKMA-Social-Projects-Kidney-Dialysis-Center.jpg',
+      link: '#'
     },
     {
       title: 'Campaigns, Training & Development',
       desc: 'Fostering growth through targeted campaigns and development programs.',
       icon: 'fa fa-book-reader',
-      img: 'https://kkma.net/wp-content/uploads/2021/06/KKMA-Social-Projects-Training.jpg',
-      link: 'https://kkma.net/social-projects/campaigns-training-development/'
+      img: '/images/initiatives/KKMA-Social-Projects-Training.jpg',
+      link: '#'
     }
   ]
 
   return (
     <div className="boxed_wrapper">
-      <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
+      <section className="page-title" style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred"><h1>Social Projects</h1></div>
@@ -136,7 +136,7 @@ export default function SocialProjects(): React.JSX.Element {
               </div></div>
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 image-column">
-              <figure className="image-box"><img src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Social-Projects.jpg" alt="Social Projects" /></figure>
+              <figure className="image-box"><img src="/images/initiatives/KKMA-Social-Projects.jpg" alt="Social Projects" /></figure>
             </div>
           </div>
         </div>

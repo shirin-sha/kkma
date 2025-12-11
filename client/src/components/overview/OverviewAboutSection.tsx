@@ -53,7 +53,7 @@ export default function OverviewAboutSection(): React.JSX.Element {
 					<div className="col-lg-4 col-md-6 col-sm-12 image-column">
 						<figure className="image-box">
 							<img
-								src="https://kkma.net/wp-content/uploads/2024/08/KKMA-About-Us-1.jpg"
+								src="/images/about/KKMA-About-Us-1.jpg"
 								alt="About KKMA"
 							/>
 						</figure>
@@ -66,7 +66,7 @@ export default function OverviewAboutSection(): React.JSX.Element {
 							<div className="inner-box">
 								<figure className="image">
 									<img
-										src="https://kkma.net/wp-content/uploads/2024/08/KKMA-Our-executive-Members.jpg"
+										src="/images/about/KKMA-Our-executive-Members.jpg"
 										alt="Meet Our Visionaries"
 									/>
 								</figure>
@@ -92,7 +92,7 @@ export default function OverviewAboutSection(): React.JSX.Element {
 							<div className="inner-box">
 								<figure className="image">
 									<img
-										src="https://kkma.net/wp-content/uploads/2024/08/KKMA-History.jpg"
+										src="/images/about/KKMA-History.jpg"
 										alt="Explore Our Journey"
 									/>
 								</figure>

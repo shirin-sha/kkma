@@ -14,7 +14,7 @@ export default function ExploreBanner(): React.JSX.Element {
 
                     <div className="single-item">
                         <div className="inner-box">
-                            <figure className="icon-box"><img decoding="async" src="https://kkma.net/wp-content/uploads/2021/05/icon-1-2.png" alt="Icon Image" />
+                            <figure className="icon-box"><img decoding="async" src="/images/home/icon-1-2.png" alt="Icon Image" />
                             </figure>
                             <h4> Educational Scholarship</h4>
                             <p><a href="#">Download the form from here.</a></p>
@@ -22,7 +22,7 @@ export default function ExploreBanner(): React.JSX.Element {
                     </div>
                     <div className="single-item">
                         <div className="inner-box">
-                            <figure className="icon-box"><img decoding="async" src="https://kkma.net/wp-content/uploads/2021/05/icon-2-2.png" alt="Icon Image" />
+                            <figure className="icon-box"><img decoding="async" src="/images/home/icon-2-2.png" alt="Icon Image" />
                             </figure>
                             <h4> Housing Improvement</h4>
                             <p><a href="#">Download the form from here.</a></p>

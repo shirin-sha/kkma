@@ -3,7 +3,7 @@ import { Star } from 'lucide-react'
 
 export default function PeopleBehind(): React.JSX.Element {
   const founder = {
-    img: 'https://kkma.net/wp-content/uploads/2024/09/KKMA-SAGEER-TRIKARIPUR.jpg',
+    img: '/images/people/KKMA-SAGEER-TRIKARIPUR.jpg',
     name: 'SAGEER TRIKARIPUR',
     role: 'FOUNDER PRESIDENT & GUIDE',
     introTitle: 'Visionary Leader and Guiding Spirit',
@@ -21,38 +21,41 @@ export default function PeopleBehind(): React.JSX.Element {
   }
 
   const pmtExecutives: TeamMember[] = [
-    { img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-K-SIDDIK-Chief-patron.jpg', name: 'K. SIDDIK', role: 'Chief Patron', phone: '+965 123 456 78' },
-    { img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-Akbar-Sidique.jpg', name: 'AKBAR SIDDIQUE', role: 'Patron', phone: '+965 123 456 78' },
-    { img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-A-P-ABDUL-SALAM.jpg', name: 'A. P. ABDUL SALAM', role: 'Chairman', phone: '+965 123 456 78' },
-    { img: 'https://kkma.net/wp-content/uploads/2021/05/KKMA-IBRAHIM-KUNNIL.jpg', name: 'IBRAHIM KUNNIL', role: 'Vice Chairman', phone: '+965 123 456 78' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-N-A-MUNEER.jpg', name: 'N.A. MUNEER', role: 'PMT Members', phone: '+965 123 456 78' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-MOHAMMED-ALI-MATRA.jpg', name: 'MOHAMMED ALI MATRA', role: 'PMT Members', phone: '+965 123 456 78' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-ABDUL-FATHAH-THAYYIL.jpg', name: 'ABDUL FATHAH THAYYIL', role: 'PMT Members', phone: '+965 123 456 78' }
+    { img: '/images/people/KKMA-K-SIDDIK-Chief-patron.jpg', name: 'K. SIDDIK', role: 'Chief Patron', phone: '+965 123 456 78' },
+    { img: '/images/people/KKMA-Akbar-Sidique.jpg', name: 'AKBAR SIDDIQUE', role: 'Patron', phone: '+965 123 456 78' },
+    { img: '/images/people/KKMA-A-P-ABDUL-SALAM.jpg', name: 'A. P. ABDUL SALAM', role: 'Chairman', phone: '+965 123 456 78' },
+    { img: '/images/people/KKMA-IBRAHIM-KUNNIL.jpg', name: 'IBRAHIM KUNNIL', role: 'Vice Chairman', phone: '+965 123 456 78' },
+    { img: '/images/people/KKMA-N-A-MUNEER.jpg', name: 'N.A. MUNEER', role: 'PMT Members', phone: '+965 123 456 78' },
+    { img: '/images/people/KKMA-MOHAMMED-ALI-MATRA.jpg', name: 'MOHAMMED ALI MATRA', role: 'PMT Members', phone: '+965 123 456 78' },
+    { img: '/images/people/KKMA-ABDUL-FATHAH-THAYYIL.jpg', name: 'ABDUL FATHAH THAYYIL', role: 'PMT Members', phone: '+965 123 456 78' }
   ]
 
   const ccOfficeBearers: TeamMember[] = [
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-K-BASHEER.jpg', name: 'K. BASHEER', role: 'President', phone: '+965 69677996' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-B-M-IQBAL.jpg', name: 'B. M. IQBAL', role: 'General Secretary', phone: '+965 99483350' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-MUNEER-KUNIYA.jpg', name: 'MUNEER KUNIYA', role: 'Treasurer', phone: '+965 90027939' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-H-A-GAFOOR.jpg', name: 'H.A. GAFOOR', role: 'Working President', phone: '+965 99765237' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-O-P-SHARAFUDHEEN.jpg', name: 'O. P. SHARAFUDHEEN', role: 'Working President', phone: '+965 90060532' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-K-C-RAFEEQUE.jpg', name: 'K. C. RAFEEQUE', role: 'Working President', phone: '+965 99514546' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-MOHAMMED-RASHEED-ZAMZAM.jpg', name: 'MOHAMMED RASHEED ZAMZAM', role: 'Working President', phone: '+965 99428719' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/Mohamed-Navas-kkma.jpg', name: 'MOHAMED NAVAZ CEENDAVIDA', role: 'Organizing Secretary', phone: '+965 97130710' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-O-M-SHAFI.jpg', name: 'O.M. SHAFI', role: 'Vice President', phone: '+965 66649544' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-A-T-NOUFAL.jpg', name: 'A.T.NOUFAL', role: 'Vice President', phone: '+965 97420679' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-P-M-JAFFER.jpg', name: 'P.M. JAFFER', role: 'Vice President', phone: '+965 66610087' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-LATHEEF-EDAYOOR.jpg', name: 'LATHEEF EDAYOOR', role: 'Vice President', phone: '+965 66637447' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-NIZAM-NALAKATH.jpg', name: 'NIZAM NALAKATH', role: 'Vice President', phone: '+965 99125481' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-P-M-SHEREEF.jpg', name: 'P.M. SHEREEF', role: 'Vice President', phone: '+965 60610733' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-T-FIROZ.jpg', name: 'T. FIROZ', role: 'Vice President', phone: '+965 99408973' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-MAJEED-RAWABI.jpg', name: 'MAJEED RAWABI', role: 'Vice President', phone: '+965 66865382' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-ASLAM-HAMZA.jpg', name: 'ASLAM HAMZA', role: 'Vice President', phone: '+965 51716683' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/Muhammed-Kunji-kkma.jpg', name: 'K. H. MUHAMMED KUNJI', role: 'Vice President', phone: '+965 99590480' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-M-P-SULFIQUER.jpg', name: 'M. P. SULFIQUER', role: 'Secretary', phone: '+965 97834590' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-K-C-KAREEM.jpg', name: 'K. C. KAREEM', role: 'Secretary', phone: '+965 66644175' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-P-A-ABDULLA.jpg', name: 'P. A. ABDULLA', role: 'Secretary', phone: '+965 66608287' },
-    { img: 'https://kkma.net/wp-content/uploads/2024/08/KKMA-MUHAMMED-ALI-KADINJIMOOLA.jpg', name: 'MUHAMMED ALI KADINJIMOOLA', role: 'Secretary', phone: '+965 66053044' }
+    { img: '/images/people/KKMA-K-BASHEER.jpg', name: 'K. BASHEER', role: 'President', phone: '+965 69677996' },
+    { img: '/images/people/KKMA-B-M-IQBAL.jpg', name: 'B. M. IQBAL', role: 'General Secretary', phone: '+965 99483350' },
+    { img: '/images/people/KKMA-MUNEER-KUNIYA.jpg', name: 'MUNEER KUNIYA', role: 'Treasurer', phone: '+965 90027939' },
+    { img: '/images/people/KKMA-H-A-GAFOOR.jpg', name: 'H.A. GAFOOR', role: 'Working President', phone: '+965 99765237' },
+    { img: '/images/people/KKMA-O-P-SHARAFUDHEEN.jpg', name: 'O. P. SHARAFUDHEEN', role: 'Working President', phone: '+965 90060532' },
+    { img: '/images/people/KKMA-K-C-RAFEEQUE.jpg', name: 'K. C. RAFEEQUE', role: 'Working President', phone: '+965 99514546' },
+    { img: '/images/people/KKMA-MOHAMMED-RASHEED-ZAMZAM.jpg', name: 'MOHAMMED RASHEED ZAMZAM', role: 'Working President', phone: '+965 99428719' },
+    { img: '/images/people/Mohamed-Navas-kkma.jpg', name: 'MOHAMED NAVAZ CEENDAVIDA', role: 'Organizing Secretary', phone: '+965 97130710' },
+    { img: '/images/people/KKMA-O-M-SHAFI.jpg', name: 'O.M. SHAFI', role: 'Vice President', phone: '+965 66649544' },
+    { img: '/images/people/KKMA-A-T-NOUFAL.jpg', name: 'A.T.NOUFAL', role: 'Vice President', phone: '+965 97420679' },
+    { img: '/images/people/KKMA-P-M-JAFFER.jpg', name: 'P.M. JAFFER', role: 'Vice President', phone: '+965 66610087' },
+    { img: '/images/people/KKMA-LATHEEF-EDAYOOR.jpg', name: 'LATHEEF EDAYOOR', role: 'Vice President', phone: '+965 66637447' },
+    { img: '/images/people/KKMA-NIZAM-NALAKATH.jpg', name: 'NIZAM NALAKATH', role: 'Vice President', phone: '+965 99125481' },
+    { img: '/images/people/KKMA-P-M-SHEREEF.jpg', name: 'P.M. SHEREEF', role: 'Vice President', phone: '+965 60610733' },
+    { img: '/images/people/KKMA-T-FIROZ.jpg', name: 'T. FIROZ', role: 'Vice President', phone: '+965 99408973' },
+    { img: '/images/people/KKMA-MAJEED-RAWABI.jpg', name: 'MAJEED RAWABI', role: 'Vice President', phone: '+965 66865382' },
+    { img: '/images/people/KKMA-ASLAM-HAMZA.jpg', name: 'ASLAM HAMZA', role: 'Vice President', phone: '+965 51716683' },
+    { img: '/images/people/KKMA-ASHARAF-MANKAV.jpg', name: 'ASHARAF MANKAVE', role: 'Vice President', phone: '+965 94739004' },
+    { img: '/images/people/KKMA-JABBAR-GURPURA.jpg', name: 'JABBAR GURPURA', role: 'Vice President', phone: '+965 66015758' },
+    { img: '/images/people/KKMA-ABDUL-KALAM-MOULAVI.jpg', name: 'ABDUL KALAM MOULAVI', role: 'Vice President', phone: '+965 55226268' },
+    { img: '/images/people/Muhammed-Kunji-kkma.jpg', name: 'K. H. MUHAMMED KUNJI', role: 'Vice President', phone: '+965 99590480' },
+    { img: '/images/people/KKMA-M-P-SULFIQUER.jpg', name: 'M. P. SULFIQUER', role: 'Secretary', phone: '+965 97834590' },
+    { img: '/images/people/KKMA-K-C-KAREEM.jpg', name: 'K. C. KAREEM', role: 'Secretary', phone: '+965 66644175' },
+    { img: '/images/people/KKMA-P-A-ABDULLA.jpg', name: 'P. A. ABDULLA', role: 'Secretary', phone: '+965 66608287' },
+    { img: '/images/people/KKMA-MUHAMMED-ALI-KADINJIMOOLA.jpg', name: 'MUHAMMED ALI KADINJIMOOLA', role: 'Secretary', phone: '+965 66053044' }
   ]
 
   type ZonalRow = { name: string; role: string; contact: string }
@@ -135,7 +138,7 @@ export default function PeopleBehind(): React.JSX.Element {
                           <li className="mail-box"><a href={`mailto:${member.email}`}><i className="flaticon-mail-inbox-app"></i>Email</a></li>
                         )}
                         {member.phone && (
-                          <li className="phone-box"><i className="flaticon-emergency-call"></i><a href={`tel:${member.phone}`}>{member.phone}</a></li>
+                          <li className="phone-box"><i className="fa fa fa-phone"></i><a href={`tel:${member.phone}`}>{member.phone}</a></li>
                         )}
                       </ul>
                     )}
@@ -183,7 +186,7 @@ export default function PeopleBehind(): React.JSX.Element {
 
   return (
     <div className="boxed_wrapper">
-      <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
+      <section className="page-title" style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred"><h1>Our Team</h1></div>

@@ -116,7 +116,7 @@ export default function HeaderWP(): React.JSX.Element {
 				<div className="right-column pull-right clearfix">
 				  <ul className="info-list clearfix">
 					<li>
-					  <i className="flaticon-phone-with-wire"></i>
+					  <i className="fas fa-phone"></i>
 					  <a href="tel:96550649506">+965 506 49506</a>
 					</li>
 				  </ul>
@@ -132,12 +132,12 @@ export default function HeaderWP(): React.JSX.Element {
 				{/* Logo */}
 				<div className="logo-box pull-left">
 				  <figure className="logo">
-					<a href="/" title="KKMA">
+					<NavLink to="/" title="KKMA">
 					  <img
-						src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
+						src="/images/logo/KKMA-LOGO-WITH-TEXT-1.png"
 						alt="logo"
 					  />
-					</a>
+					</NavLink>
 				  </figure>
 				</div>
   
@@ -160,7 +160,7 @@ export default function HeaderWP(): React.JSX.Element {
 					>
 					  <ul className="navigation clearfix">
 						<li className="active">
-						  <a href="/">Home</a>
+						  <NavLink to="/">Home</NavLink>
 						</li>
 						<li className="dropdown">
 						  <a href="#">About Us +</a>
@@ -171,14 +171,14 @@ export default function HeaderWP(): React.JSX.Element {
 								  </NavLink>
 								</li>
 							<li>
-							  <a href="/about/people-behind">
+							  <NavLink to="/about/people-behind">
 								People Behind
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/about/kkma-history">
+							  <NavLink to="/about/kkma-history">
 								KKMA History
-							  </a>
+							  </NavLink>
 							</li>
 						  </ul>
 						</li>
@@ -186,14 +186,14 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Our Initiatives +</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/initiatives/social-projects">
+							  <NavLink to="/initiatives/social-projects">
 								Social Projects
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/initiatives/magnet-club">
+							  <NavLink to="/initiatives/magnet-club">
 								Magnet Club
-							  </a>
+							  </NavLink>
 							</li>
 						  </ul>
 						</li>
@@ -201,17 +201,19 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Membership +</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/membership/membership-information">
+							  <NavLink to="/membership/membership-information">
 								Membership Information
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/membership/member-privileges">
+							  <NavLink to="/membership/member-privileges">
 								Member Privileges
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="http://database.kkma.net">Members Area</a>
+							<NavLink to="/membership/register">
+								Membership Registration Form
+							  </NavLink>
 							</li>
 						  </ul>
 						</li>
@@ -240,14 +242,14 @@ export default function HeaderWP(): React.JSX.Element {
 						  <a href="#">Media +</a>
 						  <ul className="submenu">
 							<li>
-							  <a href="/media/news-and-updates">
+							  <NavLink to="/media/news-and-updates">
 								News & Updates
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
-							  <a href="/media/events-and-programs">
+							  <NavLink to="/media/events-and-programs">
 								Events & Programs
-							  </a>
+							  </NavLink>
 							</li>
 							<li>
 							  <a href="#">Downloads</a>
@@ -258,7 +260,7 @@ export default function HeaderWP(): React.JSX.Element {
 						  </ul>
 						</li>
 						<li>
-						  <a href="/contact/">Contact</a>
+						  <NavLink to="/contact">Contact</NavLink>
 						</li>
 					  </ul>
 					</div>
@@ -285,12 +287,12 @@ export default function HeaderWP(): React.JSX.Element {
 			  <div className="outer-box clearfix">
 				<div className="logo-box pull-left">
 				  <figure className="logo">
-					<a href="https://kkma.net/" title="KKMA">
+					<NavLink to="/" title="KKMA">
 					  <img
-						src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
+						src="/images/logo/KKMA-LOGO-WITH-TEXT-1.png"
 						alt="logo"
 					  />
-					</a>
+					</NavLink>
 				  </figure>
 				</div>
 				<div className="menu-area clearfix pull-right">
@@ -376,21 +378,21 @@ export default function HeaderWP(): React.JSX.Element {
 			
 			  {/* Logo */}
 			  <div style={{ padding: '30px 20px 20px', borderBottom: '1px solid #e5e7eb' }}>
-				<a href="/" title="KKMA">
+				<NavLink to="/" title="KKMA" onClick={() => setMobileMenuOpen(false)}>
 				  <img
-					src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
+					src="/images/logo/KKMA-LOGO-WITH-TEXT-1.png"
 					alt="logo"
 					style={{ width: '150px', display: 'block' }}
 				  />
-				</a>
+				</NavLink>
 			  </div>
 
 			  {/* Menu Items */}
 			  <div style={{ padding: '20px 0' }}>
 				<ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
 				  <li style={{ borderBottom: '1px solid #e5e7eb' }}>
-					<a 
-					  href="/" 
+					<NavLink 
+					  to="/" 
 					  style={{ 
 						display: 'block', 
 						padding: '15px 20px', 
@@ -399,9 +401,10 @@ export default function HeaderWP(): React.JSX.Element {
 						fontSize: '15px',
 						fontWeight: '500',
 					  }}
+					  onClick={() => setMobileMenuOpen(false)}
 					>
 					  Home
-					</a>
+					</NavLink>
 				  </li>
 				  
 				  <li style={{ borderBottom: '1px solid #e5e7eb' }}>
@@ -432,8 +435,8 @@ export default function HeaderWP(): React.JSX.Element {
 						  </NavLink>
 						</li>
 						<li>
-						  <a 
-							href="/about/people-behind"
+						  <NavLink 
+							to="/about/people-behind"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -444,11 +447,11 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							People Behind
-						  </a>
+						  </NavLink>
 						</li>
 						<li>
-						  <a 
-							href="/about/kkma-history"
+						  <NavLink 
+							to="/about/kkma-history"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -459,7 +462,7 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							KKMA History
-						  </a>
+						  </NavLink>
 						</li>
 					  </ul>
 					</details>
@@ -478,8 +481,8 @@ export default function HeaderWP(): React.JSX.Element {
 					  </summary>
 					  <ul style={{ listStyle: 'none', padding: 0, margin: 0, background: '#f9fafb' }}>
 						<li>
-						  <a 
-							href="/initiatives/social-projects"
+						  <NavLink 
+							to="/initiatives/social-projects"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -490,11 +493,11 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							Social Projects
-						  </a>
+						  </NavLink>
 						</li>
 						<li>
-						  <a 
-							href="/initiatives/magnet-club"
+						  <NavLink 
+							to="/initiatives/magnet-club"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -505,7 +508,7 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							Magnet Club
-						  </a>
+						  </NavLink>
 						</li>
 					  </ul>
 					</details>
@@ -524,8 +527,8 @@ export default function HeaderWP(): React.JSX.Element {
 					  </summary>
 					  <ul style={{ listStyle: 'none', padding: 0, margin: 0, background: '#f9fafb' }}>
 						<li>
-						  <a 
-							href="/membership/membership-information"
+						  <NavLink 
+							to="/membership/membership-information"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -536,11 +539,11 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							Membership Information
-						  </a>
+						  </NavLink>
 						</li>
 						<li>
-						  <a 
-							href="/membership/member-privileges"
+						  <NavLink 
+							to="/membership/member-privileges"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -551,11 +554,13 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							Member Privileges
-						  </a>
+						  </NavLink>
 						</li>
 						<li>
 						  <a 
 							href="http://database.kkma.net"
+							target="_blank"
+							rel="noopener noreferrer"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -651,8 +656,8 @@ export default function HeaderWP(): React.JSX.Element {
 					  </summary>
 					  <ul style={{ listStyle: 'none', padding: 0, margin: 0, background: '#f9fafb' }}>
 						<li>
-						  <a 
-							href="/media/news-and-updates"
+						  <NavLink 
+							to="/media/news-and-updates"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -663,11 +668,11 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							News & Updates
-						  </a>
+						  </NavLink>
 						</li>
 						<li>
-						  <a 
-							href="/media/events-and-programs"
+						  <NavLink 
+							to="/media/events-and-programs"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -678,7 +683,7 @@ export default function HeaderWP(): React.JSX.Element {
 							onClick={() => setMobileMenuOpen(false)}
 						  >
 							Events & Programs
-						  </a>
+						  </NavLink>
 						</li>
 						<li>
 						  <a 
@@ -843,7 +848,7 @@ export default function HeaderWP(): React.JSX.Element {
 			  {/* Logo */}
 			  <div style={{ padding: '40px 25px 30px', textAlign: 'center' }}>
 				<img
-				  src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT-1.png"
+				  src="/images/logo/KKMA-LOGO-WITH-TEXT-1.png"
 				  alt="KKMA Logo"
 				  style={{ width: '180px', display: 'inline-block' }}
 				/>

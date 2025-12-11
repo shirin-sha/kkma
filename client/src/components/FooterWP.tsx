@@ -9,7 +9,7 @@ export default function FooterWP(): React.JSX.Element {
 					<div className="top-inner">
 						<div className="row clearfix">
 							<div className="col-lg-3 col-md-6 col-sm-12 logo-column">
-								<figure className="footer-logo"><a href="/"><img src="https://kkma.net/wp-content/uploads/2024/08/KKMA-LOGO-WITH-TEXT.png" alt="Logo"/></a></figure>
+								<figure className="footer-logo"><a href="/"><img src="/images/logo/KKMA-LOGO-WITH-TEXT.png" alt="Logo"/></a></figure>
 							</div>
 							<div className="col-lg-5 col-md-6 col-sm-12 text-column">
 								<div className="text">

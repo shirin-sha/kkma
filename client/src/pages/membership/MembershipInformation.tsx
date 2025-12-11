@@ -75,7 +75,7 @@ export default function MembershipInformation(): React.JSX.Element {
       {/* Page Title */}
       <section
         className="page-title"
-        style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}
+        style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}
       >
         <div className="auto-container">
           <div className="content-box">
@@ -169,7 +169,7 @@ export default function MembershipInformation(): React.JSX.Element {
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 image-column">
               <figure className="image-box">
-                <img src="https://kkma.net/wp-content/uploads/2024/09/KKMA-Membership-Information-Page.jpg" alt="Membership" />
+                <img src="/images/membership/KKMA-Membership-Information-Page.jpg" alt="Membership" />
               </figure>
             </div>
           </div>
@@ -363,7 +363,7 @@ export default function MembershipInformation(): React.JSX.Element {
               })}
             </div>
             <div className="lower-box clearfix">
-              <div className="bg-layer" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/bg-1-2.jpg)' }}></div>
+              <div className="bg-layer" style={{ backgroundImage: 'url(/images/membership/2021/05/bg-1-2.jpg)' }}></div>
               <div className="text pull-left">
                 <div className="icon-box"><Lightbulb size={24} /></div>
                 <h3>Embark on Your Journey with KKMA Membership</h3>

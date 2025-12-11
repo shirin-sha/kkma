@@ -18,7 +18,7 @@ export default function Services(): React.JSX.Element {
     ]
 
     return (
-        <section className="service-section" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/service-bg-4.jpg)' }}>
+        <section className="service-section" style={{ backgroundImage: 'url(/images/home/2021/05/service-bg-4.jpg)' }}>
                <div className="sec-title centred">
                <h6><Star fill='currentColor' size={16} /><span>Wide Range of Support Programs for You and Your Family</span><Star fill='currentColor' size={16} /></h6>
                <h2>Comprehensive Membership Benefits</h2>

@@ -93,7 +93,7 @@ export default function Contact(): React.JSX.Element {
 
   return (
     <div>
-      <section className="page-title" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-page-title.jpg)' }}>
+      <section className="page-title" style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred">
@@ -190,8 +190,8 @@ export default function Contact(): React.JSX.Element {
         </div>
       </section>
 
-      <section className="contact-information-two" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2021/05/download-bg-2.jpg)' }}>
-        <div className="layer-bg" style={{ backgroundImage: 'url(https://kkma.net/wp-content/uploads/2024/08/KKMA-CONTACT-PAGE.jpg)' }}></div>
+      <section className="contact-information-two" style={{ backgroundImage: 'url(/images/contact/download-bg-2.jpg)' }}>
+        <div className="layer-bg" style={{ backgroundImage: 'url(/images/contact/KKMA-CONTACT-PAGE.jpg)' }}></div>
         <div className="auto-container">
           <div className="row clearfix">
             <div className="col-lg-6 col-md-12 col-sm-12 content-column">

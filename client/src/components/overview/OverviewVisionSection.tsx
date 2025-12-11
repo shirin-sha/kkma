@@ -7,7 +7,7 @@ export default function OverviewVisionSection() {
       style={{
         backgroundColor: '#83B253',
         backgroundImage:
-          'linear-gradient(rgba(131,178,83,0.9), rgba(131,178,83,0.9)), url(https://kkma.net/wp-content/uploads/2024/08/KKMA-Homepage-BG-3.jpg)',
+          'linear-gradient(rgba(131,178,83,0.9), rgba(131,178,83,0.9)), url(/images/about/KKMA-page-title.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

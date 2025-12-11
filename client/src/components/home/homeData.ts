@@ -9,7 +9,7 @@ export const funfacts = [
 
 export const teamMembers = [
   {
-    img: "https://kkma.net/wp-content/uploads/2021/05/KKMA-K-SIDDIK-Chief-patron.jpg",
+    img: "/images/home/KKMA-K-SIDDIK-Chief-patron.jpg",
     name: "K. SIDDIK",
     role: "Chief Patron",
     email: "demoemail@email.com",
@@ -21,7 +21,7 @@ export const teamMembers = [
     },
   },
   {
-    img: "https://kkma.net/wp-content/uploads/2021/05/KKMA-Akbar-Sidique.jpg",
+    img: "/images/home/KKMA-Akbar-Sidique.jpg",
     name: "AKBAR SIDDIQUE",
     role: "Patron",
     email: "demoemail@email.com",
@@ -33,7 +33,7 @@ export const teamMembers = [
     },
   },
   {
-    img: "https://kkma.net/wp-content/uploads/2021/05/KKMA-A-P-ABDUL-SALAM.jpg",
+    img: "/images/home/KKMA-A-P-ABDUL-SALAM.jpg",
     name: "A. P. ABDUL SALAM",
     role: "Chairman",
     email: "demoemail@email.com",
@@ -45,7 +45,7 @@ export const teamMembers = [
     },
   },
   {
-    img: "https://kkma.net/wp-content/uploads/2021/05/KKMA-IBRAHIM-KUNNIL.jpg",
+    img: "/images/home/KKMA-IBRAHIM-KUNNIL.jpg",
     name: "IBRAHIM KUNNIL",
     role: "Vice Chairman",
     email: "demoemail@email.com",
