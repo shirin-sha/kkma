@@ -4,6 +4,35 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>KKMA</title>
+		<meta name="description" content="Kuwait Kerala Muslim Association - News, Events, and Community Updates" />
+		
+		<!-- Open Graph / Facebook / WhatsApp -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="KKMA" />
+		<meta property="og:description" content="Kuwait Kerala Muslim Association - News, Events, and Community Updates" />
+		<meta property="og:image" id="og-image" content="" />
+		<meta property="og:url" id="og-url" content="" />
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="KKMA" />
+		<meta name="twitter:description" content="Kuwait Kerala Muslim Association - News, Events, and Community Updates" />
+		<meta name="twitter:image" id="twitter-image" content="" />
+		
+		<script>
+			// Set absolute URLs for meta tags on page load (required for WhatsApp/Facebook)
+			(function() {
+				const origin = window.location.origin;
+				const ogImage = document.getElementById('og-image');
+				const ogUrl = document.getElementById('og-url');
+				const twitterImage = document.getElementById('twitter-image');
+				
+				if (ogImage) ogImage.setAttribute('content', origin + '/logo/KKMA-LOGO.png');
+				if (ogUrl) ogUrl.setAttribute('content', window.location.href);
+				if (twitterImage) twitterImage.setAttribute('content', origin + '/logo/KKMA-LOGO.png');
+			})();
+		</script>
+		
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 		<link rel="icon" type="image/png" href="/logo/KKMA-LOGO.png" />
 		<!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->

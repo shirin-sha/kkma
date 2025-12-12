@@ -74,6 +74,29 @@ export default function NewsDetail(): React.JSX.Element {
     loadSidebar()
   }, [baseUrl])
 
+  // Update title for social sharing (WhatsApp, Facebook, etc.)
+  useEffect(() => {
+    if (!item) {
+      document.title = 'KKMA'
+      return
+    }
+
+    document.title = item.title
+
+    // Update og:title for WhatsApp/Facebook sharing
+    let ogTitle = document.querySelector('meta[property="og:title"]') as HTMLMetaElement
+    if (!ogTitle) {
+      ogTitle = document.createElement('meta')
+      ogTitle.setAttribute('property', 'og:title')
+      document.head.appendChild(ogTitle)
+    }
+    ogTitle.setAttribute('content', item.title)
+
+    return () => {
+      document.title = 'KKMA'
+    }
+  }, [item])
+
   const pageUrl = typeof window !== 'undefined' ? window.location.href : ''
   const shareText = item?.title || 'KKMA News'
   const imgSrc = item?.imagePath ? `${baseUrl}${item.imagePath}` : item?.img
