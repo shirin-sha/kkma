@@ -557,10 +557,8 @@ export default function HeaderWP(): React.JSX.Element {
 						  </NavLink>
 						</li>
 						<li>
-						  <a 
-							href="http://database.kkma.net"
-							target="_blank"
-							rel="noopener noreferrer"
+						  <NavLink 
+							to="membership/register"
 							style={{ 
 							  display: 'block', 
 							  padding: '12px 20px 12px 35px', 
@@ -568,9 +566,10 @@ export default function HeaderWP(): React.JSX.Element {
 							  textDecoration: 'none',
 							  fontSize: '14px',
 							}}
+							onClick={() => setMobileMenuOpen(false)}
 						  >
-							Members Area
-						  </a>
+							Membership Registration Form
+						  </NavLink>
 						</li>
 					  </ul>
 					</details>
