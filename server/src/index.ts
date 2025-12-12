@@ -70,8 +70,25 @@ app.use(express.static(clientDistPath));
 
 // Helper to detect social media crawlers
 function isSocialCrawler(userAgent: string): boolean {
-  const crawlers = ['facebookexternalhit', 'Facebot', 'Twitterbot', 'LinkedInBot', 'WhatsApp', 'TelegramBot'];
-  return crawlers.some(c => userAgent.toLowerCase().includes(c.toLowerCase()));
+  const crawlers = [
+    'facebookexternalhit',
+    'Facebot',
+    'Twitterbot',
+    'LinkedInBot',
+    'WhatsApp',
+    'whatsapp',
+    'TelegramBot',
+    'Slackbot',
+    'SkypeUriPreview',
+    'Googlebot',
+    'bingbot'
+  ];
+  const ua = userAgent.toLowerCase();
+  const isCrawler = crawlers.some(c => ua.includes(c.toLowerCase()));
+  if (isCrawler) {
+    console.log(`[meta] Detected crawler: ${userAgent}`);
+  }
+  return isCrawler;
 }
 
 // Handle SPA routing - serve index.html for all non-API routes
@@ -94,33 +111,51 @@ app.get('*', async (req: Request, res: Response) => {
     let html = fs.readFileSync(indexPath, 'utf-8');
     
     // Set absolute URLs for og:image and og:url (faster for crawlers)
+    // More flexible regex to match meta tags with or without id attribute
     html = html.replace(
-      /<meta\s+property=["']og:image["'][^>]*id=["']og-image["'][^>]*>/i,
-      `<meta property="og:image" id="og-image" content="${logoUrl}" />`
+      /<meta\s+property=["']og:image["'][^>]*>/i,
+      `<meta property="og:image" content="${logoUrl}" />`
     );
     html = html.replace(
-      /<meta\s+property=["']og:url["'][^>]*id=["']og-url["'][^>]*>/i,
-      `<meta property="og:url" id="og-url" content="${pageUrl}" />`
+      /<meta\s+property=["']og:url["'][^>]*>/i,
+      `<meta property="og:url" content="${pageUrl}" />`
     );
     html = html.replace(
-      /<meta\s+name=["']twitter:image["'][^>]*id=["']twitter-image["'][^>]*>/i,
-      `<meta name="twitter:image" id="twitter-image" content="${logoUrl}" />`
+      /<meta\s+name=["']twitter:image["'][^>]*>/i,
+      `<meta name="twitter:image" content="${logoUrl}" />`
     );
 
     // For news pages, also update title
     if (newsMatch) {
       try {
-        const newsItem = await NewsPost.findById(newsMatch[1]).lean();
+        const newsId = newsMatch[1];
+        console.log(`[meta] Fetching news for ID: ${newsId}`);
+        const newsItem = await NewsPost.findById(newsId).lean();
         if (newsItem) {
           const title = newsItem.title || 'KKMA News';
+          console.log(`[meta] Setting title: ${title}`);
+          
+          // Update document title
           html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
-          html = html.replace(
-            /<meta\s+property=["']og:title["'][^>]*>/i,
-            `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
-          );
+          
+          // Update or add og:title
+          if (html.includes('property="og:title"')) {
+            html = html.replace(
+              /<meta\s+property=["']og:title["'][^>]*>/i,
+              `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
+            );
+          } else {
+            // Insert after og:type if og:title doesn't exist
+            html = html.replace(
+              /(<meta\s+property=["']og:type["'][^>]*>)/i,
+              `$1\n\t\t<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
+            );
+          }
+        } else {
+          console.log(`[meta] News item not found for ID: ${newsId}`);
         }
       } catch (err) {
-        console.error('[meta] Error:', err);
+        console.error('[meta] Error fetching news:', err);
       }
     }
     
