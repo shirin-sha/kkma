@@ -85,11 +85,11 @@ export default function NewsDetail(): React.JSX.Element {
         <div className="auto-container">
           <div className="content-box">
             <div className="title centred">
-              <h1>{item?.title || 'News'}</h1>
+              {/* <h1>{item?.title || 'News'}</h1> */}
             </div>
             <ul className="bread-crumb clearfix">
               <li><a href="/">Home</a></li>
-              <li>{item?.title || 'News'}</li>
+              <li>{'Media News & Updates'}</li>
             </ul>
           </div>
         </div>
