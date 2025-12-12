@@ -12,6 +12,7 @@ import eventsRouter from './routes/events';
 import membershipRouter from './routes/membership';
 import userRouter from './routes/user';
 import classifiedsRouter from './routes/classifieds';
+import { NewsPost } from './models/NewsPost';
 
 // Load env from project root first, then override with server/.env if present
 dotenv.config();
@@ -67,14 +68,66 @@ if (!found) {
 
 app.use(express.static(clientDistPath));
 
+// Helper to detect social media crawlers
+function isSocialCrawler(userAgent: string): boolean {
+  const crawlers = ['facebookexternalhit', 'Facebot', 'Twitterbot', 'LinkedInBot', 'WhatsApp', 'TelegramBot'];
+  return crawlers.some(c => userAgent.toLowerCase().includes(c.toLowerCase()));
+}
+
 // Handle SPA routing - serve index.html for all non-API routes
-app.get('*', (_req: Request, res: Response) => {
+app.get('*', async (req: Request, res: Response) => {
   const indexPath = path.join(clientDistPath, 'index.html');
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).json({ error: 'Frontend not found. Client dist directory may not be built correctly.' });
+  if (!fs.existsSync(indexPath)) {
+    return res.status(404).json({ error: 'Frontend not found. Client dist directory may not be built correctly.' });
   }
+
+  // For social crawlers on news pages, inject meta tags server-side
+  const newsMatch = req.path.match(/^\/media\/news-and-updates\/([a-fA-F0-9]{24})$/);
+  const userAgent = req.headers['user-agent'] || '';
+
+  const origin = `${req.protocol}://${req.get('host')}`;
+  const pageUrl = `${origin}${req.path}`;
+  const logoUrl = `${origin}/logo/KKMA-LOGO.png`;
+
+  // For all crawlers, set absolute URLs immediately (faster loading)
+  if (isSocialCrawler(userAgent)) {
+    let html = fs.readFileSync(indexPath, 'utf-8');
+    
+    // Set absolute URLs for og:image and og:url (faster for crawlers)
+    html = html.replace(
+      /<meta\s+property=["']og:image["'][^>]*id=["']og-image["'][^>]*>/i,
+      `<meta property="og:image" id="og-image" content="${logoUrl}" />`
+    );
+    html = html.replace(
+      /<meta\s+property=["']og:url["'][^>]*id=["']og-url["'][^>]*>/i,
+      `<meta property="og:url" id="og-url" content="${pageUrl}" />`
+    );
+    html = html.replace(
+      /<meta\s+name=["']twitter:image["'][^>]*id=["']twitter-image["'][^>]*>/i,
+      `<meta name="twitter:image" id="twitter-image" content="${logoUrl}" />`
+    );
+
+    // For news pages, also update title
+    if (newsMatch) {
+      try {
+        const newsItem = await NewsPost.findById(newsMatch[1]).lean();
+        if (newsItem) {
+          const title = newsItem.title || 'KKMA News';
+          html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
+          html = html.replace(
+            /<meta\s+property=["']og:title["'][^>]*>/i,
+            `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
+          );
+        }
+      } catch (err) {
+        console.error('[meta] Error:', err);
+      }
+    }
+    
+    return res.send(html);
+  }
+
+  res.sendFile(indexPath);
 });
 
 const PORT = process.env.PORT || 4001;
