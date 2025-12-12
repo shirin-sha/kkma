@@ -33,6 +33,7 @@ export default function NewsDetail(): React.JSX.Element {
   const [archives, setArchives] = useState<{ key: string; label: string; count: number }[]>([])
   const [categories, setCategories] = useState<{ name: string; count: number }[]>([])
   const [galleryIndex, setGalleryIndex] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
@@ -104,7 +105,7 @@ export default function NewsDetail(): React.JSX.Element {
             <div className="row clearfix">
               <div className="content-side col-lg-8 col-md-12 col-sm-12">
                 <div className="thm-unit-test">
-                  <div className="blog-details-content">
+                  <div>
                     <div className="inner-box">
                       {imgSrc && (
                         <figure className="image-box" style={{ marginBottom: 24 }}>
@@ -113,7 +114,6 @@ export default function NewsDetail(): React.JSX.Element {
                             alt={item.featuredAlt || item.title || ''}
                             style={{ 
                               width: '100%', 
-                              height: '400px', 
                               objectFit: 'contain',
                               objectPosition: 'center',
                               borderRadius: 12,
@@ -266,32 +266,39 @@ export default function NewsDetail(): React.JSX.Element {
                           </div>
                           
                           {/* Gallery Container */}
-                          <div style={{ 
-                            position: 'relative', 
-                            width: '100%',
-                            aspectRatio: '16/9', // Fixed aspect ratio to prevent jumping
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                            background: '#f8f9fa'
-                          }}>
+                          <div 
+                            onClick={() => setLightboxOpen(true)}
+                            style={{ 
+                              position: 'relative', 
+                              width: '100%',
+                              borderRadius: 12,
+                              overflow: 'hidden',
+                              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                              background: '#f8f9fa',
+                              cursor: 'pointer'
+                            }}
+                          >
                             {/* Main Image */}
                             <img 
                               src={`${baseUrl}${gallery[galleryIndex]}`} 
                               alt={`Gallery ${galleryIndex + 1}`}
                               style={{ 
                                 width: '100%',
-                                height: '100%',
-                                objectFit: 'cover', // Maintain aspect ratio while filling container
-                                objectPosition: 'center',
+                                height: 'auto',
+                                display: 'block',
                                 transition: 'opacity 0.3s ease-in-out'
                               }} 
                             />
                             
-                            {/* Navigation Buttons */}
+                            {/* Navigation Buttons - Only show if more than one image */}
+                            {gallery.length > 1 && (
+                              <>
                             <button 
                               aria-label="Previous image" 
-                              onClick={() => setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length);
+                              }}
                               style={{ 
                                 position: 'absolute', 
                                 top: '50%', 
@@ -326,7 +333,10 @@ export default function NewsDetail(): React.JSX.Element {
                             
                             <button 
                               aria-label="Next image" 
-                              onClick={() => setGalleryIndex((i) => (i + 1) % gallery.length)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setGalleryIndex((i) => (i + 1) % gallery.length);
+                              }}
                               style={{ 
                                 position: 'absolute', 
                                 top: '50%', 
@@ -358,22 +368,26 @@ export default function NewsDetail(): React.JSX.Element {
                             >
                               ›
                             </button>
+                            </>
+                            )}
                             
-                            {/* Image Counter */}
-                            <div style={{
-                              position: 'absolute',
-                              top: 12,
-                              right: 12,
-                              background: 'rgba(0,0,0,0.7)',
-                              color: '#fff',
-                              padding: '6px 12px',
-                              borderRadius: '20px',
-                              fontSize: '14px',
-                              fontWeight: '500',
-                              backdropFilter: 'blur(4px)'
-                            }}>
-                              {galleryIndex + 1} / {gallery.length}
-                            </div>
+                            {/* Image Counter - Only show if more than one image */}
+                            {gallery.length > 1 && (
+                              <div style={{
+                                position: 'absolute',
+                                top: 12,
+                                right: 12,
+                                background: 'rgba(0,0,0,0.7)',
+                                color: '#fff',
+                                padding: '6px 12px',
+                                borderRadius: '20px',
+                                fontSize: '14px',
+                                fontWeight: '500',
+                                backdropFilter: 'blur(4px)'
+                              }}>
+                                {galleryIndex + 1} / {gallery.length}
+                              </div>
+                            )}
                           </div>
                           
                           {/* Thumbnail Navigation */}
@@ -447,6 +461,180 @@ export default function NewsDetail(): React.JSX.Element {
                   </div>
                 </div>
               </div>
+
+              {/* Lightbox Modal for Gallery Images */}
+              {lightboxOpen && hasGallery && (
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                    zIndex: 10000,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => setLightboxOpen(false)}
+                >
+                  {/* Close Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setLightboxOpen(false);
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: 20,
+                      right: 20,
+                      background: 'rgba(255, 255, 255, 0.2)',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: 50,
+                      height: 50,
+                      color: '#fff',
+                      fontSize: '28px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      zIndex: 10001,
+                      transition: 'all 0.2s ease',
+                      lineHeight: 1
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                    }}
+                  >
+                    ×
+                  </button>
+
+                  {/* Left Navigation Button - Fixed Position */}
+                  {gallery.length > 1 && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setGalleryIndex((i) => (i - 1 + gallery.length) % gallery.length);
+                      }}
+                      style={{
+                        position: 'fixed',
+                        left: 20,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: 50,
+                        height: 50,
+                        color: '#fff',
+                        fontSize: '24px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.2s ease',
+                        zIndex: 10001
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                      }}
+                    >
+                      ‹
+                    </button>
+                  )}
+
+                  {/* Right Navigation Button - Fixed Position */}
+                  {gallery.length > 1 && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setGalleryIndex((i) => (i + 1) % gallery.length);
+                      }}
+                      style={{
+                        position: 'fixed',
+                        right: 20,
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: 50,
+                        height: 50,
+                        color: '#fff',
+                        fontSize: '24px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.2s ease',
+                        zIndex: 10001
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                      }}
+                    >
+                      ›
+                    </button>
+                  )}
+
+                  {/* Image Container */}
+                  <div
+                    style={{
+                      maxWidth: '90%',
+                      maxHeight: '90%',
+                      position: 'relative',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img
+                      src={`${baseUrl}${gallery[galleryIndex]}`}
+                      alt={`Gallery ${galleryIndex + 1}`}
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '90vh',
+                        height: 'auto',
+                        borderRadius: 8,
+                        boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
+                      }}
+                    />
+                  </div>
+
+                  {/* Image Counter - Fixed Position */}
+                  <div
+                    style={{
+                      position: 'fixed',
+                      bottom: 30,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'rgba(0, 0, 0, 0.7)',
+                      color: '#fff',
+                      padding: '10px 20px',
+                      borderRadius: '25px',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      whiteSpace: 'nowrap',
+                      zIndex: 10001
+                    }}
+                  >
+                    {galleryIndex + 1} / {gallery.length}
+                  </div>
+                </div>
+              )}
 
               <div className="col-lg-4 col-md-12 col-sm-12 sidebar-side">
                 <div className="blog-sidebar">

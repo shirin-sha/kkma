@@ -110,22 +110,9 @@ app.get('*', async (req: Request, res: Response) => {
   if (isSocialCrawler(userAgent)) {
     let html = fs.readFileSync(indexPath, 'utf-8');
     
-    // Set absolute URLs for og:image and og:url (faster for crawlers)
-    // More flexible regex to match meta tags with or without id attribute
-    html = html.replace(
-      /<meta\s+property=["']og:image["'][^>]*>/i,
-      `<meta property="og:image" content="${logoUrl}" />`
-    );
-    html = html.replace(
-      /<meta\s+property=["']og:url["'][^>]*>/i,
-      `<meta property="og:url" content="${pageUrl}" />`
-    );
-    html = html.replace(
-      /<meta\s+name=["']twitter:image["'][^>]*>/i,
-      `<meta name="twitter:image" content="${logoUrl}" />`
-    );
-
-    // For news pages, also update title
+    let imageUrl = logoUrl; // Default to logo
+    
+    // For news pages, get the news image and update title
     if (newsMatch) {
       try {
         const newsId = newsMatch[1];
@@ -134,6 +121,15 @@ app.get('*', async (req: Request, res: Response) => {
         if (newsItem) {
           const title = newsItem.title || 'KKMA News';
           console.log(`[meta] Setting title: ${title}`);
+          
+          // Use news image if available, otherwise fall back to logo
+          if (newsItem.imagePath) {
+            imageUrl = `${origin}${newsItem.imagePath}`;
+            console.log(`[meta] Using news image: ${imageUrl}`);
+          } else if (newsItem.img) {
+            imageUrl = newsItem.img.startsWith('http') ? newsItem.img : `${origin}${newsItem.img}`;
+            console.log(`[meta] Using news img: ${imageUrl}`);
+          }
           
           // Update document title
           html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
@@ -158,6 +154,20 @@ app.get('*', async (req: Request, res: Response) => {
         console.error('[meta] Error fetching news:', err);
       }
     }
+    
+    // Set absolute URLs for og:image and og:url (faster for crawlers)
+    html = html.replace(
+      /<meta\s+property=["']og:image["'][^>]*>/i,
+      `<meta property="og:image" content="${imageUrl}" />`
+    );
+    html = html.replace(
+      /<meta\s+property=["']og:url["'][^>]*>/i,
+      `<meta property="og:url" content="${pageUrl}" />`
+    );
+    html = html.replace(
+      /<meta\s+name=["']twitter:image["'][^>]*>/i,
+      `<meta name="twitter:image" content="${imageUrl}" />`
+    );
     
     return res.send(html);
   }

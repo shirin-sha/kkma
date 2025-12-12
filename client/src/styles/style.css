@@ -12460,9 +12460,7 @@
   .blog-details-content .inner-box .image-box{
     position: relative;
     display: block;
-    padding: 20px;
     border-radius: 5px;
-    border: 1px solid #e1e1e5;
   }
   
   .blog-details-content .inner-box .image-box img{
