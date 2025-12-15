@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Edit, Trash2 } from 'lucide-react'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const NEWS_CATEGORIES = [
 	'All News & Updates',
@@ -48,6 +50,7 @@ type Post = {
 	img?: string
 	imagePath?: string
 	content?: string
+  contentHtml?: string
 	date: { day: string; monthYear: string }
 	category: string
 	author: string
@@ -64,11 +67,35 @@ const emptyPost: Post = {
 	img: '',
 	imagePath: '',
 	content: '',
+  contentHtml: '',
 	date: { day: '', monthYear: '' },
 	category: 'All News & Updates',
 	author: '',
 	comments: 0,
 }
+
+const editorModules = {
+	toolbar: [
+		[{ header: [1, 2, 3, false] }],
+		['bold', 'italic', 'underline', 'strike'],
+		[{ list: 'ordered' }, { list: 'bullet' }],
+		[{ align: [] }],
+		['link'],
+		['clean'],
+	],
+}
+
+const editorFormats = [
+	'header',
+	'bold',
+	'italic',
+	'underline',
+	'strike',
+	'list',
+	'bullet',
+	'align',
+	'link',
+]
 
 export default function AdminNews(): React.JSX.Element {
 	const [items, setItems] = useState<Post[]>([])
@@ -155,7 +182,11 @@ export default function AdminNews(): React.JSX.Element {
 		fd.append('title', form.title)
 		if (form.category) fd.append('category', form.category)
 		if (form.author) fd.append('author', form.author)
-		if (form.content) fd.append('content', form.content)
+    if (form.contentHtml) {
+      fd.append('contentHtml', form.contentHtml)
+    } else if (form.content) {
+      fd.append('content', form.content)
+    }
     if (dateInput) {
       const [y, m, d] = dateInput.split('-')
       fd.append('publishedDate', `${d}/${m}/${y}`) // dd/mm/yyyy
@@ -200,7 +231,19 @@ export default function AdminNews(): React.JSX.Element {
 						</div>
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Content</label>
-							<textarea value={form.content || ''} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={6} style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
+							<ReactQuill
+								theme="snow"
+								value={form.contentHtml || form.content || ''}
+								onChange={(value) => setForm({ ...form, contentHtml: value })}
+								modules={editorModules}
+								formats={editorFormats}
+								style={{
+									background: '#fff',
+								}}
+							/>
+							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>
+								Use the toolbar to format the news content. This will appear in the News Detail page.
+							</small>
 						</div>
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Image</label>
