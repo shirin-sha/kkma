@@ -127,11 +127,13 @@ export default function NewsAndUpdates(): React.JSX.Element {
 
   const [posts, setPosts] = useState<Post[]>([])
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
   const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
   useEffect(() => {
     const load = async () => {
       try {
+        setLoading(true)
         const res = await fetch(`${baseUrl}/api/news`)
         const data = await res.json()
         if (res.ok && data?.ok && Array.isArray(data.items)) {
@@ -139,6 +141,8 @@ export default function NewsAndUpdates(): React.JSX.Element {
         }
       } catch {
         setError('')
+      } finally {
+        setLoading(false)
       }
     }
     load()
@@ -163,7 +167,34 @@ export default function NewsAndUpdates(): React.JSX.Element {
 
       <section className="news-section blog-grid sec-pad-2">
         <div className="auto-container">
-          {posts.length === 0 ? (
+          {loading ? (
+            <div className="row clearfix">
+              <div className="col-12" style={{ textAlign: 'center', padding: '40px 0' }}>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 12,
+                    color: '#4b5563',
+                    fontSize: 14,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      border: '3px solid #e5e7eb',
+                      borderTopColor: '#83b253',
+                      animation: 'spin 0.8s linear infinite',
+                    }}
+                  />
+                  <span>Loading news...</span>
+                </div>
+              </div>
+            </div>
+          ) : posts.length === 0 ? (
             <div className="row clearfix">
               <div className="col-12">
                 <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1e3a8a', padding: 12, borderRadius: 8 }}>
