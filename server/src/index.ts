@@ -22,8 +22,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static uploads
-app.use('/uploads', express.static(path.resolve(__dirname, '../../uploads')));
+// Serve static uploads with cache headers for faster loading
+app.use('/uploads', express.static(path.resolve(__dirname, '../../uploads'), {
+  maxAge: '1y', // Cache for 1 year
+  etag: true,
+  lastModified: true
+}));
 
 // API health check
 app.get('/api/health', (_req: Request, res: Response) => {
@@ -129,6 +133,8 @@ app.get('*', async (req: Request, res: Response) => {
           } else if (newsItem.img) {
             imageUrl = newsItem.img.startsWith('http') ? newsItem.img : `${origin}${newsItem.img}`;
             console.log(`[meta] Using news img: ${imageUrl}`);
+          } else {
+            console.log(`[meta] No news image found, using default logo: ${logoUrl}`);
           }
           
           // Update document title
@@ -156,10 +162,22 @@ app.get('*', async (req: Request, res: Response) => {
     }
     
     // Set absolute URLs for og:image and og:url (faster for crawlers)
+    // Remove existing og:image meta tags first
+    html = html.replace(/<meta\s+property=["']og:image[^>]*>/gi, '');
+    html = html.replace(/<meta\s+property=["']og:image:width[^>]*>/gi, '');
+    html = html.replace(/<meta\s+property=["']og:image:height[^>]*>/gi, '');
+    html = html.replace(/<meta\s+property=["']og:image:type[^>]*>/gi, '');
+    html = html.replace(/<meta\s+property=["']og:image:secure_url[^>]*>/gi, '');
+    
+    // Use HTTPS for secure_url if origin is HTTPS, otherwise use same protocol
+    const secureImageUrl = origin.startsWith('https') ? imageUrl.replace('http://', 'https://') : imageUrl;
+    
+    // Insert og:image meta tags after og:type for better compatibility
     html = html.replace(
-      /<meta\s+property=["']og:image["'][^>]*>/i,
-      `<meta property="og:image" content="${imageUrl}" />`
+      /(<meta\s+property=["']og:type["'][^>]*>)/i,
+      `$1\n\t\t<meta property="og:image" content="${imageUrl}" />\n\t\t<meta property="og:image:secure_url" content="${secureImageUrl}" />\n\t\t<meta property="og:image:type" content="image/jpeg" />`
     );
+    
     html = html.replace(
       /<meta\s+property=["']og:url["'][^>]*>/i,
       `<meta property="og:url" content="${pageUrl}" />`

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import 'react-quill/dist/quill.snow.css'
 
 type Post = {
   _id?: string
@@ -217,11 +218,40 @@ export default function NewsDetail(): React.JSX.Element {
                         </div>
                       </div>
                       {isHtmlContent ? (
-                        <div data-elementor-type="wp-post" className="elementor">
-                          <div dangerouslySetInnerHTML={{ __html: item.contentHtml || item.content || '' }} />
+                        <div 
+                          data-elementor-type="wp-post" 
+                          className="elementor"
+                          style={{
+                            fontSize: '16px',
+                            lineHeight: '1.8',
+                            color: '#374151',
+                            wordWrap: 'break-word',
+                            fontFamily: "'DM Sans', 'Noto Sans Malayalam', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+                          }}
+                        >
+                          <div 
+                            className="ql-editor news-content-editor"
+                            dangerouslySetInnerHTML={{ __html: item.contentHtml || item.content || '' }}
+                            style={{
+                              padding: 0,
+                              fontFamily: "'DM Sans', 'Noto Sans Malayalam', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+                              fontSize: 'inherit',
+                              lineHeight: 'inherit',
+                              color: 'inherit'
+                            }}
+                          />
                         </div>
                       ) : (
-                        item.content ? <div style={{ whiteSpace: 'pre-wrap' }}>{item.content}</div> : null
+                        item.content ? (
+                          <div style={{ 
+                            whiteSpace: 'pre-wrap',
+                            fontSize: '16px',
+                            lineHeight: '1.8',
+                            color: '#374151'
+                          }}>
+                            {item.content}
+                          </div>
+                        ) : null
                       )}
 
                   {hasGallery && (
