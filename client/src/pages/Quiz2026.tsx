@@ -181,16 +181,12 @@ export default function Quiz2026(): React.JSX.Element {
 			<div style={{ maxWidth: 1200, margin: '0 auto', padding: 'clamp(20px, 5vw, 40px) clamp(16px, 4vw, 20px)' }}>
 				{/* Quiz Title Section */}
 				<div style={{ textAlign: 'center', marginBottom: 'clamp(24px, 6vw, 40px)' }}>
-					{quiz.heading && (
-						<h2 style={{ fontSize: '20px', fontWeight: 500, marginBottom: 20, color: '#83b253', lineHeight: '1.3' }}>
-							{quiz.heading}
-						</h2>
-					)}
-					{quiz.subheading && (
-						<h1 style={{ fontSize: '30px', fontWeight: 700, color: '#374151', lineHeight: '1.3', marginBottom: 16 }}>
-							{quiz.subheading} {quiz.day}
-						</h1>
-					)}
+					<h2 style={{ fontSize: '20px', fontWeight: 500, marginBottom: 20, color: '#83b253', lineHeight: '1.3' }}>
+						അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും....
+					</h2>
+					<h1 style={{ fontSize: '30px', fontWeight: 700, color: '#374151', lineHeight: '1.3', marginBottom: 16 }}>
+						കെ.കെ.എം.എ "റമദാൻ ക്വിസ്സ് 2026" : Day {quiz.day}
+					</h1>
 					<div style={{ width: 100, height: 2, background: '#e5e7eb', margin: '20px auto' }}></div>
 				</div>
 
