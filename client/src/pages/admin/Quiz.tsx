@@ -24,10 +24,10 @@ const emptyQuiz: Quiz = {
 	videoUrl: '',
 	question: '',
 	options: [
-		{ value: 'one', label: '' },
-		{ value: 'two', label: '' }
+		{ value: 'Option 1', label: 'Option 1' },
+		{ value: 'Option 2', label: 'Option 2' }
 	],
-	correctAnswer: 'one',
+	correctAnswer: 'Option 1',
 	isActive: true,
 }
 
@@ -93,10 +93,10 @@ export default function AdminQuiz(): React.JSX.Element {
 	}
 
 	function addOption() {
-		const newValue = `option-${form.options.length + 1}`
+		const newValue = `Option ${form.options.length + 1}`
 		setForm({
 			...form,
-			options: [...form.options, { value: newValue, label: '' }]
+			options: [...form.options, { value: newValue, label: newValue }]
 		})
 	}
 
@@ -201,16 +201,17 @@ export default function AdminQuiz(): React.JSX.Element {
 							{form.options.map((opt, idx) => (
 								<div key={idx} style={{ display: 'flex', gap: 8, marginBottom: 8, alignItems: 'center' }}>
 									<input type="radio" checked={form.correctAnswer === opt.value} onChange={() => setForm({ ...form, correctAnswer: opt.value })} style={{ cursor: 'pointer' }} />
-									<input type="text" value={opt.value} onChange={(e) => {
-										const newOptions = [...form.options]
-										newOptions[idx].value = e.target.value
-										setForm({ ...form, options: newOptions, correctAnswer: form.correctAnswer === opt.value ? e.target.value : form.correctAnswer })
-									}} placeholder="Option value" required style={{ flex: 1, padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} />
 									<input type="text" value={opt.label} onChange={(e) => {
+										const newValue = e.target.value
 										const newOptions = [...form.options]
-										newOptions[idx].label = e.target.value
-										setForm({ ...form, options: newOptions })
-									}} placeholder="Option label" required style={{ flex: 2, padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} />
+										newOptions[idx].value = newValue
+										newOptions[idx].label = newValue
+										setForm({ 
+											...form, 
+											options: newOptions, 
+											correctAnswer: form.correctAnswer === opt.value ? newValue : form.correctAnswer 
+										})
+									}} placeholder="Enter option text" required style={{ flex: 1, padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} />
 									{form.options.length > 2 && (
 										<button type="button" onClick={() => removeOption(idx)} style={{ padding: '6px 12px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Remove</button>
 									)}
