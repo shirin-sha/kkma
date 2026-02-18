@@ -20,7 +20,6 @@ const emptyQuiz: Quiz = {
 	year: 2026,
 	day: 1,
 	title: '',
-	description: '',
 	imagePath: '',
 	videoUrl: '',
 	question: '',
@@ -129,7 +128,6 @@ export default function AdminQuiz(): React.JSX.Element {
 		fd.append('year', String(form.year))
 		fd.append('day', String(currentDay))
 		fd.append('title', 'Ramadan Quiz 2026') // Title not used on public page, but required by schema
-		if (form.description) fd.append('description', form.description)
 		if (form.videoUrl) fd.append('videoUrl', form.videoUrl)
 		// Question is not needed - it comes from the video
 		fd.append('question', 'Question from video') // Placeholder, not used
@@ -177,11 +175,6 @@ export default function AdminQuiz(): React.JSX.Element {
 									<option value="false">No</option>
 								</select>
 							</div>
-						</div>
-						<div>
-							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Description</label>
-							<textarea value={form.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={5} placeholder="Enter description text that will appear at the bottom of the quiz page..." style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
-							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>This description will be displayed at the bottom of the quiz page</small>
 						</div>
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Image</label>
