@@ -182,12 +182,12 @@ export default function Quiz2026(): React.JSX.Element {
 				{/* Quiz Title Section */}
 				<div style={{ textAlign: 'center', marginBottom: 'clamp(24px, 6vw, 40px)' }}>
 					{quiz.heading && (
-						<h2 style={{ fontSize: 'clamp(16px, 4vw, 20px)', fontWeight: 500, marginBottom: 12, color: '#83B253' }}>
+						<h2 style={{ fontSize: '20px', fontWeight: 500, marginBottom: 20, color: '#83b253', lineHeight: '1.3' }}>
 							{quiz.heading}
 						</h2>
 					)}
 					{quiz.subheading && (
-						<h1 style={{ fontSize: 'clamp(24px, 6vw, 32px)', fontWeight: 700, color: '#374151', lineHeight: 1.2 }}>
+						<h1 style={{ fontSize: '30px', fontWeight: 700, color: '#374151', lineHeight: '1.3', marginBottom: 16 }}>
 							{quiz.subheading} {quiz.day}
 						</h1>
 					)}
@@ -294,10 +294,10 @@ export default function Quiz2026(): React.JSX.Element {
 				</div>
 			) : (
 				<div style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: 'clamp(20px, 5vw, 32px)', marginBottom: 'clamp(24px, 6vw, 40px)' }}>
-					<h2 style={{ fontSize: 'clamp(18px, 4.5vw, 24px)', fontWeight: 600, marginBottom: 16, color: '#111827', lineHeight: 1.3 }}>
+					<h2 style={{ fontSize: '24px', fontWeight: 700, marginBottom: 16, color: '#111827', lineHeight: '1.3' }}>
 						ഇന്നത്തെ ചോദ്യങ്ങൾക്ക് ഇവിടെ ഉത്തരം നൽകുക
 					</h2>
-					<p style={{ color: '#6b7280', marginBottom: 24, fontSize: 'clamp(14px, 3.5vw, 16px)', lineHeight: 1.5 }}>
+					<p style={{ color: '#374151', marginBottom: 24, fontSize: '16px', lineHeight: '1.6' }}>
 						ഒരാൾ ഒരു ഫോൺ നമ്പറിൽ നിന്നും ഒരിക്കൽ മാത്രമേ ഉത്തരം എൻ്റർ ചെയ്യാൻ പാടുള്ളൂ.
 					</p>
 
@@ -428,7 +428,7 @@ export default function Quiz2026(): React.JSX.Element {
 			{/* Description Section - Placed after the form */}
 			{quiz.description && (
 				<div style={{ marginTop: 'clamp(24px, 6vw, 40px)' }}>
-					<div style={{ fontSize: 'clamp(14px, 3.5vw, 16px)', lineHeight: 1.8, color: '#374151', whiteSpace: 'pre-wrap' }}>
+					<div style={{ fontSize: '16px', lineHeight: '1.8', color: '#374151', whiteSpace: 'pre-wrap' }}>
 						{quiz.description}
 					</div>
 				</div>
