@@ -543,4 +543,113 @@ router.post("/api/admin/quiz/test-submission", async (req: Request, res: Respons
   }
 })
 
+// PUT /api/admin/quiz/submissions/:id/winner - Mark/unmark submission as winner (admin)
+router.put("/api/admin/quiz/submissions/:id/winner", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const { isWinner } = req.body
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ ok: false, error: "Invalid submission ID" })
+    }
+
+    if (typeof isWinner !== 'boolean') {
+      return res.status(400).json({ ok: false, error: "isWinner must be a boolean" })
+    }
+
+    const submission = await QuizSubmission.findByIdAndUpdate(
+      id,
+      { isWinner },
+      { new: true }
+    ).lean()
+
+    if (!submission) {
+      return res.status(404).json({ ok: false, error: "Submission not found" })
+    }
+
+    return res.json({ 
+      ok: true, 
+      message: isWinner ? "Submission marked as winner" : "Winner status removed",
+      submission 
+    })
+  } catch (err: any) {
+    console.error("[admin mark winner] error:", err)
+    return res.status(500).json({ ok: false, error: err.message || "Server error" })
+  }
+})
+
+// POST /api/admin/quiz/submissions/select-winner - Automatically select a random winner from correct answers for a day (admin)
+router.post("/api/admin/quiz/submissions/select-winner", async (req: Request, res: Response) => {
+  try {
+    const { day, year } = req.body
+
+    if (!day || !year) {
+      return res.status(400).json({ ok: false, error: "Day and year are required" })
+    }
+
+    const dayNum = parseInt(String(day), 10)
+    const yearNum = parseInt(String(year), 10)
+
+    if (isNaN(dayNum) || dayNum < 1 || dayNum > 30) {
+      return res.status(400).json({ ok: false, error: "Invalid day (must be 1-30)" })
+    }
+
+    if (isNaN(yearNum) || yearNum < 2020) {
+      return res.status(400).json({ ok: false, error: "Invalid year" })
+    }
+
+    // First, unmark all existing winners for this day/year
+    await QuizSubmission.updateMany(
+      { day: dayNum, year: yearNum, isWinner: true },
+      { isWinner: false }
+    )
+
+    // Find all correct submissions for this day/year
+    const correctSubmissions = await QuizSubmission.find({
+      day: dayNum,
+      year: yearNum,
+      isCorrect: true
+    }).lean()
+
+    if (correctSubmissions.length === 0) {
+      return res.json({ 
+        ok: true, 
+        message: `No correct submissions found for Day ${dayNum}, Year ${yearNum}`,
+        winner: null,
+        totalCorrect: 0
+      })
+    }
+
+    // Randomly select one winner from correct submissions
+    const randomIndex = Math.floor(Math.random() * correctSubmissions.length)
+    const selectedWinner = correctSubmissions[randomIndex]
+
+    // Mark the selected submission as winner
+    const winner = await QuizSubmission.findByIdAndUpdate(
+      selectedWinner._id,
+      { isWinner: true },
+      { new: true }
+    ).lean()
+
+    return res.json({ 
+      ok: true, 
+      message: `Winner randomly selected from ${correctSubmissions.length} correct submission(s)`,
+      winner: {
+        _id: winner!._id,
+        fullName: winner!.fullName,
+        phoneNumber: winner!.phoneNumber,
+        location: winner!.location,
+        residenceCountry: winner!.residenceCountry,
+        day: winner!.day,
+        year: winner!.year,
+        submittedAt: winner!.submittedAt
+      },
+      totalCorrect: correctSubmissions.length
+    })
+  } catch (err: any) {
+    console.error("[admin select winner] error:", err)
+    return res.status(500).json({ ok: false, error: err.message || "Server error" })
+  }
+})
+
 export default router

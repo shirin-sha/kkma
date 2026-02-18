@@ -16,6 +16,7 @@ type QuizSubmission = {
 	residenceCountry: string
 	answer: string
 	isCorrect: boolean
+	isWinner: boolean
 	submittedAt: string
 	ipAddress?: string
 }
@@ -35,6 +36,8 @@ export default function QuizSubmissions(): React.JSX.Element {
 	const [submissionError, setSubmissionError] = useState<string>('')
 	const [selectedDay, setSelectedDay] = useState<number | null>(null)
 	const [correctFilter, setCorrectFilter] = useState<'all' | 'correct' | 'incorrect'>('all')
+	const [winnerFilter, setWinnerFilter] = useState<'all' | 'winners'>('all')
+	const [selectingWinner, setSelectingWinner] = useState(false)
 
 	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
@@ -145,6 +148,69 @@ export default function QuizSubmissions(): React.JSX.Element {
 		})
 	}
 
+	async function toggleWinner(submissionId: string, currentStatus: boolean) {
+		try {
+			const res = await fetch(`${baseUrl}/api/admin/quiz/submissions/${submissionId}/winner`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ isWinner: !currentStatus })
+			})
+
+			const data = await res.json()
+			if (res.ok && data.ok) {
+				// Update the submission in state
+				setAllSubmissions(prev => prev.map(sub => 
+					sub._id === submissionId 
+						? { ...sub, isWinner: !currentStatus }
+						: sub
+				))
+			} else {
+				alert(data.error || 'Failed to update winner status')
+			}
+		} catch (err: any) {
+			console.error('Error toggling winner:', err)
+			alert('Failed to update winner status')
+		}
+	}
+
+	async function selectRandomWinner() {
+		if (!selectedDay) {
+			alert('Please select a day first')
+			return
+		}
+
+		if (!confirm(`Are you sure you want to randomly select a winner from all correct answers for Day ${selectedDay}? This will replace any existing winner for this day.`)) {
+			return
+		}
+
+		setSelectingWinner(true)
+		try {
+			const res = await fetch(`${baseUrl}/api/admin/quiz/submissions/select-winner`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ day: selectedDay, year: 2026 })
+			})
+
+			const data = await res.json()
+			if (res.ok && data.ok) {
+				if (data.winner) {
+					alert(`Winner selected!\n\nName: ${data.winner.fullName}\nPhone: ${data.winner.phoneNumber}\nLocation: ${data.winner.location}\n\nSelected from ${data.totalCorrect} correct submission(s)`)
+					// Reload submissions to show the new winner
+					loadAllSubmissions()
+				} else {
+					alert(data.message || 'No correct submissions found for this day')
+				}
+			} else {
+				alert(data.error || 'Failed to select winner')
+			}
+		} catch (err: any) {
+			console.error('Error selecting winner:', err)
+			alert('Failed to select winner')
+		} finally {
+			setSelectingWinner(false)
+		}
+	}
+
 	// Get unique days from submissions
 	const uniqueDays = useMemo(() => {
 		const days = new Set<number>()
@@ -154,7 +220,7 @@ export default function QuizSubmissions(): React.JSX.Element {
 		return Array.from(days).sort((a, b) => a - b)
 	}, [allSubmissions])
 
-	// Filter submissions by selected day and correct/incorrect status
+	// Filter submissions by selected day, correct/incorrect status, and winner status
 	useEffect(() => {
 		let filtered = allSubmissions
 		
@@ -168,6 +234,11 @@ export default function QuizSubmissions(): React.JSX.Element {
 			filtered = filtered.filter(sub => sub.isCorrect === true)
 		} else if (correctFilter === 'incorrect') {
 			filtered = filtered.filter(sub => sub.isCorrect === false)
+		}
+		
+		// Filter by winner status
+		if (winnerFilter === 'winners') {
+			filtered = filtered.filter(sub => sub.isWinner === true)
 		}
 		
 		setSubmissions(filtered)
@@ -184,7 +255,7 @@ export default function QuizSubmissions(): React.JSX.Element {
 			incorrect,
 			accuracy
 		})
-	}, [selectedDay, correctFilter, allSubmissions])
+	}, [selectedDay, correctFilter, winnerFilter, allSubmissions])
 
 	return (
 		<div>
@@ -234,6 +305,45 @@ export default function QuizSubmissions(): React.JSX.Element {
 							<option value="correct">Correct Only</option>
 							<option value="incorrect">Incorrect Only</option>
 						</select>
+						<label style={{ fontWeight: 600, fontSize: 14, color: '#374151', marginRight: 8 }}>Winners:</label>
+						<select
+							value={winnerFilter}
+							onChange={(e) => {
+								setWinnerFilter(e.target.value as 'all' | 'winners')
+							}}
+							style={{
+								padding: '8px 12px',
+								border: '1px solid #d1d5db',
+								borderRadius: 8,
+								fontSize: 14,
+								minWidth: 120,
+								cursor: 'pointer',
+								marginRight: 8
+							}}
+						>
+							<option value="all">All</option>
+							<option value="winners">Winners Only</option>
+						</select>
+						{selectedDay && (
+							<button 
+								onClick={selectRandomWinner}
+								disabled={selectingWinner || loadingSubmissions}
+								style={{ 
+									padding: '10px 20px', 
+									background: selectingWinner ? '#9ca3af' : '#f59e0b', 
+									color: '#fff', 
+									border: 'none', 
+									borderRadius: 8, 
+									cursor: selectingWinner || loadingSubmissions ? 'not-allowed' : 'pointer', 
+									fontSize: 14,
+									fontWeight: 600,
+									marginRight: 8
+								}}
+								title="Randomly select a winner from all correct answers for this day"
+							>
+								{selectingWinner ? 'Selecting...' : '🎲 Select Random Winner'}
+							</button>
+						)}
 						<button 
 							onClick={loadAllSubmissions}
 							disabled={loadingSubmissions}
@@ -312,6 +422,7 @@ export default function QuizSubmissions(): React.JSX.Element {
 											<th style={{ padding: '12px', textAlign: 'left', fontWeight: 600, color: '#374151' }}>Country</th>
 											<th style={{ padding: '12px', textAlign: 'left', fontWeight: 600, color: '#374151' }}>Answer</th>
 											<th style={{ padding: '12px', textAlign: 'center', fontWeight: 600, color: '#374151' }}>Status</th>
+											<th style={{ padding: '12px', textAlign: 'center', fontWeight: 600, color: '#374151' }}>Winner</th>
 											<th style={{ padding: '12px', textAlign: 'left', fontWeight: 600, color: '#374151' }}>Submitted At</th>
 										</tr>
 									</thead>
@@ -336,6 +447,25 @@ export default function QuizSubmissions(): React.JSX.Element {
 													}}>
 														{submission.isCorrect ? '✓ Correct' : '✗ Incorrect'}
 													</span>
+												</td>
+												<td style={{ padding: '12px', textAlign: 'center' }}>
+													<button
+														onClick={() => toggleWinner(submission._id, submission.isWinner || false)}
+														style={{
+															padding: '6px 12px',
+															borderRadius: 6,
+															border: 'none',
+															cursor: 'pointer',
+															fontSize: 12,
+															fontWeight: 600,
+															background: submission.isWinner ? '#fbbf24' : '#e5e7eb',
+															color: submission.isWinner ? '#92400e' : '#6b7280',
+															transition: 'all 0.2s'
+														}}
+														title={submission.isWinner ? 'Click to remove winner' : 'Click to mark as winner'}
+													>
+														{submission.isWinner ? '🏆 Winner' : 'Mark Winner'}
+													</button>
 												</td>
 												<td style={{ padding: '12px', color: '#6b7280', fontSize: 12 }}>{formatDate(submission.submittedAt)}</td>
 											</tr>

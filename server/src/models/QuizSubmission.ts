@@ -10,6 +10,7 @@ export interface QuizSubmissionDoc extends Document {
   residenceCountry: string
   answer: string // selected option value
   isCorrect: boolean
+  isWinner: boolean
   submittedAt: Date
   ipAddress?: string
 }
@@ -24,6 +25,7 @@ const QuizSubmissionSchema = new Schema<QuizSubmissionDoc>({
   residenceCountry: { type: String, required: true },
   answer: { type: String, required: true },
   isCorrect: { type: Boolean, default: false },
+  isWinner: { type: Boolean, default: false, index: true },
   submittedAt: { type: Date, default: Date.now },
   ipAddress: { type: String }
 }, { collection: 'quizsubmissions' })
