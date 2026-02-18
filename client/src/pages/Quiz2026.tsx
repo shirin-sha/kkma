@@ -297,6 +297,7 @@ export default function Quiz2026(): React.JSX.Element {
 						ഒരാൾ ഒരു ഫോൺ നമ്പറിൽ നിന്നും ഒരിക്കൽ മാത്രമേ ഉത്തരം എൻ്റർ ചെയ്യാൻ പാടുള്ളൂ.
 					</p>
 
+				
 					<form onSubmit={handleSubmit} style={{ display: 'grid', gap: 'clamp(16px, 4vw, 20px)' }}>
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 8, color: '#374151', fontSize: 'clamp(14px, 3.5vw, 16px)' }}>
@@ -359,7 +360,7 @@ export default function Quiz2026(): React.JSX.Element {
 
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 12, color: '#374151', fontSize: 'clamp(14px, 3.5vw, 16px)', lineHeight: 1.4 }}>
-								വീഡിയോയിലെ ചോദ്യത്തിനുള്ള ഉത്തരം താഴെ നിന്ന് തിരഞ്ഞെടുക്കുക <span style={{ color: '#ef4444' }}>*</span>
+								{quiz.question || 'വീഡിയോയിലെ ചോദ്യത്തിനുള്ള ഉത്തരം താഴെ നിന്ന് തിരഞ്ഞെടുക്കുക'} <span style={{ color: '#ef4444' }}>*</span>
 							</label>
 							<div style={{ display: 'grid', gap: 'clamp(10px, 2.5vw, 12px)' }}>
 								{quiz.options.map((option, idx) => (

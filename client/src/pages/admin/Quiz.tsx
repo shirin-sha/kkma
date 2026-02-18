@@ -129,8 +129,7 @@ export default function AdminQuiz(): React.JSX.Element {
 		fd.append('day', String(currentDay))
 		fd.append('title', 'Ramadan Quiz 2026') // Title not used on public page, but required by schema
 		if (form.videoUrl) fd.append('videoUrl', form.videoUrl)
-		// Question is not needed - it comes from the video
-		fd.append('question', 'Question from video') // Placeholder, not used
+		if (form.question) fd.append('question', form.question)
 		fd.append('options', JSON.stringify(form.options))
 		fd.append('correctAnswer', form.correctAnswer)
 		fd.append('isActive', String(form.isActive))
@@ -188,7 +187,11 @@ export default function AdminQuiz(): React.JSX.Element {
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Video URL (YouTube)</label>
 							<input type="url" value={form.videoUrl || ''} onChange={(e) => setForm({ ...form, videoUrl: e.target.value })} placeholder="https://youtu.be/..." style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
-							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>The question will come from the video</small>
+						</div>
+						<div>
+							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Question</label>
+							<textarea value={form.question || ''} onChange={(e) => setForm({ ...form, question: e.target.value })} rows={3} placeholder="Enter the quiz question..." style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 8 }} />
+							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>The question that will be displayed to users</small>
 						</div>
 						<div>
 							<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
