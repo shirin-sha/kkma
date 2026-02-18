@@ -328,8 +328,9 @@ router.get("/api/admin/quiz/submissions/all", async (req: Request, res: Response
   try {
     console.log("[admin quiz submissions all] Fetching all submissions...")
     const allSubmissions = await QuizSubmission.find({})
+      .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
       .sort({ submittedAt: -1 })
-      .limit(100)
+      .limit(500) // Increased limit for better coverage
       .lean()
     
     return res.json({
@@ -394,9 +395,12 @@ router.get("/api/admin/quiz/submissions", async (req: Request, res: Response) =>
     try {
       // Use the exact same query pattern as the working "all" endpoint
       // If filter is empty, it will return all (same as "all" endpoint)
+      // Select only needed fields to reduce memory usage
       const query = QuizSubmission.find(filter)
+        .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
       submissions = await query
         .sort({ submittedAt: -1 })
+        .limit(1000) // Add limit to prevent memory issues
         .lean()
       
       console.log("[admin quiz submissions] Query result count:", submissions.length)
@@ -405,9 +409,11 @@ router.get("/api/admin/quiz/submissions", async (req: Request, res: Response) =>
       if (submissions.length > 0) {
         try {
           const populatedQuery = QuizSubmission.find(filter)
+            .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
           const populated = await populatedQuery
             .populate('quizId', 'day year title')
             .sort({ submittedAt: -1 })
+            .limit(1000)
             .lean()
           submissions = populated
           console.log("[admin quiz submissions] Populate successful")
@@ -605,11 +611,14 @@ router.post("/api/admin/quiz/submissions/select-winner", async (req: Request, re
     )
 
     // Find all correct submissions for this day/year
+    // Only select necessary fields to reduce memory usage
     const correctSubmissions = await QuizSubmission.find({
       day: dayNum,
       year: yearNum,
       isCorrect: true
-    }).lean()
+    })
+      .select('_id fullName phoneNumber location residenceCountry day year submittedAt')
+      .lean()
 
     if (correctSubmissions.length === 0) {
       return res.json({ 

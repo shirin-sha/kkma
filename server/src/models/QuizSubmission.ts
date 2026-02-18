@@ -33,4 +33,7 @@ const QuizSubmissionSchema = new Schema<QuizSubmissionDoc>({
 // Prevent duplicate submissions from same phone number for same quiz
 QuizSubmissionSchema.index({ quizId: 1, phoneNumber: 1 }, { unique: true })
 
+// Compound index for winner selection queries (day + year + isCorrect)
+QuizSubmissionSchema.index({ day: 1, year: 1, isCorrect: 1 })
+
 export const QuizSubmission: Model<QuizSubmissionDoc> = mongoose.models.QuizSubmission || mongoose.model<QuizSubmissionDoc>("QuizSubmission", QuizSubmissionSchema)

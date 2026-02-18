@@ -99,23 +99,23 @@ export default function QuizSubmissions(): React.JSX.Element {
 			if (data.ok === true || data.ok === 'true') {
 				const items = data.items || []
 				
-				// Calculate stats from items
-				const total = items.length
-				const correct = items.filter((s: any) => s.isCorrect === true).length
-				const incorrect = total - correct
-				const accuracy = total > 0 ? ((correct / total) * 100).toFixed(2) : '0.00'
-				
-				const stats = {
-					total,
-					correct,
-					incorrect,
-					accuracy
-				}
-				
 				console.log('Setting all submissions:', items.length, 'items')
 				setAllSubmissions(items)
-				setSubmissions(items)
-				setSubmissionStats(stats)
+				
+				// Find the latest day with submissions (only on initial load)
+				if (items.length > 0 && selectedDay === null) {
+					// Group by day and find the maximum day
+					const days = items.map((s: any) => s.day).filter((d: number) => d != null && !isNaN(d))
+					if (days.length > 0) {
+						const latestDay = Math.max(...days)
+						console.log('Setting latest day:', latestDay)
+						setSelectedDay(latestDay)
+						// The useEffect will handle filtering when selectedDay changes
+					}
+				}
+				// Note: If selectedDay is already set, the useEffect will handle filtering
+				// If selectedDay is null and no items, show empty state
+				
 				setSubmissionError('')
 			} else {
 				const errorMsg = data.error || 'Failed to load submissions'
