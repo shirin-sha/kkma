@@ -50,6 +50,56 @@ export default function Quiz2026(): React.JSX.Element {
 				const data = await res.json()
 				if (res.ok && data.ok) {
 					setQuiz(data.quiz)
+					
+					// Update meta tags for social sharing
+					const day = data.quiz?.day || ''
+					const title = 'Ramadan Quiz 2026 – KKMA'
+					const description = `അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും.... കെ.കെ.എം.എ "റമദാൻ ക്വിസ് 2026" : Day ${day}`
+					const imageUrl = data.quiz?.imagePath ? `${baseUrl}${data.quiz.imagePath}` : `${window.location.origin}/logo/KKMA-LOGO.png`
+					const pageUrl = window.location.href
+					
+					// Update document title
+					document.title = title
+					
+					// Update meta description
+					let metaDesc = document.querySelector('meta[name="description"]')
+					if (!metaDesc) {
+						metaDesc = document.createElement('meta')
+						metaDesc.setAttribute('name', 'description')
+						document.head.appendChild(metaDesc)
+					}
+					metaDesc.setAttribute('content', description)
+					
+					// Update Open Graph tags
+					const updateMetaTag = (property: string, content: string) => {
+						let meta = document.querySelector(`meta[property="${property}"]`)
+						if (!meta) {
+							meta = document.createElement('meta')
+							meta.setAttribute('property', property)
+							document.head.appendChild(meta)
+						}
+						meta.setAttribute('content', content)
+					}
+					
+					updateMetaTag('og:title', title)
+					updateMetaTag('og:description', description)
+					updateMetaTag('og:image', imageUrl)
+					updateMetaTag('og:url', pageUrl)
+					
+					// Update Twitter tags
+					const updateTwitterTag = (name: string, content: string) => {
+						let meta = document.querySelector(`meta[name="${name}"]`)
+						if (!meta) {
+							meta = document.createElement('meta')
+							meta.setAttribute('name', name)
+							document.head.appendChild(meta)
+						}
+						meta.setAttribute('content', content)
+					}
+					
+					updateTwitterTag('twitter:title', title)
+					updateTwitterTag('twitter:description', description)
+					updateTwitterTag('twitter:image', imageUrl)
 				} else {
 					setError(data.error || 'Quiz not found')
 				}

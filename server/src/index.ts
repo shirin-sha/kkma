@@ -134,16 +134,11 @@ app.get('*', async (req: Request, res: Response) => {
         const quiz = await RamadanQuiz.findOne({ year, day: quizDay, isActive: true }).lean();
         
         if (quiz) {
-          // Use subheading or heading for title, fallback to default
-          title = quiz.subheading 
-            ? `${quiz.subheading} ${quiz.day} - Ramadan Quiz 2026`
-            : quiz.heading 
-            ? `${quiz.heading} - Ramadan Quiz 2026`
-            : `Ramadan Quiz 2026 - Day ${quiz.day}`;
+          // Title format: "Ramadan Quiz 2026 – KKMA"
+          title = `Ramadan Quiz 2026 – KKMA`;
           
-          description = quiz.description 
-            ? quiz.description.substring(0, 160).replace(/\n/g, ' ')
-            : `Participate in KKMA Ramadan Quiz 2026 - Day ${quiz.day}. Watch the video and submit your answer.`;
+          // Description format: "അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും.... കെ.കെ.എം.എ "റമദാൻ ക്വിസ് 2026" : Day {day}"
+          description = `അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും.... കെ.കെ.എം.എ "റമദാൻ ക്വിസ് 2026" : Day ${quiz.day}`;
           
           // Use quiz image if available
           if (quiz.imagePath) {
@@ -151,8 +146,8 @@ app.get('*', async (req: Request, res: Response) => {
           }
         } else {
           // Default quiz page metadata
-          title = 'Ramadan Quiz 2026 - KKMA';
-          description = 'Participate in KKMA Ramadan Quiz 2026. Watch daily videos and submit your answers for a chance to win prizes.';
+          title = 'Ramadan Quiz 2026 – KKMA';
+          description = 'അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും.... കെ.കെ.എം.എ "റമദാൻ ക്വിസ് 2026"';
         }
       } catch (err) {
         console.error('[meta] Error fetching quiz:', err);
