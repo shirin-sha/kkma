@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Outlet, RouteObject, createBrowserRouter, RouterProvider } from "react-router-dom";
 import HeaderWP from "./components/HeaderWP";
 import FooterWP from "./components/FooterWP";
@@ -32,11 +32,14 @@ import AdminEvents from "./pages/admin/EventsandPrograms";
 import AdminMemberships from "./pages/admin/Memberships";
 import AdminMembershipDetail from "./pages/admin/MembershipDetail";
 import AdminClassifieds from "./pages/admin/Classifieds";
+import AdminQuiz from "./pages/admin/Quiz";
+import AdminQuizSubmissions from "./pages/admin/QuizSubmissions";
 import EventDetail from "./pages/media/EventDetail";
 import NewsDetail from "./pages/media/NewsDetail";
 import CategoryNews from "./pages/media/CategoryNews";
 import ArchiveNews from "./pages/media/ArchiveNews";
 import Register from "./pages/membership/Register";
+import Quiz2026 from "./pages/Quiz2026";
 
 function Layout(): React.JSX.Element {
 return (
@@ -75,13 +78,14 @@ path: "/",
 { path: "membership/register", element: <Register /> },
 { path: "initiatives/magnet-club", element: <MagnetClub /> },
 { path: "initiatives/social-projects", element: <SocialProjects /> },
-{ path: "about/overview", element: <Overview /> },
-{ path: "about/people-behind", element: <PeopleBehind /> },
-{ path: "about/kkma-history", element: <KKMA_History /> },
-{ path: "initiatives", element: <Initiatives /> },
-{ path: "classifieds", element: <Classifieds /> },
-{ path: "media", element: <Media /> },
-{ path: "contact", element: <Contact /> }
+      { path: "about/overview", element: <Overview /> },
+      { path: "about/people-behind", element: <PeopleBehind /> },
+      { path: "about/kkma-history", element: <KKMA_History /> },
+      { path: "initiatives", element: <Initiatives /> },
+      { path: "classifieds", element: <Classifieds /> },
+      { path: "media", element: <Media /> },
+      { path: "contact", element: <Contact /> },
+      { path: "quiz-2026", element: <Quiz2026 /> }
 ]
 },
 // Standalone admin login (no AdminLayout)
@@ -93,10 +97,12 @@ path: "/admin",
  children: [
 { path: "contacts", element: <AdminContacts /> },
 { path: "classifieds", element: <AdminClassifieds /> },
-{ path: "news", element: <AdminNews /> },
-{ path: "events", element: <AdminEvents /> },
-{ path: "memberships", element: <AdminMemberships /> },
-{ path: "memberships/:id", element: <AdminMembershipDetail /> },
+      { path: "news", element: <AdminNews /> },
+      { path: "events", element: <AdminEvents /> },
+      { path: "memberships", element: <AdminMemberships /> },
+      { path: "memberships/:id", element: <AdminMembershipDetail /> },
+      { path: "quiz", element: <AdminQuiz /> },
+      { path: "quiz/submissions", element: <AdminQuizSubmissions /> },
 ]
 }
 ];

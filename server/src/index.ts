@@ -1,4 +1,4 @@
-﻿import express, { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -12,7 +12,10 @@ import eventsRouter from './routes/events';
 import membershipRouter from './routes/membership';
 import userRouter from './routes/user';
 import classifiedsRouter from './routes/classifieds';
+import quizRouter from './routes/quiz';
 import { NewsPost } from './models/NewsPost';
+import { RamadanQuiz } from './models/RamadanQuiz';
+import { QuizSubmission } from './models/QuizSubmission';
 
 // Load env from project root first, then override with server/.env if present
 dotenv.config();
@@ -41,6 +44,7 @@ app.use(eventsRouter);
 app.use(membershipRouter);
 app.use('/api/user', userRouter);
 app.use('/api/classifieds', classifiedsRouter);
+app.use(quizRouter);
 
 // Serve static files from client dist (both development and production)
 // Try multiple possible paths to find client dist
@@ -102,8 +106,9 @@ app.get('*', async (req: Request, res: Response) => {
     return res.status(404).json({ error: 'Frontend not found. Client dist directory may not be built correctly.' });
   }
 
-  // For social crawlers on news pages, inject meta tags server-side
+  // For social crawlers on news pages and quiz page, inject meta tags server-side
   const newsMatch = req.path.match(/^\/media\/news-and-updates\/([a-fA-F0-9]{24})$/);
+  const quizMatch = req.path === '/quiz-2026';
   const userAgent = req.headers['user-agent'] || '';
 
   const origin = `${req.protocol}://${req.get('host')}`;
@@ -115,6 +120,44 @@ app.get('*', async (req: Request, res: Response) => {
     let html = fs.readFileSync(indexPath, 'utf-8');
     
     let imageUrl = logoUrl; // Default to logo
+    let title = 'KKMA';
+    let description = 'Kuwait Kerala Muslim Association';
+    
+    // For quiz page, get the current quiz and update meta tags
+    if (quizMatch) {
+      try {
+        const year = 2026;
+        const today = new Date();
+        const dayOfMonth = today.getDate();
+        let quizDay = Math.max(1, Math.min(30, dayOfMonth));
+        
+        const quiz = await RamadanQuiz.findOne({ year, day: quizDay, isActive: true }).lean();
+        
+        if (quiz) {
+          // Use subheading or heading for title, fallback to default
+          title = quiz.subheading 
+            ? `${quiz.subheading} ${quiz.day} - Ramadan Quiz 2026`
+            : quiz.heading 
+            ? `${quiz.heading} - Ramadan Quiz 2026`
+            : `Ramadan Quiz 2026 - Day ${quiz.day}`;
+          
+          description = quiz.description 
+            ? quiz.description.substring(0, 160).replace(/\n/g, ' ')
+            : `Participate in KKMA Ramadan Quiz 2026 - Day ${quiz.day}. Watch the video and submit your answer.`;
+          
+          // Use quiz image if available
+          if (quiz.imagePath) {
+            imageUrl = `${origin}${quiz.imagePath}`;
+          }
+        } else {
+          // Default quiz page metadata
+          title = 'Ramadan Quiz 2026 - KKMA';
+          description = 'Participate in KKMA Ramadan Quiz 2026. Watch daily videos and submit your answers for a chance to win prizes.';
+        }
+      } catch (err) {
+        console.error('[meta] Error fetching quiz:', err);
+      }
+    }
     
     // For news pages, get the news image and update title
     if (newsMatch) {
@@ -123,8 +166,10 @@ app.get('*', async (req: Request, res: Response) => {
         console.log(`[meta] Fetching news for ID: ${newsId}`);
         const newsItem = await NewsPost.findById(newsId).lean();
         if (newsItem) {
-          const title = newsItem.title || 'KKMA News';
+          title = newsItem.title || 'KKMA News';
           console.log(`[meta] Setting title: ${title}`);
+          
+          description = newsItem.seoDescription || newsItem.excerpt || newsItem.content?.substring(0, 160) || 'Latest news and updates from KKMA.';
           
           // Use news image if available, otherwise fall back to logo
           if (newsItem.imagePath) {
@@ -136,23 +181,6 @@ app.get('*', async (req: Request, res: Response) => {
           } else {
             console.log(`[meta] No news image found, using default logo: ${logoUrl}`);
           }
-          
-          // Update document title
-          html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
-          
-          // Update or add og:title
-          if (html.includes('property="og:title"')) {
-            html = html.replace(
-              /<meta\s+property=["']og:title["'][^>]*>/i,
-              `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
-            );
-          } else {
-            // Insert after og:type if og:title doesn't exist
-            html = html.replace(
-              /(<meta\s+property=["']og:type["'][^>]*>)/i,
-              `$1\n\t\t<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
-            );
-          }
         } else {
           console.log(`[meta] News item not found for ID: ${newsId}`);
         }
@@ -160,6 +188,52 @@ app.get('*', async (req: Request, res: Response) => {
         console.error('[meta] Error fetching news:', err);
       }
     }
+    
+    // Update document title
+    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
+    
+    // Update description
+    html = html.replace(
+      /<meta\s+name=["']description["'][^>]*>/i,
+      `<meta name="description" content="${description.replace(/"/g, '&quot;')}" />`
+    );
+    
+    // Update or add og:title
+    if (html.includes('property="og:title"')) {
+      html = html.replace(
+        /<meta\s+property=["']og:title["'][^>]*>/i,
+        `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
+      );
+    } else {
+      // Insert after og:type if og:title doesn't exist
+      html = html.replace(
+        /(<meta\s+property=["']og:type["'][^>]*>)/i,
+        `$1\n\t\t<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
+      );
+    }
+    
+    // Update og:description
+    if (html.includes('property="og:description"')) {
+      html = html.replace(
+        /<meta\s+property=["']og:description["'][^>]*>/i,
+        `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`
+      );
+    } else {
+      html = html.replace(
+        /(<meta\s+property=["']og:title["'][^>]*>)/i,
+        `$1\n\t\t<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`
+      );
+    }
+    
+    // Update twitter:title and twitter:description
+    html = html.replace(
+      /<meta\s+name=["']twitter:title["'][^>]*>/i,
+      `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`
+    );
+    html = html.replace(
+      /<meta\s+name=["']twitter:description["'][^>]*>/i,
+      `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`
+    );
     
     // Set absolute URLs for og:image and og:url (faster for crawlers)
     // Remove existing og:image meta tags first
