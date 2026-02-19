@@ -234,8 +234,7 @@ export default function QuizSubmissions(): React.JSX.Element {
 					'Answer',
 					'Status',
 					'Winner',
-					'Submitted At',
-					'IP Address'
+					'Submitted At'
 				]
 
 				// Convert submissions to CSV rows
@@ -252,8 +251,7 @@ export default function QuizSubmissions(): React.JSX.Element {
 							`"${(sub.answer || '').replace(/"/g, '""')}"`, // Escape quotes
 							sub.isCorrect ? 'Correct' : 'Incorrect',
 							sub.isWinner ? 'Yes' : 'No',
-							formatDate(sub.submittedAt),
-							sub.ipAddress || ''
+							formatDate(sub.submittedAt)
 						]
 						return row.join(',')
 					})

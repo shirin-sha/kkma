@@ -328,7 +328,7 @@ router.get("/api/admin/quiz/submissions/all", async (req: Request, res: Response
   try {
     console.log("[admin quiz submissions all] Fetching all submissions...")
     const allSubmissions = await QuizSubmission.find({})
-      .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
+      .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt')
       .sort({ submittedAt: -1 })
       // Removed limit to fetch all submissions
       .lean()
@@ -399,7 +399,7 @@ router.get("/api/admin/quiz/submissions", async (req: Request, res: Response) =>
       // If filter is empty, it will return all (same as "all" endpoint)
       // Select only needed fields to reduce memory usage
       const query = QuizSubmission.find(filter)
-        .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
+        .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt')
       submissions = await query
         .sort({ submittedAt: -1 })
         .limit(1000) // Add limit to prevent memory issues
@@ -411,7 +411,7 @@ router.get("/api/admin/quiz/submissions", async (req: Request, res: Response) =>
       if (submissions.length > 0) {
         try {
           const populatedQuery = QuizSubmission.find(filter)
-            .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
+            .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt')
           const populated = await populatedQuery
             .populate('quizId', 'day year title')
             .sort({ submittedAt: -1 })
