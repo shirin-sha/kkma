@@ -38,6 +38,7 @@ export default function QuizSubmissions(): React.JSX.Element {
 	const [correctFilter, setCorrectFilter] = useState<'all' | 'correct' | 'incorrect'>('all')
 	const [winnerFilter, setWinnerFilter] = useState<'all' | 'winners'>('all')
 	const [selectingWinner, setSelectingWinner] = useState(false)
+	const [exporting, setExporting] = useState(false)
 
 	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
@@ -211,6 +212,87 @@ export default function QuizSubmissions(): React.JSX.Element {
 		}
 	}
 
+	function exportToCSV() {
+		if (submissions.length === 0) {
+			alert('No submissions to export')
+			return
+		}
+
+		setExporting(true)
+
+		// Use setTimeout to allow UI to update and show loading state
+		setTimeout(() => {
+			try {
+				// CSV Headers
+				const headers = [
+					'Day',
+					'Year',
+					'Full Name',
+					'Phone Number',
+					'Location',
+					'Residence Country',
+					'Answer',
+					'Status',
+					'Winner',
+					'Submitted At',
+					'IP Address'
+				]
+
+				// Convert submissions to CSV rows
+				const csvRows = [
+					headers.join(','), // Header row
+					...submissions.map(sub => {
+						const row = [
+							sub.day || '',
+							sub.year || '',
+							`"${(sub.fullName || '').replace(/"/g, '""')}"`, // Escape quotes
+							sub.phoneNumber || '',
+							`"${(sub.location || '').replace(/"/g, '""')}"`, // Escape quotes
+							sub.residenceCountry || '',
+							`"${(sub.answer || '').replace(/"/g, '""')}"`, // Escape quotes
+							sub.isCorrect ? 'Correct' : 'Incorrect',
+							sub.isWinner ? 'Yes' : 'No',
+							formatDate(sub.submittedAt),
+							sub.ipAddress || ''
+						]
+						return row.join(',')
+					})
+				]
+
+				// Create CSV content
+				const csvContent = csvRows.join('\n')
+
+				// Create blob and download
+				const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+				const link = document.createElement('a')
+				const url = URL.createObjectURL(blob)
+				
+				// Generate filename with current date and filters
+				const dateStr = new Date().toISOString().split('T')[0]
+				let filename = `quiz-submissions-${dateStr}`
+				if (selectedDay) filename += `-day${selectedDay}`
+				if (correctFilter !== 'all') filename += `-${correctFilter}`
+				if (winnerFilter === 'winners') filename += '-winners'
+				filename += '.csv'
+
+				link.setAttribute('href', url)
+				link.setAttribute('download', filename)
+				link.style.visibility = 'hidden'
+				document.body.appendChild(link)
+				link.click()
+				document.body.removeChild(link)
+				
+				// Clean up the object URL
+				setTimeout(() => URL.revokeObjectURL(url), 100)
+			} catch (err: any) {
+				console.error('Error exporting CSV:', err)
+				alert('Failed to export CSV. Please try again.')
+			} finally {
+				setExporting(false)
+			}
+		}, 100) // Small delay to show loading state
+	}
+
 	// Get unique days from submissions
 	const uniqueDays = useMemo(() => {
 		const days = new Set<number>()
@@ -344,6 +426,24 @@ export default function QuizSubmissions(): React.JSX.Element {
 								{selectingWinner ? 'Selecting...' : '🎲 Select Random Winner'}
 							</button>
 						)}
+						<button 
+							onClick={exportToCSV}
+							disabled={loadingSubmissions || submissions.length === 0 || exporting}
+							style={{ 
+								padding: '10px 20px', 
+								background: (loadingSubmissions || submissions.length === 0 || exporting) ? '#9ca3af' : '#10b981', 
+								color: '#fff', 
+								border: 'none', 
+								borderRadius: 8, 
+								cursor: (loadingSubmissions || submissions.length === 0 || exporting) ? 'not-allowed' : 'pointer', 
+								fontSize: 14,
+								fontWeight: 600,
+								marginRight: 8
+							}}
+							title={submissions.length === 0 ? 'No submissions to export' : exporting ? 'Exporting...' : 'Export filtered submissions to CSV'}
+						>
+							{exporting ? '⏳ Exporting...' : '📥 Export CSV'}
+						</button>
 						<button 
 							onClick={loadAllSubmissions}
 							disabled={loadingSubmissions}

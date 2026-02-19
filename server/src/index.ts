@@ -117,6 +117,11 @@ app.get('*', async (req: Request, res: Response) => {
 
   // For all crawlers, set absolute URLs immediately (faster loading)
   if (isSocialCrawler(userAgent)) {
+    // Set no-cache headers to prevent WhatsApp/Facebook from caching old meta tags
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    
     let html = fs.readFileSync(indexPath, 'utf-8');
     
     let imageUrl = logoUrl; // Default to logo
@@ -127,11 +132,10 @@ app.get('*', async (req: Request, res: Response) => {
     if (quizMatch) {
       try {
         const year = 2026;
-        const today = new Date();
-        const dayOfMonth = today.getDate();
-        let quizDay = Math.max(1, Math.min(30, dayOfMonth));
-        
-        const quiz = await RamadanQuiz.findOne({ year, day: quizDay, isActive: true }).lean();
+        // Get the latest active quiz (same logic as /api/quiz/current endpoint)
+        const quiz = await RamadanQuiz.findOne({ year, isActive: true })
+          .sort({ day: -1 }) // Get the quiz with the highest day number
+          .lean();
         
         if (quiz) {
           // Title format: "Ramadan Quiz 2026 – KKMA"
@@ -144,13 +148,19 @@ app.get('*', async (req: Request, res: Response) => {
           if (quiz.imagePath) {
             imageUrl = `${origin}${quiz.imagePath}`;
           }
+          
+          console.log(`[meta] Quiz page - Title: ${title}, Description: ${description}, Image: ${imageUrl}`);
         } else {
           // Default quiz page metadata
           title = 'Ramadan Quiz 2026 – KKMA';
           description = 'അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും.... കെ.കെ.എം.എ "റമദാൻ ക്വിസ് 2026"';
+          console.log(`[meta] Quiz page - No quiz found, using defaults`);
         }
       } catch (err) {
         console.error('[meta] Error fetching quiz:', err);
+        // Fallback to default quiz metadata
+        title = 'Ramadan Quiz 2026 – KKMA';
+        description = 'അറിവ് നേടൂ, ഒപ്പം സമ്മാനങ്ങളും.... കെ.കെ.എം.എ "റമദാൻ ക്വിസ് 2026"';
       }
     }
     
@@ -184,50 +194,48 @@ app.get('*', async (req: Request, res: Response) => {
       }
     }
     
-    // Update document title
-    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</title>`);
+    // Helper function to escape HTML attributes properly
+    const escapeHtml = (str: string): string => {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+    };
     
-    // Update description
+    const escapedTitle = escapeHtml(title);
+    const escapedDescription = escapeHtml(description);
+    
+    // Update document title
+    html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escapedTitle}</title>`);
+    
+    // Update description - remove existing and add new one
+    html = html.replace(/<meta\s+name=["']description["'][^>]*>/i, '');
+    // Insert description meta tag after charset
     html = html.replace(
-      /<meta\s+name=["']description["'][^>]*>/i,
-      `<meta name="description" content="${description.replace(/"/g, '&quot;')}" />`
+      /(<meta\s+charset=["'][^"']*["']\s*>)/i,
+      `$1\n\t\t<meta name="description" content="${escapedDescription}" />`
     );
     
-    // Update or add og:title
-    if (html.includes('property="og:title"')) {
-      html = html.replace(
-        /<meta\s+property=["']og:title["'][^>]*>/i,
-        `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
-      );
-    } else {
-      // Insert after og:type if og:title doesn't exist
-      html = html.replace(
-        /(<meta\s+property=["']og:type["'][^>]*>)/i,
-        `$1\n\t\t<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`
-      );
-    }
+    // Remove existing og:title and og:description to ensure clean replacement
+    html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/gi, '');
+    html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/gi, '');
     
-    // Update og:description
-    if (html.includes('property="og:description"')) {
-      html = html.replace(
-        /<meta\s+property=["']og:description["'][^>]*>/i,
-        `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`
-      );
-    } else {
-      html = html.replace(
-        /(<meta\s+property=["']og:title["'][^>]*>)/i,
-        `$1\n\t\t<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`
-      );
-    }
+    // Insert og:title and og:description after og:type
+    html = html.replace(
+      /(<meta\s+property=["']og:type["'][^>]*>)/i,
+      `$1\n\t\t<meta property="og:title" content="${escapedTitle}" />\n\t\t<meta property="og:description" content="${escapedDescription}" />`
+    );
     
     // Update twitter:title and twitter:description
     html = html.replace(
       /<meta\s+name=["']twitter:title["'][^>]*>/i,
-      `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`
+      `<meta name="twitter:title" content="${escapedTitle}" />`
     );
     html = html.replace(
       /<meta\s+name=["']twitter:description["'][^>]*>/i,
-      `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`
+      `<meta name="twitter:description" content="${escapedDescription}" />`
     );
     
     // Set absolute URLs for og:image and og:url (faster for crawlers)
@@ -241,16 +249,26 @@ app.get('*', async (req: Request, res: Response) => {
     // Use HTTPS for secure_url if origin is HTTPS, otherwise use same protocol
     const secureImageUrl = origin.startsWith('https') ? imageUrl.replace('http://', 'https://') : imageUrl;
     
-    // Insert og:image meta tags after og:type for better compatibility
+    // Insert og:image meta tags after og:description for better compatibility
     html = html.replace(
-      /(<meta\s+property=["']og:type["'][^>]*>)/i,
+      /(<meta\s+property=["']og:description["'][^>]*>)/i,
       `$1\n\t\t<meta property="og:image" content="${imageUrl}" />\n\t\t<meta property="og:image:secure_url" content="${secureImageUrl}" />\n\t\t<meta property="og:image:type" content="image/jpeg" />`
     );
     
-    html = html.replace(
-      /<meta\s+property=["']og:url["'][^>]*>/i,
-      `<meta property="og:url" content="${pageUrl}" />`
-    );
+    // Update or add og:url
+    if (html.includes('property="og:url"')) {
+      html = html.replace(
+        /<meta\s+property=["']og:url["'][^>]*>/i,
+        `<meta property="og:url" content="${pageUrl}" />`
+      );
+    } else {
+      html = html.replace(
+        /(<meta\s+property=["']og:image["'][^>]*>)/i,
+        `$1\n\t\t<meta property="og:url" content="${pageUrl}" />`
+      );
+    }
+    
+    // Update twitter:image
     html = html.replace(
       /<meta\s+name=["']twitter:image["'][^>]*>/i,
       `<meta name="twitter:image" content="${imageUrl}" />`

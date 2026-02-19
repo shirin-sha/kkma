@@ -330,8 +330,10 @@ router.get("/api/admin/quiz/submissions/all", async (req: Request, res: Response
     const allSubmissions = await QuizSubmission.find({})
       .select('_id quizId year day fullName phoneNumber location residenceCountry answer isCorrect isWinner submittedAt ipAddress')
       .sort({ submittedAt: -1 })
-      .limit(500) // Increased limit for better coverage
+      // Removed limit to fetch all submissions
       .lean()
+    
+    console.log(`[admin quiz submissions all] Found ${allSubmissions.length} submissions`)
     
     return res.json({
       ok: true,
