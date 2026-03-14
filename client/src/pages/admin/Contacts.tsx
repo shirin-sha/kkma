@@ -131,19 +131,33 @@ export default function AdminContacts(): React.JSX.Element {
       </section>
 
       {open && selected && (
-        <div className="modal__overlay" role="dialog" aria-modal="true" style={{ position: 'fixed', inset: 0, background: 'rgba(17,24,39,0.2)', display: 'grid', placeItems: 'center' }}>
-          <div className="modal__card" style={{ width: 'min(560px, 92%)', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
-            <div className="modal__header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 14, borderBottom: '1px solid #e5e7eb' }}>
+        <div className="modal__overlay" role="dialog" aria-modal="true" style={{ position: 'fixed', inset: 0, background: 'rgba(17,24,39,0.2)', display: 'grid', placeItems: 'center', zIndex: 1000, padding: '20px' }}>
+          <div className="modal__card" style={{ width: 'min(800px, 92%)', maxHeight: '90vh', background: '#fff', border: '1px solid #e5e7eb', borderRadius: 10, boxShadow: '0 20px 40px rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div className="modal__header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 14, borderBottom: '1px solid #e5e7eb', flexShrink: 0 }}>
               <h6 style={{ margin: 0, color: '#111827', fontSize: 16 }}>Contact from {selected.name}</h6>
               <button type="button" className="modal__close" aria-label="Close" onClick={onClose} style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 18 }}>✕</button>
             </div>
-            <div className="modal__body" style={{ padding: 16, color: '#111827' }}>
-              <div style={{ marginBottom: 8 }}><strong>Email:</strong> {selected.email}</div>
-              {selected.subject && <div style={{ marginBottom: 8 }}><strong>Subject:</strong> {selected.subject}</div>}
-              <div style={{ marginBottom: 8 }}><strong>Received:</strong> {formatDisplay(selected.createdAt)}</div>
-              <div style={{ whiteSpace: 'pre-wrap' }}><strong>Message:</strong><br />{selected.message}</div>
+            <div className="modal__body" style={{ padding: 16, color: '#111827', overflowY: 'auto', flex: 1, minHeight: 0 }}>
+              <div style={{ marginBottom: 12 }}><strong>Email:</strong> {selected.email}</div>
+              {selected.subject && <div style={{ marginBottom: 12 }}><strong>Subject:</strong> {selected.subject}</div>}
+              <div style={{ marginBottom: 12 }}><strong>Received:</strong> {formatDisplay(selected.createdAt)}</div>
+              <div style={{ marginTop: 16 }}>
+                <strong style={{ display: 'block', marginBottom: 8 }}>Message:</strong>
+                <div style={{ 
+                  whiteSpace: 'pre-wrap', 
+                  wordBreak: 'break-word', 
+                  overflowWrap: 'break-word',
+                  padding: '12px',
+                  background: '#f9fafb',
+                  borderRadius: 6,
+                  border: '1px solid #e5e7eb',
+                  lineHeight: 1.6
+                }}>
+                  {selected.message}
+                </div>
+              </div>
             </div>
-            <div className="modal__footer" style={{ padding: 12, borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'flex-end' }}>
+            <div className="modal__footer" style={{ padding: 12, borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
               <button type="button" className="modal__btn" onClick={onClose} style={{ padding: '8px 12px', border: '1px solid #e5e7eb', background: '#fff', borderRadius: 6, cursor: 'pointer' }}>Close</button>
             </div>
           </div>
