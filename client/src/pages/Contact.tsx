@@ -10,20 +10,21 @@ export default function Contact(): React.JSX.Element {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const branches = [
-    { name: 'Abu Halifa', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Ahmed Al-Sabah', address: 'Street 1, Block 1, Abu Halifa, Hawally' },
-    { name: 'Ahmadi', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Fatima Al-Ahmad', address: 'Street 2, Block 2, Ahmadi, Ahmadi' },
-    { name: 'Kuwait City', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Mohammed Al-Kuwait', address: 'Street 3, Block 3, Kuwait City, Capital' },
-    { name: 'Abbasiya', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Noura Al-Abbasi', address: 'Street 4, Block 4, Abbasiya, Hawally' },
-    { name: 'Fahahaeel', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Khalid Al-Fahahaeel', address: 'Street 5, Block 5, Fahahaeel, Ahmadi' },
-    { name: 'Farwaniya', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Mariam Al-Farwaniya', address: 'Street 6, Block 6, Farwaniya, Farwaniya' },
-    { name: 'Fintas', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Abdullah Al-Fintas', address: 'Street 7, Block 7, Fintas, Ahmadi' },
-    { name: 'Hasawi', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Hessa Al-Hasawi', address: 'Street 8, Block 8, Hasawi, Ahmadi' },
-    { name: 'Hawally', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Saad Al-Hawally', address: 'Street 9, Block 9, Hawally, Hawally' },
-    { name: 'Jahra', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Nasser Al-Jahra', address: 'Street 10, Block 10, Jahra, Jahra' },
-    { name: 'Khaitan', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Layla Al-Khaitan', address: 'Street 11, Block 11, Khaitan, Farwaniya' },
-    { name: 'Mahbola', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Yousef Al-Mahbola', address: 'Street 12, Block 12, Mahbola, Ahmadi' },
-    { name: 'Sabhan', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Aisha Al-Sabhan', address: 'Street 13, Block 13, Sabhan, Hawally' },
-    { name: 'Salmiya', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Omar Al-Salmiya', address: 'Street 14, Block 14, Salmiya, Hawally' },
+    { name: 'Abbasiya', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Noura Al-Abbasi', address: 'Street 1, Block 1, Abbasiya, Hawally' },
+    { name: 'Abu Haleefa', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Ahmed Al-Sabah', address: 'Street 2, Block 2, Abu Haleefa, Hawally' },
+    { name: 'City', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Mohammed Al-Kuwait', address: 'Street 3, Block 3, Kuwait City, Capital' },
+    { name: 'Fahaheel', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Khalid Al-Fahaheel', address: 'Street 4, Block 4, Fahaheel, Ahmadi' },
+    { name: 'Farwaniya', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Mariam Al-Farwaniya', address: 'Street 5, Block 5, Farwaniya, Farwaniya' },
+    { name: 'Finthas', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Abdullah Al-Finthas', address: 'Street 6, Block 6, Finthas, Ahmadi' },
+    { name: 'Hawally', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Saad Al-Hawally', address: 'Street 7, Block 7, Hawally, Hawally' },
+    { name: 'Jahara', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Nasser Al-Jahara', address: 'Street 8, Block 8, Jahara, Jahra' },
+    { name: 'Jleeb', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Yousef Al-Jleeb', address: 'Street 9, Block 9, Jleeb, Farwaniya' },
+    { name: 'Karnataka', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Rahman Al-Karnataka', address: 'Street 10, Block 10, Karnataka' },
+    { name: 'Khaithan', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Layla Al-Khaithan', address: 'Street 11, Block 11, Khaithan, Farwaniya' },
+    { name: 'Mahboula', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Fatima Al-Mahboula', address: 'Street 12, Block 12, Mahboula, Ahmadi' },
+    { name: 'Mangaf', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Omar Al-Mangaf', address: 'Street 13, Block 13, Mangaf, Ahmadi' },
+    { name: 'Sabhan', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Aisha Al-Sabhan', address: 'Street 14, Block 14, Sabhan, Hawally' },
+    { name: 'Salmiya', phone: '+965123456789', email: 'info@kkma.net', contactPerson: 'Khalid Al-Salmiya', address: 'Street 15, Block 15, Salmiya, Hawally' },
   ]
 
   const cardsPerSlide = 2

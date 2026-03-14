@@ -68,7 +68,7 @@ export default function FooterWP(): React.JSX.Element {
 									<div className="widget-title"><h3>Contact Info</h3></div>
 									<div className="widget-content">
 										<ul className="info clearfix">
-											<li><h5>Branches</h5><p>Abuhalifa, Ahmadi, Kuwait City, Abbasiya, Fahahaeel, Farwaniya, Fintas, Hasawi, Hawally, Jahra, Khaitan, Mahbola, Sabhan, Salmiya</p></li>
+											<li><h5>Branches</h5><p>Abbasiya, Abu Haleefa, City, Fahaheel, Farwaniya, Finthas, Hawally, Jahara, Jleeb, Karnataka, Khaithan, Mahboula, Mangaf, Sabhan, Salmiya</p></li>
 											<li><h5>General Phone</h5><p><a href="tel:96550649506">+965 506 49506</a></p></li>
 											<li><h5>Email:</h5><p><a href="mailto:info@kkma.net">info@kkma.net</a></p></li>
 										</ul>
