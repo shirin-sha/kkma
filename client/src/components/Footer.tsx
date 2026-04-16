@@ -33,7 +33,7 @@ export default function Footer(): React.JSX.Element {
 					<h4>Contact Info</h4>
 					<p>Branches: Abbasiya, Abu Haleefa, City, Fahaheel, Farwaniya, Finthas, Hawally, Jahara, Jleeb, Karnataka, Khaithan, Mahboula, Mangaf, Sabhan, Salmiya</p>
 					<p>Phone: <a href="tel:+96550649506">+965 506 49506</a></p>
-					<p>Email: <a href="mailto:info@kkma.net">info@kkma.net</a></p>
+					<p>Email: <a href="mailto:kkma@kkma.net">kkma@kkma.net</a></p>
 				</div>
 			</div>
 			<div className="container footer-bottom">
