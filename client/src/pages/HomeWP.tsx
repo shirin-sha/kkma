@@ -24,7 +24,11 @@ export default function HomeWP(): React.JSX.Element {
                 const data = await res.json()
                 if (!res.ok || !data?.ok || !Array.isArray(data?.items)) return
 
-                const mapped = data.items.map((item: any) => ({
+                const homepageMembers = data.items
+                    .filter((item: any) => item.group === 'pmt_executives')
+                    .slice(0, 4)
+
+                const mapped = homepageMembers.map((item: any) => ({
                     img: item.photoPath ? `${baseUrl}${item.photoPath}` : '/images/home/KKMA-K-SIDDIK-Chief-patron.jpg',
                     name: item.name,
                     role: item.role,
