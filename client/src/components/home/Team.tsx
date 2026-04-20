@@ -1,5 +1,6 @@
 import { Star, Mail, Phone, Share2 } from 'lucide-react'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 type Member = {
     img: string
@@ -36,9 +37,9 @@ export default function Team({ members }: { members: Member[] }): React.JSX.Elem
           </h6>
           <h2>Meet Our Leadership</h2>
           <div className="title-shape"></div>
-          <a href="https://kkma.net/our-team/" className="theme-btn">
+          <Link to="/about/people-behind" className="theme-btn">
             All members
-          </a>
+          </Link>
         </div>
 
         {/* Team Members */}
