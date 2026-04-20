@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Star } from 'lucide-react'
 
 export default function PeopleBehind(): React.JSX.Element {
@@ -19,6 +19,21 @@ export default function PeopleBehind(): React.JSX.Element {
     phone?: string
     email?: string
   }
+  type TeamGroup =
+    | 'pmt_executives'
+    | 'central_committee_office_bearers'
+    | 'ahmadi_zonal_committee'
+    | 'city_zonal_committee'
+    | 'farwaniya_zonal_committee'
+  type ApiTeamItem = {
+    group: TeamGroup
+    name: string
+    role: string
+    phone?: string
+    email?: string
+    photoPath?: string
+  }
+  type ApiTeamResponse = { ok: boolean; items?: ApiTeamItem[] }
 
   const pmtExecutives: TeamMember[] = [
     { img: '/images/people/KKMA-K-SIDDIK-Chief-patron.jpg', name: 'K. SIDDIK', role: 'Chief Patron', phone: '+965 123 456 78' },
@@ -57,6 +72,49 @@ export default function PeopleBehind(): React.JSX.Element {
     { img: '/images/people/KKMA-P-A-ABDULLA.jpg', name: 'P. A. ABDULLA', role: 'Secretary', phone: '+965 66608287' },
     { img: '/images/people/KKMA-MUHAMMED-ALI-KADINJIMOOLA.jpg', name: 'MUHAMMED ALI KADINJIMOOLA', role: 'Secretary', phone: '+965 66053044' }
   ]
+
+  const [pmtMembers, setPmtMembers] = useState<TeamMember[]>(pmtExecutives)
+  const [centralMembers, setCentralMembers] = useState<TeamMember[]>(ccOfficeBearers)
+  const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
+
+  useEffect(() => {
+    async function loadTeam(): Promise<void> {
+      try {
+        const res = await fetch(`${baseUrl}/api/team`)
+        const data: ApiTeamResponse = await res.json()
+        if (!res.ok || !data.ok || !Array.isArray(data.items)) return
+
+        const toCard = (item: ApiTeamItem): TeamMember => ({
+          img: item.photoPath ? `${baseUrl}${item.photoPath}` : '/images/home/KKMA-K-SIDDIK-Chief-patron.jpg',
+          name: item.name,
+          role: item.role,
+          phone: item.phone || '',
+          email: item.email || '',
+        })
+
+        const pmt = data.items.filter((item) => item.group === 'pmt_executives').map(toCard)
+        const central = data.items.filter((item) => item.group === 'central_committee_office_bearers').map(toCard)
+        const toZonalRow = (item: ApiTeamItem): ZonalRow => ({
+          name: item.name,
+          role: item.role,
+          contact: item.phone || '-',
+        })
+        const ahmadi = data.items.filter((item) => item.group === 'ahmadi_zonal_committee').map(toZonalRow)
+        const city = data.items.filter((item) => item.group === 'city_zonal_committee').map(toZonalRow)
+        const farwaniya = data.items.filter((item) => item.group === 'farwaniya_zonal_committee').map(toZonalRow)
+
+        if (pmt.length > 0) setPmtMembers(pmt)
+        if (central.length > 0) setCentralMembers(central)
+        if (ahmadi.length > 0) setAhmadiMembers(ahmadi)
+        if (city.length > 0) setCityMembers(city)
+        if (farwaniya.length > 0) setFarwaniyaMembers(farwaniya)
+      } catch {
+        // Keep static fallback data when API is unavailable.
+      }
+    }
+
+    loadTeam()
+  }, [baseUrl])
 
   type ZonalRow = { name: string; role: string; contact: string }
 
@@ -112,6 +170,10 @@ export default function PeopleBehind(): React.JSX.Element {
     { name: 'Mr Usman Madathil', role: 'Secretary - Communication', contact: '99129503' },
     { name: 'Dr S Muhammed', role: 'Treasurer', contact: '66915688' }
   ]
+
+  const [ahmadiMembers, setAhmadiMembers] = useState<ZonalRow[]>(ahmadiRows)
+  const [cityMembers, setCityMembers] = useState<ZonalRow[]>(cityRows)
+  const [farwaniyaMembers, setFarwaniyaMembers] = useState<ZonalRow[]>(farwaniyaRows)
 
   const renderTeamGrid = (title: string, subtitle: string, members: TeamMember[]) => (
     <section className="team-section sec-pad ">
@@ -270,19 +332,19 @@ export default function PeopleBehind(): React.JSX.Element {
         </div>
       </section>
 
-      {renderTeamGrid('Our PMT Executives', 'Guiding Our Mission with Expertise and Commitment', pmtExecutives)}
+      {renderTeamGrid('Our PMT Executives', 'Guiding Our Mission with Expertise and Commitment', pmtMembers)}
 
-      {renderTeamGrid('Central Committee Office Bearers', 'Leading with Vision and Dedication', ccOfficeBearers)}
+      {renderTeamGrid('Central Committee Office Bearers', 'Leading with Vision and Dedication', centralMembers)}
 
-      {renderZonal('Ahmadi Zonal Committee', ahmadiRows)}
-
-      <div className="elementor-divider"><span className="elementor-divider-separator"></span></div>
-
-      {renderZonal('City Zonal Committee', cityRows)}
+      {renderZonal('Ahmadi Zonal Committee', ahmadiMembers)}
 
       <div className="elementor-divider"><span className="elementor-divider-separator"></span></div>
 
-      {renderZonal('Farwaniya Zonal Committee', farwaniyaRows)}
+      {renderZonal('City Zonal Committee', cityMembers)}
+
+      <div className="elementor-divider"><span className="elementor-divider-separator"></span></div>
+
+      {renderZonal('Farwaniya Zonal Committee', farwaniyaMembers)}
     </div>
   )
 }

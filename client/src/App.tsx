@@ -34,6 +34,7 @@ import AdminMembershipDetail from "./pages/admin/MembershipDetail";
 import AdminClassifieds from "./pages/admin/Classifieds";
 import AdminQuiz from "./pages/admin/Quiz";
 import AdminQuizSubmissions from "./pages/admin/QuizSubmissions";
+import AdminTeam from "./pages/admin/Team";
 import EventDetail from "./pages/media/EventDetail";
 import NewsDetail from "./pages/media/NewsDetail";
 import CategoryNews from "./pages/media/CategoryNews";
@@ -101,6 +102,7 @@ path: "/admin",
       { path: "events", element: <AdminEvents /> },
       { path: "memberships", element: <AdminMemberships /> },
       { path: "memberships/:id", element: <AdminMembershipDetail /> },
+      { path: "team", element: <AdminTeam /> },
       { path: "quiz", element: <AdminQuiz /> },
       { path: "quiz/submissions", element: <AdminQuizSubmissions /> },
 ]

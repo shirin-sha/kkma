@@ -13,6 +13,7 @@ import membershipRouter from './routes/membership';
 import userRouter from './routes/user';
 import classifiedsRouter from './routes/classifieds';
 import quizRouter from './routes/quiz';
+import teamRouter from './routes/team';
 import { NewsPost } from './models/NewsPost';
 import { RamadanQuiz } from './models/RamadanQuiz';
 import { QuizSubmission } from './models/QuizSubmission';
@@ -45,6 +46,7 @@ app.use(membershipRouter);
 app.use('/api/user', userRouter);
 app.use('/api/classifieds', classifiedsRouter);
 app.use(quizRouter);
+app.use(teamRouter);
 
 // Serve static files from client dist (both development and production)
 // Try multiple possible paths to find client dist

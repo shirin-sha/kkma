@@ -8,7 +8,9 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
     "seed:admin": "node dist/scripts/seedAdmin.js",
-    "seed:admin:dev": "ts-node scripts/seedAdmin.ts"
+    "seed:admin:dev": "ts-node scripts/seedAdmin.ts",
+    "seed:team": "node dist/src/scripts/seedTeam.js",
+    "seed:team:dev": "ts-node src/scripts/seedTeam.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
