@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import 'react-quill/dist/quill.snow.css'
 
 type Post = {
   _id?: string

@@ -3,6 +3,7 @@ import { NewsPost } from "../models/NewsPost"
 import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
+import { compressMulterFile } from '../utils/compressImage'
 
 const router = Router()
 
@@ -31,7 +32,16 @@ const storage = multer.diskStorage({
     cb(null, `${unique}${ext}`)
   },
 })
-const upload = multer({ storage })
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB per file before compression
+  fileFilter: (_req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed'))
+    }
+    cb(null, true)
+  },
+})
 
 /** Remove a news upload from disk if it lives under /uploads/news/ */
 function deleteNewsUpload(imagePath?: string | null) {
@@ -158,7 +168,7 @@ router.get('/api/news/:id([0-9a-fA-F]{24})', async (req: Request, res: Response)
 // POST /api/news - Create a new news post
 router.post("/api/news", upload.fields([
   { name: 'image', maxCount: 1 },
-  { name: 'gallery', maxCount: 20 },
+  { name: 'gallery', maxCount: 40 },
 ]), async (req: Request, res: Response) => {
   try {
     const { title, href, category, author, comments, content, contentHtml, excerpt, publishedDate, slug, featuredAlt, featuredCaption, tags, seoTitle, seoDescription } = req.body as any
@@ -189,8 +199,13 @@ router.post("/api/news", upload.fields([
     const featured = files?.image?.[0]
     const gallery = files?.gallery || []
 
-    const imagePath = featured ? `/uploads/news/${featured.filename}` : undefined
-    const galleryPaths = gallery.map((f) => `/uploads/news/${f.filename}`)
+    const imagePath = featured
+      ? await compressMulterFile(featured, 'uploads/news')
+      : undefined
+    const galleryPaths: string[] = []
+    for (const f of gallery) {
+      galleryPaths.push(await compressMulterFile(f, 'uploads/news'))
+    }
 
     const parsedTags = typeof tags === 'string' ? tags.split(',').map((t: string) => t.trim()).filter(Boolean) : Array.isArray(tags) ? tags : []
 
@@ -228,7 +243,7 @@ router.post("/api/news", upload.fields([
 // PUT /api/news/:id - Update a news post
 router.put("/api/news/:id", upload.fields([
   { name: 'image', maxCount: 1 },
-  { name: 'gallery', maxCount: 20 },
+  { name: 'gallery', maxCount: 40 },
 ]), async (req: Request, res: Response) => {
   try {
     const { id } = req.params
@@ -277,7 +292,10 @@ router.put("/api/news/:id", upload.fields([
     const existingPaths = Array.isArray(existing.galleryPaths) ? existing.galleryPaths : []
     const removeSet = new Set(removePaths)
     const keptPaths = existingPaths.filter((p) => !removeSet.has(p))
-    const addedPaths = gallery.map((f) => `/uploads/news/${f.filename}`)
+    const addedPaths: string[] = []
+    for (const f of gallery) {
+      addedPaths.push(await compressMulterFile(f, 'uploads/news'))
+    }
 
     const update: any = {
       title,
@@ -302,7 +320,7 @@ router.put("/api/news/:id", upload.fields([
     }
 
     if (featured) {
-      update.imagePath = `/uploads/news/${featured.filename}`
+      update.imagePath = await compressMulterFile(featured, 'uploads/news')
     }
 
     // Always sync gallery when removing and/or appending

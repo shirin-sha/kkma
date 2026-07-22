@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Edit, Trash2 } from 'lucide-react'
 import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
 
 const NEWS_CATEGORIES = [
 	'All News & Updates',
@@ -76,7 +75,7 @@ const emptyPost: Post = {
 	comments: 0,
 }
 
-const GALLERY_MAX = 20
+const GALLERY_MAX = 40
 
 const editorModules = {
 	toolbar: [

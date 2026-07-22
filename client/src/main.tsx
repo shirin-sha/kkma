@@ -6,6 +6,7 @@ import './styles/color.css';
 import './styles/style.css';
 import './styles/custom.css';
 import './styles/responsive.css';
+import 'react-quill/dist/quill.snow.css';
 import App from './App';
 
 // Initialize WOW.js animations via dynamic import to avoid bundling issues
