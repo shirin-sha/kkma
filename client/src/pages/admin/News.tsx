@@ -49,6 +49,7 @@ type Post = {
 	href: string
 	img?: string
 	imagePath?: string
+	galleryPaths?: string[]
 	content?: string
   contentHtml?: string
 	date: { day: string; monthYear: string }
@@ -66,6 +67,7 @@ const emptyPost: Post = {
 	href: '',
 	img: '',
 	imagePath: '',
+	galleryPaths: [],
 	content: '',
   contentHtml: '',
 	date: { day: '', monthYear: '' },
@@ -73,6 +75,8 @@ const emptyPost: Post = {
 	author: '',
 	comments: 0,
 }
+
+const GALLERY_MAX = 20
 
 const editorModules = {
 	toolbar: [
@@ -108,8 +112,16 @@ export default function AdminNews(): React.JSX.Element {
 	const [editingId, setEditingId] = useState<string>('')
 	const [dateInput, setDateInput] = useState<string>('')
 	const [galleryFiles, setGalleryFiles] = useState<File[]>([])
+	const [existingGallery, setExistingGallery] = useState<string[]>([])
+	const [removedGallery, setRemovedGallery] = useState<string[]>([])
 
 	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
+
+	function resetGalleryState(paths: string[] = []) {
+		setExistingGallery(paths)
+		setRemovedGallery([])
+		setGalleryFiles([])
+	}
 
 	useEffect(() => {
     const token = localStorage.getItem('adminToken')
@@ -143,12 +155,14 @@ export default function AdminNews(): React.JSX.Element {
 		setFile(null)
 		setEditingId('')
 		setDateInput(dateToISO(new Date()))
+		resetGalleryState([])
 		setMode('create')
 	}
 	function onEdit(p: Post) {
 		setForm({ ...p })
 		setFile(null)
 		setEditingId(p._id || '')
+		resetGalleryState(Array.isArray(p.galleryPaths) ? [...p.galleryPaths] : [])
 		try {
 			setDateInput(displayToISO(p.date?.day, p.date?.monthYear))
 		} catch {
@@ -162,7 +176,33 @@ export default function AdminNews(): React.JSX.Element {
 		setFile(null)
 		setEditingId('')
 		setDateInput('')
-		setGalleryFiles([])
+		resetGalleryState([])
+	}
+
+	function onRemoveExistingGallery(path: string) {
+		setExistingGallery((prev) => prev.filter((p) => p !== path))
+		setRemovedGallery((prev) => (prev.includes(path) ? prev : [...prev, path]))
+	}
+
+	function onRemovePendingGallery(index: number) {
+		setGalleryFiles((prev) => prev.filter((_, i) => i !== index))
+	}
+
+	function onPickGalleryFiles(e: React.ChangeEvent<HTMLInputElement>) {
+		const picked = Array.from(e.target.files || [])
+		if (picked.length === 0) return
+		const remaining = GALLERY_MAX - (existingGallery.length + galleryFiles.length)
+		if (remaining <= 0) {
+			alert(`Maximum ${GALLERY_MAX} gallery images allowed`)
+			e.target.value = ''
+			return
+		}
+		const toAdd = picked.slice(0, remaining)
+		if (picked.length > remaining) {
+			alert(`Only ${remaining} more image(s) can be added (max ${GALLERY_MAX})`)
+		}
+		setGalleryFiles((prev) => [...prev, ...toAdd])
+		e.target.value = ''
 	}
 
 	async function onDelete(id?: string) {
@@ -194,6 +234,9 @@ export default function AdminNews(): React.JSX.Element {
 		if (file) fd.append('image', file)
 		if (galleryFiles && galleryFiles.length > 0) {
 			for (const gf of galleryFiles) fd.append('gallery', gf)
+		}
+		if (mode === 'edit' && removedGallery.length > 0) {
+			fd.append('removeGallery', JSON.stringify(removedGallery))
 		}
 
 		const isEdit = mode === 'edit' && editingId
@@ -255,12 +298,84 @@ export default function AdminNews(): React.JSX.Element {
 							)}
 						</div>
 						<div>
-							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Gallery Images</label>
-							<input type="file" accept="image/*" multiple onChange={(e) => setGalleryFiles(Array.from(e.target.files || []))} />
-							{galleryFiles.length > 0 && (
+							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>
+								Gallery Images ({existingGallery.length + galleryFiles.length}/{GALLERY_MAX})
+							</label>
+							<input
+								type="file"
+								accept="image/*"
+								multiple
+								onChange={onPickGalleryFiles}
+								disabled={existingGallery.length + galleryFiles.length >= GALLERY_MAX}
+							/>
+							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>
+								New uploads are added to the gallery. Remove only marks images for deletion — click Update/Create to save.
+							</small>
+							{(existingGallery.length > 0 || galleryFiles.length > 0) && (
 								<div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
+									{existingGallery.map((path) => (
+										<div key={path} style={{ position: 'relative', width: 80, height: 80 }}>
+											<img
+												src={`${baseUrl}${path}`}
+												alt="gallery"
+												style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #e5e7eb', display: 'block' }}
+											/>
+											<button
+												type="button"
+												title="Remove"
+												aria-label="Remove gallery image"
+												onClick={() => onRemoveExistingGallery(path)}
+												style={{
+													position: 'absolute',
+													top: -6,
+													right: -6,
+													width: 22,
+													height: 22,
+													borderRadius: '50%',
+													border: 'none',
+													background: '#dc2626',
+													color: '#fff',
+													cursor: 'pointer',
+													fontSize: 14,
+													lineHeight: '22px',
+													padding: 0,
+												}}
+											>
+												×
+											</button>
+										</div>
+									))}
 									{galleryFiles.map((g, i) => (
-										<img key={i} src={URL.createObjectURL(g)} alt="gallery" style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #e5e7eb' }} />
+										<div key={`new-${i}-${g.name}`} style={{ position: 'relative', width: 80, height: 80 }}>
+											<img
+												src={URL.createObjectURL(g)}
+												alt="new gallery"
+												style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #93c5fd', display: 'block' }}
+											/>
+											<button
+												type="button"
+												title="Remove"
+												aria-label="Remove pending gallery image"
+												onClick={() => onRemovePendingGallery(i)}
+												style={{
+													position: 'absolute',
+													top: -6,
+													right: -6,
+													width: 22,
+													height: 22,
+													borderRadius: '50%',
+													border: 'none',
+													background: '#dc2626',
+													color: '#fff',
+													cursor: 'pointer',
+													fontSize: 14,
+													lineHeight: '22px',
+													padding: 0,
+												}}
+											>
+												×
+											</button>
+										</div>
 									))}
 								</div>
 							)}

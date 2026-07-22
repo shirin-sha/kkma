@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import 'react-quill/dist/quill.snow.css'
 
@@ -35,7 +35,29 @@ export default function NewsDetail(): React.JSX.Element {
   const [categories, setCategories] = useState<{ name: string; count: number }[]>([])
   const [galleryIndex, setGalleryIndex] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [thumbCanScrollLeft, setThumbCanScrollLeft] = useState(false)
+  const [thumbCanScrollRight, setThumbCanScrollRight] = useState(false)
+  const thumbStripRef = useRef<HTMLDivElement | null>(null)
   const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
+
+  const updateThumbScrollState = useCallback(() => {
+    const el = thumbStripRef.current
+    if (!el) {
+      setThumbCanScrollLeft(false)
+      setThumbCanScrollRight(false)
+      return
+    }
+    const maxScroll = el.scrollWidth - el.clientWidth
+    setThumbCanScrollLeft(el.scrollLeft > 2)
+    setThumbCanScrollRight(maxScroll > 2 && el.scrollLeft < maxScroll - 2)
+  }, [])
+
+  const scrollThumbs = useCallback((direction: 'left' | 'right') => {
+    const el = thumbStripRef.current
+    if (!el) return
+    const amount = Math.max(160, Math.floor(el.clientWidth * 0.7))
+    el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' })
+  }, [])
 
   useEffect(() => {
     const load = async () => {
@@ -81,8 +103,40 @@ export default function NewsDetail(): React.JSX.Element {
   const gallery = Array.isArray(item?.galleryPaths) ? item!.galleryPaths! : []
   const hasGallery = gallery.length > 0
 
+  useEffect(() => {
+    setGalleryIndex(0)
+  }, [item?._id])
+
+  useEffect(() => {
+    updateThumbScrollState()
+    const el = thumbStripRef.current
+    if (!el) return
+    const onScroll = () => updateThumbScrollState()
+    el.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', updateThumbScrollState)
+    return () => {
+      el.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', updateThumbScrollState)
+    }
+  }, [gallery.length, updateThumbScrollState])
+
+  useEffect(() => {
+    const strip = thumbStripRef.current
+    if (!strip) return
+    const active = strip.querySelector<HTMLElement>(`[data-thumb-index="${galleryIndex}"]`)
+    if (active) {
+      active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    }
+    // Recheck after smooth scroll settles
+    const t = window.setTimeout(updateThumbScrollState, 350)
+    return () => window.clearTimeout(t)
+  }, [galleryIndex, updateThumbScrollState])
+
   return (
     <div>
+      <style>{`
+        .news-gallery-thumbs::-webkit-scrollbar { display: none; }
+      `}</style>
       <section className="page-title" style={{ backgroundImage: 'url(/images/page-title/KKMA-page-title.jpg)' }}>
         <div className="auto-container">
           <div className="content-box">
@@ -422,55 +476,125 @@ export default function NewsDetail(): React.JSX.Element {
                           
                           {/* Thumbnail Navigation */}
                           {gallery.length > 1 && (
-                            <div style={{ 
-                              display: 'flex', 
-                              gap: 8, 
-                              justifyContent: 'center', 
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 8,
                               marginTop: 16,
-                              flexWrap: 'wrap'
+                              position: 'relative'
                             }}>
-                              {gallery.map((g, idx) => (
-                                <button 
-                                  key={idx} 
-                                  onClick={() => setGalleryIndex(idx)} 
-                                  aria-label={`View image ${idx + 1}`}
-                                  style={{ 
-                                    width: 60, 
-                                    height: 60, 
-                                    borderRadius: 8,
-                                    border: idx === galleryIndex ? '3px solid #83b253' : '2px solid #e5e7eb',
-                                    overflow: 'hidden',
+                              {thumbCanScrollLeft && (
+                                <button
+                                  type="button"
+                                  aria-label="Scroll thumbnails left"
+                                  onClick={() => scrollThumbs('left')}
+                                  style={{
+                                    flexShrink: 0,
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: '50%',
+                                    border: '1px solid #e5e7eb',
+                                    background: '#111827',
+                                    color: '#fff',
                                     cursor: 'pointer',
-                                    background: 'none',
-                                    padding: 0,
-                                    transition: 'all 0.2s ease',
-                                    opacity: idx === galleryIndex ? 1 : 0.7
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    if (idx !== galleryIndex) {
-                                      e.currentTarget.style.opacity = '1'
-                                      e.currentTarget.style.transform = 'scale(1.05)'
-                                    }
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    if (idx !== galleryIndex) {
-                                      e.currentTarget.style.opacity = '0.7'
-                                      e.currentTarget.style.transform = 'scale(1)'
-                                    }
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: 20,
+                                    lineHeight: 1,
+                                    padding: 0
                                   }}
                                 >
-                                  <img 
-                                    src={`${baseUrl}${g}`} 
-                                    alt={`Thumbnail ${idx + 1}`}
-                                    style={{ 
-                                      width: '100%',
-                                      height: '100%',
-                                      objectFit: 'cover',
-                                      objectPosition: 'center'
-                                    }}
-                                  />
+                                  ‹
                                 </button>
-                              ))}
+                              )}
+
+                              <div
+                                ref={thumbStripRef}
+                                style={{
+                                  display: 'flex',
+                                  gap: 8,
+                                  overflowX: 'auto',
+                                  overflowY: 'hidden',
+                                  flex: 1,
+                                  scrollBehavior: 'smooth',
+                                  WebkitOverflowScrolling: 'touch',
+                                  scrollbarWidth: 'none'
+                                }}
+                                className="news-gallery-thumbs"
+                              >
+                                {gallery.map((g, idx) => (
+                                  <button
+                                    key={idx}
+                                    type="button"
+                                    data-thumb-index={idx}
+                                    onClick={() => setGalleryIndex(idx)}
+                                    aria-label={`View image ${idx + 1}`}
+                                    style={{
+                                      width: 60,
+                                      height: 60,
+                                      flexShrink: 0,
+                                      borderRadius: 8,
+                                      border: idx === galleryIndex ? '3px solid #83b253' : '2px solid #e5e7eb',
+                                      overflow: 'hidden',
+                                      cursor: 'pointer',
+                                      background: 'none',
+                                      padding: 0,
+                                      transition: 'all 0.2s ease',
+                                      opacity: idx === galleryIndex ? 1 : 0.7
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      if (idx !== galleryIndex) {
+                                        e.currentTarget.style.opacity = '1'
+                                        e.currentTarget.style.transform = 'scale(1.05)'
+                                      }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      if (idx !== galleryIndex) {
+                                        e.currentTarget.style.opacity = '0.7'
+                                        e.currentTarget.style.transform = 'scale(1)'
+                                      }
+                                    }}
+                                  >
+                                    <img
+                                      src={`${baseUrl}${g}`}
+                                      alt={`Thumbnail ${idx + 1}`}
+                                      style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        objectPosition: 'center'
+                                      }}
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+
+                              {thumbCanScrollRight && (
+                                <button
+                                  type="button"
+                                  aria-label="Scroll thumbnails right"
+                                  onClick={() => scrollThumbs('right')}
+                                  style={{
+                                    flexShrink: 0,
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: '50%',
+                                    border: '1px solid #e5e7eb',
+                                    background: '#111827',
+                                    color: '#fff',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: 20,
+                                    lineHeight: 1,
+                                    padding: 0
+                                  }}
+                                >
+                                  ›
+                                </button>
+                              )}
                             </div>
                           )}
                         </div>

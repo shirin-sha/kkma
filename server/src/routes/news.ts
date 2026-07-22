@@ -33,6 +33,21 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
+/** Remove a news upload from disk if it lives under /uploads/news/ */
+function deleteNewsUpload(imagePath?: string | null) {
+  if (!imagePath || typeof imagePath !== 'string') return
+  if (!imagePath.startsWith('/uploads/news/')) return
+  const filename = path.basename(imagePath)
+  if (!filename || filename === '.' || filename === '..') return
+  const fp = path.join(uploadDir, filename)
+  fs.promises.unlink(fp).catch(() => {})
+}
+
+function deleteNewsUploads(paths?: (string | null | undefined)[] | null) {
+  if (!Array.isArray(paths)) return
+  for (const p of paths) deleteNewsUpload(p)
+}
+
 // GET /api/news/latest - Get latest 3 news posts for homepage
 router.get("/api/news/latest", async (req: Request, res: Response) => {
   try {
@@ -213,11 +228,11 @@ router.post("/api/news", upload.fields([
 // PUT /api/news/:id - Update a news post
 router.put("/api/news/:id", upload.fields([
   { name: 'image', maxCount: 1 },
-  { name: 'gallery', maxCount: 10 },
+  { name: 'gallery', maxCount: 20 },
 ]), async (req: Request, res: Response) => {
   try {
     const { id } = req.params
-    const { title, href, category, author, comments, content, contentHtml, excerpt, publishedDate, slug, featuredAlt, featuredCaption, tags, seoTitle, seoDescription } = req.body as any
+    const { title, href, category, author, comments, content, contentHtml, excerpt, publishedDate, slug, featuredAlt, featuredCaption, tags, seoTitle, seoDescription, removeGallery } = req.body as any
 
     // Parse publishedDate from dd/mm/yyyy format
     let newPublishedDateStr: string | undefined
@@ -237,9 +252,32 @@ router.put("/api/news/:id", upload.fields([
       }
     }
 
+    const existing = await NewsPost.findById(id)
+    if (!existing) {
+      return res.status(404).json({ ok: false, error: "Post not found" })
+    }
+
     const files = (req as any).files as Record<string, Express.Multer.File[] | undefined>
     const featured = files?.image?.[0]
     const gallery = files?.gallery || []
+
+    // Paths the admin explicitly removed from the gallery
+    let removePaths: string[] = []
+    if (typeof removeGallery === 'string' && removeGallery.trim()) {
+      try {
+        const parsed = JSON.parse(removeGallery)
+        removePaths = Array.isArray(parsed) ? parsed.filter((p: unknown) => typeof p === 'string') : []
+      } catch {
+        removePaths = removeGallery.split(',').map((p: string) => p.trim()).filter(Boolean)
+      }
+    } else if (Array.isArray(removeGallery)) {
+      removePaths = removeGallery.filter((p: unknown) => typeof p === 'string') as string[]
+    }
+
+    const existingPaths = Array.isArray(existing.galleryPaths) ? existing.galleryPaths : []
+    const removeSet = new Set(removePaths)
+    const keptPaths = existingPaths.filter((p) => !removeSet.has(p))
+    const addedPaths = gallery.map((f) => `/uploads/news/${f.filename}`)
 
     const update: any = {
       title,
@@ -266,8 +304,10 @@ router.put("/api/news/:id", upload.fields([
     if (featured) {
       update.imagePath = `/uploads/news/${featured.filename}`
     }
-    if (gallery.length > 0) {
-      update.galleryPaths = gallery.map((f) => `/uploads/news/${f.filename}`)
+
+    // Always sync gallery when removing and/or appending
+    if (removePaths.length > 0 || addedPaths.length > 0) {
+      update.galleryPaths = [...keptPaths, ...addedPaths]
     }
 
     if (typeof tags === 'string') {
@@ -286,6 +326,13 @@ router.put("/api/news/:id", upload.fields([
       return res.status(404).json({ ok: false, error: "Post not found" })
     }
 
+    // Remove replaced featured image from disk
+    if (featured && existing.imagePath && existing.imagePath !== post.imagePath) {
+      deleteNewsUpload(existing.imagePath)
+    }
+    // Only delete gallery files the admin explicitly removed
+    deleteNewsUploads(existingPaths.filter((p) => removeSet.has(p)))
+
     return res.json({ ok: true, item: post })
   } catch (err) {
     console.error("[news update] error:", err)
@@ -303,6 +350,10 @@ router.delete("/api/news/:id", async (req: Request, res: Response) => {
     if (!post) {
       return res.status(404).json({ ok: false, error: "Post not found" })
     }
+
+    // Remove featured + gallery files from disk
+    deleteNewsUpload(post.imagePath)
+    deleteNewsUploads(post.galleryPaths)
 
     return res.json({ ok: true })
   } catch (err) {
