@@ -116,6 +116,28 @@ export default function AdminNews(): React.JSX.Element {
 
 	const baseUrl = useMemo(() => (import.meta as any).env?.VITE_API_URL || '', [])
 
+	const filePreviewUrl = useMemo(() => {
+		if (!file) return null
+		return URL.createObjectURL(file)
+	}, [file])
+
+	const galleryPreviewUrls = useMemo(
+		() => galleryFiles.map((g) => URL.createObjectURL(g)),
+		[galleryFiles]
+	)
+
+	useEffect(() => {
+		return () => {
+			if (filePreviewUrl) URL.revokeObjectURL(filePreviewUrl)
+		}
+	}, [filePreviewUrl])
+
+	useEffect(() => {
+		return () => {
+			galleryPreviewUrls.forEach((url) => URL.revokeObjectURL(url))
+		}
+	}, [galleryPreviewUrls])
+
 	function resetGalleryState(paths: string[] = []) {
 		setExistingGallery(paths)
 		setRemovedGallery([])
@@ -217,6 +239,7 @@ export default function AdminNews(): React.JSX.Element {
 
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault()
+
 		const fd = new FormData()
 		fd.append('title', form.title)
 		if (form.category) fd.append('category', form.category)
@@ -241,13 +264,26 @@ export default function AdminNews(): React.JSX.Element {
 		const isEdit = mode === 'edit' && editingId
 		const url = isEdit ? `${baseUrl}/api/news/${editingId}` : `${baseUrl}/api/news`
 		const method = isEdit ? 'PUT' : 'POST'
-		const res = await fetch(url, { method, body: fd })
-		const data = await res.json()
-		if (res.ok && data.ok) {
-			onCancel()
-			await load()
-		} else {
-			alert(data?.error || 'Save failed')
+
+		try {
+			const res = await fetch(url, { method, body: fd })
+			let data: { ok?: boolean; error?: string } = {}
+			try {
+				data = await res.json()
+			} catch {
+				alert(res.status === 413
+					? 'Upload too large. Your server or hosting may have a request size limit — try fewer or smaller images.'
+					: 'Save failed — server returned an invalid response.')
+				return
+			}
+			if (res.ok && data.ok) {
+				onCancel()
+				await load()
+			} else {
+				alert(data?.error || 'Save failed')
+			}
+		} catch {
+			alert('Network error — could not save. Please check your connection and try again.')
 		}
 	}
 
@@ -290,9 +326,12 @@ export default function AdminNews(): React.JSX.Element {
 						<div>
 							<label style={{ display: 'block', fontWeight: 600, marginBottom: 6 }}>Image</label>
 							<input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>
+								Images are auto-compressed after upload.
+							</small>
 							{(file || form.imagePath) && (
 								<div style={{ marginTop: 8 }}>
-									<img src={file ? URL.createObjectURL(file) : `${baseUrl}${form.imagePath}`} alt="preview" style={{ maxWidth: 240, borderRadius: 8, border: '1px solid #e5e7eb' }} />
+									<img src={filePreviewUrl || `${baseUrl}${form.imagePath}`} alt="preview" style={{ maxWidth: 240, borderRadius: 8, border: '1px solid #e5e7eb' }} />
 								</div>
 							)}
 						</div>
@@ -308,7 +347,7 @@ export default function AdminNews(): React.JSX.Element {
 								disabled={existingGallery.length + galleryFiles.length >= GALLERY_MAX}
 							/>
 							<small style={{ display: 'block', marginTop: 4, color: '#6b7280' }}>
-								New uploads are added to the gallery. Remove only marks images for deletion — click Update/Create to save.
+								Max {GALLERY_MAX} images. New uploads are added to the gallery — click Update/Create to save.
 							</small>
 							{(existingGallery.length > 0 || galleryFiles.length > 0) && (
 								<div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }}>
@@ -345,9 +384,9 @@ export default function AdminNews(): React.JSX.Element {
 										</div>
 									))}
 									{galleryFiles.map((g, i) => (
-										<div key={`new-${i}-${g.name}`} style={{ position: 'relative', width: 80, height: 80 }}>
+										<div key={`new-${i}-${g.name}-${g.size}-${g.lastModified}`} style={{ position: 'relative', width: 80, height: 80 }}>
 											<img
-												src={URL.createObjectURL(g)}
+												src={galleryPreviewUrls[i]}
 												alt="new gallery"
 												style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #93c5fd', display: 'block' }}
 											/>

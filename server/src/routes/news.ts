@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express"
 import { NewsPost } from "../models/NewsPost"
-import multer from 'multer'
+import multer, { MulterError } from 'multer'
 import path from 'path'
 import fs from 'fs'
 import { compressMulterFile } from '../utils/compressImage'
@@ -22,6 +22,8 @@ const toPublishedTs = (item: any): number => {
   return 0
 }
 
+const GALLERY_MAX = 40
+
 const uploadDir = path.resolve(__dirname, '../../../uploads/news')
 fs.mkdirSync(uploadDir, { recursive: true })
 const storage = multer.diskStorage({
@@ -34,7 +36,6 @@ const storage = multer.diskStorage({
 })
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB per file before compression
   fileFilter: (_req, file, cb) => {
     if (!file.mimetype.startsWith('image/')) {
       return cb(new Error('Only image files are allowed'))
@@ -42,6 +43,31 @@ const upload = multer({
     cb(null, true)
   },
 })
+
+type NewsUploadField = { name: string; maxCount: number }
+
+function handleNewsUpload(fields: NewsUploadField[]) {
+  return (req: Request, res: Response, next: (err?: unknown) => void) => {
+    upload.fields(fields)(req, res, (err: unknown) => {
+      if (err instanceof MulterError) {
+        if (err.code === 'LIMIT_FILE_COUNT' || err.code === 'LIMIT_UNEXPECTED_FILE') {
+          return res.status(400).json({
+            ok: false,
+            error: `Too many gallery images. Maximum ${GALLERY_MAX} allowed.`,
+          })
+        }
+        return res.status(400).json({ ok: false, error: err.message })
+      }
+      if (err instanceof Error) {
+        return res.status(400).json({ ok: false, error: err.message })
+      }
+      if (err) {
+        return res.status(400).json({ ok: false, error: 'Upload failed' })
+      }
+      next()
+    })
+  }
+}
 
 /** Remove a news upload from disk if it lives under /uploads/news/ */
 function deleteNewsUpload(imagePath?: string | null) {
@@ -166,9 +192,9 @@ router.get('/api/news/:id([0-9a-fA-F]{24})', async (req: Request, res: Response)
 })
 
 // POST /api/news - Create a new news post
-router.post("/api/news", upload.fields([
+router.post("/api/news", handleNewsUpload([
   { name: 'image', maxCount: 1 },
-  { name: 'gallery', maxCount: 40 },
+  { name: 'gallery', maxCount: GALLERY_MAX },
 ]), async (req: Request, res: Response) => {
   try {
     const { title, href, category, author, comments, content, contentHtml, excerpt, publishedDate, slug, featuredAlt, featuredCaption, tags, seoTitle, seoDescription } = req.body as any
@@ -241,9 +267,9 @@ router.post("/api/news", upload.fields([
 })
 
 // PUT /api/news/:id - Update a news post
-router.put("/api/news/:id", upload.fields([
+router.put("/api/news/:id", handleNewsUpload([
   { name: 'image', maxCount: 1 },
-  { name: 'gallery', maxCount: 40 },
+  { name: 'gallery', maxCount: GALLERY_MAX },
 ]), async (req: Request, res: Response) => {
   try {
     const { id } = req.params
